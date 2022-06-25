@@ -13,7 +13,20 @@ const PlugList: React.FC<PlugListProps> = ({ plugs }) => {
 
   return (
     <Grid>
-      {plugs.map((plug) => (
+      {plugs.map((plug) => {
+        const plugStatus: string = plug.connected && plug.busy
+          ? 'Busy'
+          : plug.connected
+          ? 'Connected'
+          : 'Disconnected';
+
+        const plugStatusColor: string = plug.connected && plug.busy
+        ? 'red'
+        : plug.connected
+        ? 'green'
+        : 'gray';
+
+        return (
         <Grid.Col key={plug.id} span={4}>
           <Card 
             p="lg"
@@ -25,7 +38,7 @@ const PlugList: React.FC<PlugListProps> = ({ plugs }) => {
               <Box>
                 <Text>{plug.name}</Text>
               </Box>
-              <Badge color={plug.connected ? 'green' : plug.connected && plug.busy ? 'red' : 'gray'}>{plug.connected ? 'Connected' : plug.connected && plug.busy ? 'Busy' : 'Disconnected'}</Badge>
+              <Badge color={plugStatusColor}>{plugStatus}</Badge>
             </Group>
             <Text color="gray" size="sm">{plug.location}</Text>
             
@@ -34,7 +47,7 @@ const PlugList: React.FC<PlugListProps> = ({ plugs }) => {
             </Box>
           </Card>
       </Grid.Col>
-      ))}
+      )})}
     </Grid>
   )
 }
