@@ -2,7 +2,9 @@
 	"compilerOptions": {
 		"baseUrl": "src",
 		"paths": {
-			"@features/*": ["features/*"]
+			"@features/*": ["features/*"],
+			"@lib/*": ["lib/*"],
+			"@hooks/*": ["hooks/*"]
 		},
 		"target": "ESNext",
 		"useDefineForClassFields": true,
