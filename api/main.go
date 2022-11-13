@@ -6,10 +6,12 @@ import (
 	"github.com/pocketbase/pocketbase"
 )
 
-func main() {
-	app := pocketbase.New()
+var App *pocketbase.PocketBase
 
-	if err := app.Start(); err != nil {
+func main() {
+	App = pocketbase.New()
+
+	if err := App.Start(); err != nil {
 		log.Fatal(err)
 	}
 }
