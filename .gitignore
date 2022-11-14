@@ -6,7 +6,6 @@ node_modules
 .pnp.js
 
 pocketbase
-pb_data
 
 # testing
 coverage
