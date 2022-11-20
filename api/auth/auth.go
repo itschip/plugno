@@ -1,10 +1,10 @@
 package auth
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
-	"plugno-api/db"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -22,9 +22,19 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+type AuthHandler struct {
+	db *sql.DB
+}
+
+func NewAuthHandler(db *sql.DB) *AuthHandler {
+	return &AuthHandler{
+		db: db,
+	}
+}
+
 var jwtKey = []byte("veri_secret_key")
 
-func HandleRegister(c *gin.Context) {
+func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	var register RegisterReq
 	err := c.BindJSON(&register)
 	if err != nil {
@@ -41,7 +51,7 @@ func HandleRegister(c *gin.Context) {
 
 	// Create user
 	query := "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
-	res, err := db.Client.Exec(query, register.Username, register.Email, register.Password)
+	res, err := auth.db.Exec(query, register.Username, register.Email, register.Password)
 	if err != nil {
 		log.Println(err.Error())
 		c.Writer.WriteHeader(http.StatusInternalServerError)

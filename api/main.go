@@ -8,9 +8,13 @@ import (
 )
 
 func main() {
+	conn := db.Open()
 	router := gin.Default()
-	router.POST("/register", auth.HandleRegister)
 
-	db.Open()
+	// AUTH
+	a := auth.NewAuthHandler(conn)
+
+	router.POST("/register", a.RegisterUser)
+
 	router.Run()
 }
