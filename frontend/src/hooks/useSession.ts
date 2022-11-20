@@ -5,5 +5,6 @@ export const useSession = () => {
 
 	return {
 		authenticated: !!userModel?.email,
+		data: userModel ?? null,
 	};
 };
