@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"plugno-api/db"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -28,10 +29,32 @@ func HandleRegister(c *gin.Context) {
 	err := c.BindJSON(&register)
 	if err != nil {
 		log.Println(err.Error())
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
-	fmt.Println("Register data")
-	fmt.Println(register)
+	if register.Email == "" || register.Username == "" || register.Password == "" {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		c.Writer.Write([]byte("Missing field when trying to register"))
+		return
+	}
+
+	// Create user
+	query := "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
+	res, err := db.Client.Exec(query, register.Username, register.Email, register.Password)
+	if err != nil {
+		log.Println(err.Error())
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// TODO: Generate an actual UID for the user
+	userID, err := res.LastInsertId()
+	if err != nil {
+		log.Println("(Register) res.LastInsertId", err)
+	}
+
+	fmt.Println(userID)
 
 	expiryDate := time.Now().Add(15 * time.Minute)
 	claims := &Claims{
@@ -45,6 +68,7 @@ func HandleRegister(c *gin.Context) {
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	c.SetCookie("token", tokenString, int(expiryDate.UnixMilli()), "/", "localhost", false, true)
