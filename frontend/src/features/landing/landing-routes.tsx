@@ -22,7 +22,7 @@ export const LandingRoute = () => {
 					</Link>
 				</div>
 			</nav>
-			<main className="bg-neutral-900 h-screen">
+			<main className="bg-neutral-900 min-h-screen">
 				<div>
 					<div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
 						<div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">

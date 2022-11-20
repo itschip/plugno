@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { LoginRoute } from '../features/auth/auth-routes';
+import { LoginRoot, RegisterRoot } from '../features/auth/auth-routes';
 import { LandingRoute } from '../features/landing/landing-routes';
 
 export const router = createBrowserRouter([
@@ -9,6 +9,10 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: '/login',
-		element: <LoginRoute />,
+		element: <LoginRoot />,
+	},
+	{
+		path: '/register',
+		element: <RegisterRoot />,
 	},
 ]);
