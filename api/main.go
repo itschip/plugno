@@ -1,17 +1,14 @@
 package main
 
 import (
-	"log"
+	"plugno-api/auth"
 
-	"github.com/pocketbase/pocketbase"
+	"github.com/gin-gonic/gin"
 )
 
-var App *pocketbase.PocketBase
-
 func main() {
-	App = pocketbase.New()
+	router := gin.Default()
+	router.POST("/register", auth.HandleRegister)
 
-	if err := App.Start(); err != nil {
-		log.Fatal(err)
-	}
+	router.Run()
 }
