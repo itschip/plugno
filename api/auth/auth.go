@@ -2,9 +2,10 @@ package auth
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
+	"plugno-api/models"
+	"plugno-api/structs"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -17,18 +18,26 @@ type RegisterReq struct {
 	Password string `json:"password"`
 }
 
+type LoginReq struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type Claims struct {
+	ID       int
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
 
 type AuthHandler struct {
-	db *sql.DB
+	db        *sql.DB
+	userModel models.UserModel
 }
 
-func NewAuthHandler(db *sql.DB) *AuthHandler {
+func NewAuthHandler(s *structs.Server) *AuthHandler {
 	return &AuthHandler{
-		db: db,
+		db:        s.DB,
+		userModel: s.UserModel,
 	}
 }
 
@@ -49,6 +58,14 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
+	// Check if user exists
+	user := auth.userModel.GetUserFromEmail(register.Email)
+	if user.Email == "" {
+		c.Writer.WriteHeader(http.StatusForbidden)
+		c.Writer.Write([]byte("User already exists"))
+		return
+	}
+
 	// Create user
 	query := "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
 	res, err := auth.db.Exec(query, register.Username, register.Email, register.Password)
@@ -64,10 +81,9 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 		log.Println("(Register) res.LastInsertId", err)
 	}
 
-	fmt.Println(userID)
-
 	expiryDate := time.Now().Add(15 * time.Minute)
 	claims := &Claims{
+		ID:       int(userID),
 		Username: register.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiryDate),
@@ -82,4 +98,20 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	}
 
 	c.SetCookie("token", tokenString, int(expiryDate.UnixMilli()), "/", "localhost", false, true)
+}
+
+func (auth *AuthHandler) Login(c *gin.Context) {
+	var login LoginReq
+	err := c.BindJSON(&login)
+	if err != nil {
+		log.Println(err.Error())
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if login.Email == "" || login.Password == "" {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		c.Writer.Write([]byte("Missing field when trying to login"))
+		return
+	}
 }
