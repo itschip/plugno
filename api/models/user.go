@@ -26,3 +26,18 @@ func (um *UserModel) GetUserFromEmail(email string) User {
 
 	return user
 }
+
+func (um *UserModel) CreateUser(username string, email string, password string) (User, error) {
+	query := "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
+	_, err := um.DB.Exec(query, username, email, password)
+	if err != nil {
+		return User{}, err
+	}
+
+	user := um.GetUserFromEmail(email)
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}

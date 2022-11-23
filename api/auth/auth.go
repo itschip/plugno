@@ -60,15 +60,15 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 
 	// Check if user exists
 	user := auth.userModel.GetUserFromEmail(register.Email)
+
 	if user.Email == "" {
 		c.Writer.WriteHeader(http.StatusForbidden)
-		c.Writer.Write([]byte("User already exists"))
+		c.Writer.Write([]byte("User already exists!"))
 		return
 	}
 
 	// Create user
-	query := "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
-	res, err := auth.db.Exec(query, register.Username, register.Email, register.Password)
+	newUser, err := auth.userModel.CreateUser(register.Username, register.Email, register.Password)
 	if err != nil {
 		log.Println(err.Error())
 		c.Writer.WriteHeader(http.StatusInternalServerError)
@@ -76,14 +76,13 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	}
 
 	// TODO: Generate an actual UID for the user
-	userID, err := res.LastInsertId()
 	if err != nil {
 		log.Println("(Register) res.LastInsertId", err)
 	}
 
 	expiryDate := time.Now().Add(15 * time.Minute)
 	claims := &Claims{
-		ID:       int(userID),
+		ID:       int(newUser.ID),
 		Username: register.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiryDate),
