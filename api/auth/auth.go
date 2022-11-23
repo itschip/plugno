@@ -61,7 +61,7 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	// Check if user exists
 	user := auth.userModel.GetUserFromEmail(register.Email)
 
-	if user.Email == "" {
+	if user.Email != "" {
 		c.Writer.WriteHeader(http.StatusForbidden)
 		c.Writer.Write([]byte("User already exists!"))
 		return
@@ -96,7 +96,7 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", tokenString, int(expiryDate.UnixMilli()), "/", "localhost", false, true)
+	c.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
 }
 
 func (auth *AuthHandler) Login(c *gin.Context) {
