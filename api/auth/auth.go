@@ -44,6 +44,10 @@ func NewAuthHandler(s *structs.Server) *AuthHandler {
 var jwtKey = []byte("veri_secret_key")
 
 func (auth *AuthHandler) RegisterUser(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+
 	var register RegisterReq
 	err := c.BindJSON(&register)
 	if err != nil {
