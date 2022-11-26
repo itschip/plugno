@@ -9,10 +9,10 @@ export const RegisterPage = () => {
 	const handleRegister = async () => {
 		fetch('http://localhost:6001/register', {
 			method: 'POST',
-			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			credentials: 'include',
 			body: JSON.stringify({
 				username,
 				email,
