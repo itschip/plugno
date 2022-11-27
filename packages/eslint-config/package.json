@@ -1,0 +1,15 @@
+{
+  "name": "eslint-config-custom",
+  "version": "1.0.0",
+  "description": "Custom eslint configuration for React projects used in Plug.no",
+  "main": "index.js",
+  "keywords": [],
+  "author": "itschip",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  }
+}
