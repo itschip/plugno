@@ -1,0 +1,4 @@
+package profile
+
+func NewProfileHandler() {
+}

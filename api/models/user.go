@@ -15,16 +15,17 @@ type UserModel struct {
 	DB *sql.DB
 }
 
-func (um *UserModel) GetUserFromEmail(email string) User {
+func (um *UserModel) GetUserFromEmail(email string) (User, error) {
 	var user User
 
 	query := "SELECT id, username, email FROM users WHERE email = ?"
 	err := um.DB.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Email)
 	if err != nil {
 		log.Println(err.Error())
+		return User{}, err
 	}
 
-	return user
+	return user, nil
 }
 
 func (um *UserModel) GetUser(id int) (User, error) {
@@ -46,7 +47,7 @@ func (um *UserModel) CreateUser(username string, email string, password string) 
 		return User{}, err
 	}
 
-	user := um.GetUserFromEmail(email)
+	user, err := um.GetUserFromEmail(email)
 	if err != nil {
 		return User{}, err
 	}

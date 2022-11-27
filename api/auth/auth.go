@@ -60,7 +60,12 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	}
 
 	// Check if user exists
-	user := auth.userModel.GetUserFromEmail(register.Email)
+	user, err := auth.userModel.GetUserFromEmail(register.Email)
+	if err != nil {
+		log.Fatalln("Failed to query user: ", err.Error())
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	if user.Email != "" {
 		c.Writer.WriteHeader(http.StatusForbidden)
@@ -81,7 +86,7 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 		log.Println("(Register) res.LastInsertId", err)
 	}
 
-	expiryDate := time.Now().Add(15 * time.Minute)
+	expiryDate := time.Now().Add(1 * time.Hour)
 	claims := &Claims{
 		ID:       int(newUser.ID),
 		Email:    newUser.Email,
@@ -99,7 +104,10 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	}
 
 	c.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
-	c.JSON(200, "Successfully created new user")
+	c.JSON(200, map[string]any{
+		"user":      newUser,
+		"isSuccess": true,
+	})
 }
 
 func (auth *AuthHandler) Login(c *gin.Context) {
@@ -117,8 +125,41 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	user := auth.userModel.GetUserFromEmail(login.Email)
-	fmt.Println(user)
+	user, err := auth.userModel.GetUserFromEmail(login.Email)
+	if err != nil {
+		log.Fatalln("Failed to query user: ", err.Error())
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if user.Email == "" {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		c.Writer.Write([]byte("User does not exist"))
+		return
+	}
+
+	expiryDate := time.Now().Add(1 * time.Hour)
+	claims := &Claims{
+		ID:       int(user.ID),
+		Email:    user.Email,
+		Username: user.Username,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expiryDate),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	c.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
+	c.JSON(200, map[string]any{
+		"user":      user,
+		"isSuccess": true,
+	})
 }
 
 func (auth *AuthHandler) User(c *gin.Context) {

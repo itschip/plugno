@@ -32,15 +32,16 @@ func main() {
 		PostModel: models.PostModel{DB: conn},
 	}
 
-	a := auth.NewAuthHandler(server)
-	p := post.NewPostHandler(server)
+	authHandler := auth.NewAuthHandler(server)
+	postHandler := post.NewPostHandler(server)
 
-	router.POST("/register", a.RegisterUser)
-	router.GET("/user", a.User)
+	router.POST("/register", authHandler.RegisterUser)
+	router.POST("/login", authHandler.Login)
+	router.GET("/user", authHandler.User)
 
 	authorized.Use(auth.Authorized())
 	{
-		authorized.GET("/post/new", p.New)
+		authorized.POST("/post/new", postHandler.New)
 	}
 
 	router.Run(":6001")
