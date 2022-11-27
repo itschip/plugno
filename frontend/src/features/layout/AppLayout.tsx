@@ -25,7 +25,7 @@ export const AppLayout = () => {
 					console.log('user data', data);
 				});
 		})();
-	}, []);
+	}, [navigate]);
 
 	return (
 		<div>
