@@ -24,8 +24,9 @@ type LoginReq struct {
 }
 
 type Claims struct {
-	ID       int
+	ID       int    `json:"id"`
 	Username string `json:"username"`
+	Email    string `json:"email"`
 	jwt.RegisteredClaims
 }
 
@@ -44,10 +45,6 @@ func NewAuthHandler(s *structs.Server) *AuthHandler {
 var jwtKey = []byte("veri_secret_key")
 
 func (auth *AuthHandler) RegisterUser(c *gin.Context) {
-	// c.Writer.Header().Set("Content-Type", "application/json")
-	// c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-	// c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
-
 	var register RegisterReq
 	err := c.BindJSON(&register)
 	if err != nil {
@@ -87,7 +84,8 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	expiryDate := time.Now().Add(15 * time.Minute)
 	claims := &Claims{
 		ID:       int(newUser.ID),
-		Username: register.Username,
+		Email:    newUser.Email,
+		Username: newUser.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiryDate),
 		},
@@ -118,4 +116,23 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 		c.Writer.Write([]byte("Missing field when trying to login"))
 		return
 	}
+}
+
+func (auth *AuthHandler) User(c *gin.Context) {
+	cookie, err := c.Cookie("token")
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	token, err := jwt.ParseWithClaims(cookie, &Claims{}, func(t *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusUnauthorized)
+		c.Writer.Write([]byte("You are unauthorized"))
+	}
+
+	claims := token.Claims.(*Claims)
+
+	c.JSON(200, claims)
 }

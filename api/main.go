@@ -34,6 +34,7 @@ func main() {
 	a := auth.NewAuthHandler(server)
 
 	router.POST("/register", a.RegisterUser)
+	router.GET("/user", a.User)
 
 	router.Run(":6001")
 }
