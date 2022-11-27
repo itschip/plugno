@@ -33,6 +33,14 @@ func main() {
 	// AUTH
 	a := auth.NewAuthHandler(server)
 
+	authorized := router.Group("/")
+	authorized.Use(auth.Authorized())
+	{
+		authorized.GET("/post/new", func(ctx *gin.Context) {
+			ctx.JSON(200, "HELLO, YOU ARE AUTH")
+		})
+	}
+
 	router.POST("/register", a.RegisterUser)
 	router.GET("/user", a.User)
 
