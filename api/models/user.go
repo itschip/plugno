@@ -18,7 +18,7 @@ type UserModel struct {
 func (um *UserModel) GetUserFromEmail(email string) User {
 	var user User
 
-	query := "SELECT id, username, email  FROM users WHERE email = ?"
+	query := "SELECT id, username, email FROM users WHERE email = ?"
 	err := um.DB.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Email)
 	if err != nil {
 		log.Println(err.Error())
@@ -27,15 +27,16 @@ func (um *UserModel) GetUserFromEmail(email string) User {
 	return user
 }
 
-func (um *UserModel) GetUser(id int) User {
+func (um *UserModel) GetUser(id int) (User, error) {
 	var user User
-	query := "SELECT id, username, email FROM WHERE id = ?"
+	query := "SELECT id, username, email FROM users WHERE id = ?"
 	err := um.DB.QueryRow(query, id).Scan(&user.ID, &user.Username, &user.Email)
 	if err != nil {
 		log.Println(err.Error())
+		return User{}, err
 	}
 
-	return user
+	return user, nil
 }
 
 func (um *UserModel) CreateUser(username string, email string, password string) (User, error) {

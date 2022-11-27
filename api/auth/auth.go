@@ -134,9 +134,19 @@ func (auth *AuthHandler) User(c *gin.Context) {
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusUnauthorized)
 		c.Writer.Write([]byte("You are unauthorized"))
+		return
 	}
 
 	claims := token.Claims.(*Claims)
 
-	c.JSON(200, claims)
+	fmt.Println("USER ID", claims.ID)
+
+	user, err := auth.userModel.GetUser(claims.ID)
+	if err != nil {
+		log.Fatalln("Failed to get query user:", err.Error())
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(200, user)
 }

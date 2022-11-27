@@ -5,7 +5,7 @@ export const LandingRoute = () => {
 		<div>
 			<nav className="bg-neutral-900 h-20 px-3 w-max-7xl mx-auto flex items-center justify-between">
 				<div>
-					<h1 className="font-extrabold text-2xl text-rose-500">Plug.no</h1>
+					<h1 className="font-extrabold text-3xl text-rose-500">Plugs.no</h1>
 				</div>
 				<div className="flex space-x-4 items-center">
 					<Link
@@ -41,7 +41,7 @@ export const LandingRoute = () => {
 										href="#"
 										className="flex items-center justify-center rounded-md border border-neutral-700 bg-neutral-800 px-4 py-3 text-base font-medium text-white shadow-sm sm:px-8"
 									>
-										Om Plug.no
+										Om Plugs.no
 									</a>
 									<a
 										href="#"
