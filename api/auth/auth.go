@@ -2,6 +2,7 @@ package auth
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"plugno-api/models"
@@ -116,6 +117,9 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 		c.Writer.Write([]byte("Missing field when trying to login"))
 		return
 	}
+
+	user := auth.userModel.GetUserFromEmail(login.Email)
+	fmt.Println(user)
 }
 
 func (auth *AuthHandler) User(c *gin.Context) {
