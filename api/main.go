@@ -4,6 +4,7 @@ import (
 	"plugno-api/auth"
 	"plugno-api/db"
 	"plugno-api/models"
+	"plugno-api/post"
 	"plugno-api/structs"
 	"time"
 
@@ -24,25 +25,23 @@ func main() {
 	})
 
 	router.Use(CORSHandler)
+	authorized := router.Group("/")
 
 	server := &structs.Server{
-		DB:        conn,
 		UserModel: models.UserModel{DB: conn},
+		PostModel: models.PostModel{DB: conn},
 	}
 
-	// AUTH
 	a := auth.NewAuthHandler(server)
-
-	authorized := router.Group("/")
-	authorized.Use(auth.Authorized())
-	{
-		authorized.GET("/post/new", func(ctx *gin.Context) {
-			ctx.JSON(200, "HELLO, YOU ARE AUTH")
-		})
-	}
+	p := post.NewPostHandler(server)
 
 	router.POST("/register", a.RegisterUser)
 	router.GET("/user", a.User)
+
+	authorized.Use(auth.Authorized())
+	{
+		authorized.GET("/post/new", p.New)
+	}
 
 	router.Run(":6001")
 }

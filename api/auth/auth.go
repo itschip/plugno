@@ -38,7 +38,6 @@ type AuthHandler struct {
 
 func NewAuthHandler(s *structs.Server) *AuthHandler {
 	return &AuthHandler{
-		db:        s.DB,
 		userModel: s.UserModel,
 	}
 }
