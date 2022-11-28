@@ -13,6 +13,7 @@ export const View = () => {
 						<PlugCard name="Christopher" status="available" />
 						<PlugCard name="Real plug" status="busy" />
 						<PlugCard name="Real plug" status="unavailable" />
+						<PlugCard name="Real plug" status="busy" />
 					</div>
 				</div>
 			</div>
