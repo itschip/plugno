@@ -1,0 +1,9 @@
+{
+  "name": "@plugno/api",
+  "version": "1.0.0",
+  "description": "API for Plug.no",
+  "scripts": {
+    "dev": "~/go/bin/gow run main.go"
+  },
+  "author": "itschip"
+}
