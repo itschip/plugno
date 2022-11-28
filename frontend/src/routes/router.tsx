@@ -22,7 +22,15 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				path: '/app',
-				element: <div>Hello</div>,
+				element: <div>Home</div>,
+			},
+			{
+				path: 'plugs',
+				element: <div className="bg-neutral-900 h-screen">Plugs</div>,
+			},
+			{
+				path: 'jobber',
+				element: <div>Jobber</div>,
 			},
 		],
 	},

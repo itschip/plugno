@@ -1,8 +1,19 @@
 import { createModel } from '@rematch/core';
+import { RootModel } from '.';
+import { AuthState, User } from '../typings/user';
 
-export const user = createModel()({
-	state: null,
+export const auth = createModel<RootModel>()({
+	state: {
+		user: null,
+	} as AuthState,
 	reducers: {
-		populate() {},
+		populate: (state, payload: User) => {
+			console.log(state);
+			console.log(payload);
+			return {
+				...state,
+				user: payload,
+			};
+		},
 	},
 });

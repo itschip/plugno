@@ -1,8 +1,14 @@
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { Dispatch, RootState } from '../../store/store';
+import { User } from '../../typings/user';
+import { Header } from './components/Header';
 
 export const AppLayout = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch<Dispatch>();
+	const userState = useSelector((state: RootState) => state.auth.user);
 
 	useEffect(() => {
 		(async () => {
@@ -21,14 +27,18 @@ export const AppLayout = () => {
 
 					return res.json();
 				})
-				.then((data) => {
+				.then((data: User) => {
 					console.log('user data', data);
+					if (!userState) {
+						dispatch.auth.populate(data);
+					}
 				});
 		})();
-	}, [navigate]);
+	}, []);
 
 	return (
 		<div>
+			<Header />
 			<Outlet />
 		</div>
 	);
