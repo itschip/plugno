@@ -27,13 +27,13 @@ I decided to for a more traditional architecture for this projects due to it's p
 this would be a mess to maintain in the long-term. There are trade-off's with the current architecture, one being SEO, which I actually rather concered about :).
 Other than what's already mentioned, I believe this is a more sustainable approach for the frontend.
 
-The choice for using Expo, instead of just React-Native, is the ease of use, and abstractions I don't want to spend time on handling myself. Building the app Expo is also awesome.
+The choice for using Expo, instead of just React-Native, is the ease of use, and abstractions I don't want to spend time on handling myself. Building the app with Expo is also awesome.
 
 ### Backend
 
-Nothing much here. I chose Go because I wanted a fast and robsut backend, something Node does not offer :eyes:
+Nothing much here. I chose Go because I wanted a fast and robust backend, something Node does not offer :eyes:
 
-Seriously, I like Go, as well as it would be nice to learn more. Would probably have gone for Node if I wanted to it quick.
+Seriously though, I like Go, as well as it would be nice to learn more. Would probably have gone for Node if I wanted to write the backend quicker.
 
 ## Funding
 
