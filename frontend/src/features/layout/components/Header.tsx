@@ -34,8 +34,8 @@ export const Header = () => {
 							<Link
 								key={navigation.link}
 								className={classes(
-									'font-semibold hover:text-rose-600 text-lg',
-									path === navigation.link ? 'text-rose-500' : 'text-gray-400',
+									'font-semibold hover:text-rose-500 text-lg hover:underline',
+									path === navigation.link ? 'text-rose-500 ' : 'text-gray-400',
 								)}
 								to={navigation.link}
 							>
