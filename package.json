@@ -5,11 +5,13 @@
   "workspaces": [
     "frontend",
     "packages/*",
-    "api"
+    "api",
+    "native"
   ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "native": "pnpm --filter @plugno/native",
     "frontend": "pnpm --filter @plugno/frontend",
     "api": "cd ./api && go run main.go",
     "lint": "turbo run lint",
