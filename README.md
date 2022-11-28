@@ -19,7 +19,8 @@ This project is a monorepo, and split up in three different apps/packages.
 - `frontend` - The React application for Plugs/Plugs.
 - `api` - The backend built in Go.
 - `packages` - Other reusable packages used internally within the React projects. Such as configs, ui libs and more.
-- `native` - (CTA) The react-native (expo) applicaiton for Android and iOS.
+
+The RN application is moved to https://github.com/plugno/plugno.app
 
 ### Frontend / App
 
