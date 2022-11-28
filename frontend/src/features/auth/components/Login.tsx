@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserResponse } from '../../../typings/user';
 
 export const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-
+	const navigate = useNavigate();
 	const handleLogin = async () => {
 		fetch('http://localhost:6001/login', {
 			method: 'POST',
@@ -16,7 +17,11 @@ export const LoginPage = () => {
 				email,
 				password,
 			}),
-		});
+		})
+			.then((res) => res.json())
+			.then((data: UserResponse) => {
+				if (data.isSuccess) navigate('/app/plugs');
+			});
 	};
 
 	return (

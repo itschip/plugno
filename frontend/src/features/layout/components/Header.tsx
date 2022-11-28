@@ -28,8 +28,7 @@ export const Header = () => {
 	return (
 		<div className="w-full bg-neutral-900 border-b border-neutral-700">
 			<div className="flex h-20 items-center justify-between max-w-7xl mx-auto">
-				<div></div>
-				<div className="flex space-x-20 items-center">
+				<div className="">
 					<nav className="space-x-4">
 						{navigation.map((navigation) => (
 							<Link
@@ -44,6 +43,14 @@ export const Header = () => {
 							</Link>
 						))}
 					</nav>
+				</div>
+				<div className="w-full max-w-[50%] mx-auto">
+					<input
+						placeholder="Søk etter hjelp, plugs og alt annet..."
+						className="text-white px-2 py-3 text-md bg-neutral-800 border border-neutral-700 outline-none rounded-md w-full"
+					/>
+				</div>
+				<div className="flex space-x-20 items-center">
 					<div className="flex items-center justify-center group hover:cursor-pointer">
 						<div className="flex items-center space-x-4">
 							<img
