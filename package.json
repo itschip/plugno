@@ -11,7 +11,6 @@
     "dev": "turbo run dev --parallel",
     "frontend": "pnpm --filter @plugno/frontend",
     "api": "cd ./api && go run main.go",
-    "pocketbase": "./pocketbase serve",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
