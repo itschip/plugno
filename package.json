@@ -5,8 +5,7 @@
   "workspaces": [
     "frontend",
     "packages/*",
-    "api",
-    "native"
+    "api"
   ],
   "scripts": {
     "build": "turbo run build",
