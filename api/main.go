@@ -14,6 +14,14 @@ import (
 
 func main() {
 	conn := db.Open()
+
+	server := &structs.Server{
+		UserModel: models.UserModel{DB: conn},
+		PostModel: models.PostModel{DB: conn},
+	}
+	authHandler := auth.NewAuthHandler(server)
+	postHandler := post.NewPostHandler(server)
+
 	router := gin.Default()
 
 	CORSHandler := cors.New(cors.Config{
@@ -25,15 +33,8 @@ func main() {
 	})
 
 	router.Use(CORSHandler)
+
 	authorized := router.Group("/")
-
-	server := &structs.Server{
-		UserModel: models.UserModel{DB: conn},
-		PostModel: models.PostModel{DB: conn},
-	}
-
-	authHandler := auth.NewAuthHandler(server)
-	postHandler := post.NewPostHandler(server)
 
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)

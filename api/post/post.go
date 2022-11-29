@@ -1,6 +1,7 @@
 package post
 
 import (
+	"log"
 	"plugno-api/models"
 	"plugno-api/structs"
 
@@ -17,5 +18,12 @@ func NewPostHandler(s *structs.Server) *PostHandler {
 	}
 }
 
-func (post *PostHandler) New(c *gin.Context) {
+func (ph *PostHandler) New(c *gin.Context) {
+	var postReq models.Post
+	err := c.ShouldBindJSON(&postReq)
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	ph.postModel.Create(&postReq)
 }
