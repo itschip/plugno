@@ -1,6 +1,6 @@
 # Plug or Plugs, idk
 
-![BD8F56E5-9688-42AF-845E-FE018A41381D](https://user-images.githubusercontent.com/59088889/204407265-7424ed96-3df0-416c-9bcb-e632d3ecb0f2.jpeg)
+<img width="1512" alt="Screenshot 2022-11-29 at 17 31 01" src="https://user-images.githubusercontent.com/59088889/204587361-9a3683d8-06bc-4b60-806f-f58eb274c6b7.png">
 WIP - Not a representation of the final product
 
 ## About Plug/Plugs - Motivation
