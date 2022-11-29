@@ -3,8 +3,8 @@ package main
 import (
 	"plugno-api/auth"
 	"plugno-api/db"
+	"plugno-api/jobs"
 	"plugno-api/models"
-	"plugno-api/post"
 	"plugno-api/structs"
 	"time"
 
@@ -17,10 +17,10 @@ func main() {
 
 	server := &structs.Server{
 		UserModel: models.UserModel{DB: conn},
-		PostModel: models.PostModel{DB: conn},
+		JobModel:  models.JobModel{DB: conn},
 	}
 	authHandler := auth.NewAuthHandler(server)
-	postHandler := post.NewPostHandler(server)
+	jobsHandler := jobs.NewJobsHandler(server)
 
 	router := gin.Default()
 
@@ -39,10 +39,11 @@ func main() {
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
+	router.GET("/jobs/findAll", jobsHandler.GetAll)
 
 	authorized.Use(auth.Authorized())
 	{
-		authorized.POST("/post/new", postHandler.New)
+		authorized.POST("/jobs/new", jobsHandler.New)
 	}
 
 	router.Run(":6001")

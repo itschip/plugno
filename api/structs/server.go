@@ -6,5 +6,5 @@ import (
 
 type Server struct {
 	UserModel models.UserModel
-	PostModel models.PostModel
+	JobModel  models.JobModel
 }

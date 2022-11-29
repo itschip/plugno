@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useJobs } from './api/useJobs';
 
 export const View = () => {
+	const { isLoading, error, data } = useJobs();
+
 	return (
 		<div className="h-screen bg-neutral-900">
 			<div className="w-full">
@@ -13,6 +16,16 @@ export const View = () => {
 						>
 							Legg ut jobb
 						</Link>
+					</div>
+					<div className="mt-8 grid grid-cols-4 gap-4">
+						{data &&
+							data.map((job) => (
+								<div key={job.id}>
+									<div className="border border-gray-700 h-72 rounded-md shadow-sm p-2">
+										<h2 className="text-white text-lg font-bold">{job.title}</h2>
+									</div>
+								</div>
+							))}
 					</div>
 				</div>
 			</div>
