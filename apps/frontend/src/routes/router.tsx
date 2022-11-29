@@ -34,6 +34,10 @@ export const router = createBrowserRouter([
 				path: 'jobber',
 				element: <JobsRoot />,
 			},
+			{
+				path: 'chat',
+				element: <div>Hello</div>,
+			},
 		],
 	},
 ]);

@@ -10,13 +10,13 @@ export const LandingRoute = () => {
 				<div className="flex space-x-4 items-center">
 					<Link
 						to="/login"
-						className="bg-neutral-800 px-5 py-2 text-white font-medium rounded-md shadow-sm border border-neutral-700"
+						className="bg-neutral-800 px-2.5 py-1.5 text-white font-medium rounded-md shadow-sm border border-neutral-700"
 					>
 						Login
 					</Link>
 					<Link
 						to="/register"
-						className="bg-rose-500 px-3 py-2 text-white font-medium rounded-md shadow-sm border border-rose-600/60 bg-opacity-60"
+						className="bg-rose-500 py-1.5 px-2.5  text-white font-medium rounded-md shadow-sm border border-rose-600/60 bg-opacity-60"
 					>
 						Register
 					</Link>
