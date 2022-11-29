@@ -22,8 +22,6 @@ This project is a monorepo, and split up in three different apps/packages.
 - `api` - The backend built in Go.
 - `packages` - Other reusable packages used internally within the React projects. Such as configs, ui libs and more.
 
-The RN application is moved to https://github.com/plugno/plugno.app
-
 ### Frontend / App
 
 I decided to for a more traditional architecture for this projects due to it's potential scale. I considered a fullstack framework like Next.js or Remix.run, but I think
