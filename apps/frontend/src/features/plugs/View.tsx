@@ -59,10 +59,7 @@ const PlugCard: React.FC<PlugCardProps> = ({ name, status }) => {
 				</span>
 			</div>
 			<div className="p-2">
-				<p className="text-gray-200">
-					I am able to help with shipment, moving and all other small tasks. I am usally up til late
-					at night.
-				</p>
+				<p className="text-gray-200">Plug text</p>
 			</div>
 			<div className="border-t border-neutral-700 h-[56px] absolute bottom-0 right-0 left-0 flex items-center justify-between p-2">
 				<span className="flex items-center space-x-2 group hover:cursor-pointer">

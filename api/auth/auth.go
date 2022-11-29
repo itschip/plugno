@@ -2,7 +2,6 @@ package auth
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 	"plugno-api/models"
@@ -132,6 +131,7 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
+	// TODO: Better validation. Should probabbly just return a 'found' from the func above
 	if user.Email == "" {
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		c.Writer.Write([]byte("User does not exist"))
@@ -178,8 +178,6 @@ func (auth *AuthHandler) User(c *gin.Context) {
 	}
 
 	claims := token.Claims.(*Claims)
-
-	fmt.Println("USER ID", claims.ID)
 
 	user, err := auth.userModel.GetUser(claims.ID)
 	if err != nil {
