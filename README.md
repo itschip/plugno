@@ -1,5 +1,7 @@
 # Plug or Plugs, idk
 
+![BD8F56E5-9688-42AF-845E-FE018A41381D](https://user-images.githubusercontent.com/59088889/204407265-7424ed96-3df0-416c-9bcb-e632d3ecb0f2.jpeg)
+
 ## About Plug/Plugs - Motivation
 
 After seeing the low amount of well-defined online services offering user-to-user help, I looked into creating a solution myself.
