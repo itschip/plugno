@@ -16,7 +16,7 @@ to keep open-source. (plz don't steal my idea. Contribute instead)
 
 This project is a monorepo, and split up in three different apps/packages.
 
-- `frontend` - The React application for Plugs/Plugs.
+- `apps` - The React and React Native application for Plugs/Plugs.
 - `api` - The backend built in Go.
 - `packages` - Other reusable packages used internally within the React projects. Such as configs, ui libs and more.
 
