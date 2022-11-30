@@ -1,5 +1,5 @@
 {
-  "name": "@plugno/native",
+  "name": "@plugs/mobile",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
