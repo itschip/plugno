@@ -25,11 +25,7 @@ This project is a monorepo, and split up in three different apps/packages.
 
 ### Frontend / App
 
-I decided to for a more traditional architecture for this projects due to it's potential scale. I considered a fullstack framework like Next.js or Remix.run, but I think
-this would be a mess to maintain in the long-term. There are trade-off's with the current architecture, one being SEO, which I actually rather concered about :).
-Other than what's already mentioned, I believe this is a more sustainable approach for the frontend.
-
-Update (30.11.2022): I'll most likely move to Next.js for the frontend, and use it as a proxy for the Go backend.
+I decided go for Next.JS as the frontend framework, while still keeping our backend in Go. I started out with React and CSR, but I had too many concerns about SEO and other goodies that Next provides.
 
 The choice for using Expo, instead of just React-Native, is the ease of use, and abstractions I don't want to spend time on handling myself. Building the app with Expo is also awesome.
 
