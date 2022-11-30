@@ -1,4 +1,4 @@
-import { classes } from '../../../utils/css';
+import { classes } from '@utils/css';
 
 export default function View() {
 	return (

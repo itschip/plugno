@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dispatch, RootState } from '../../store/store';
+import { Dispatch, RootState } from '@store/store';
 import { Header } from './AppHeader';
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {

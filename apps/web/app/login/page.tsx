@@ -1,5 +1,6 @@
 'use client';
 
+import { UserResponse } from '@typings/user';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -22,7 +23,7 @@ export default function LoginPage() {
 			}),
 		})
 			.then((res) => res.json())
-			.then((data: any) => {
+			.then((data: UserResponse) => {
 				if (data.isSuccess) router.push('/app/plugs');
 			});
 	};

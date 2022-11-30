@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { ChatBubbleLeftIcon as ChatIconOutline } from '@heroicons/react/24/outline';
 import { NotificationMenu } from '../header/NotificationMenu';
-import { RootState } from '../../store/store';
-import { classes } from '../../utils/css';
+import { RootState } from '@store/store';
+import { classes } from '@utils/css';
 import { usePathname } from 'next/navigation';
 
 type Navigation = {

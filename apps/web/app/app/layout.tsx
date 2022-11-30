@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Header } from '../../components/layout/AppHeader';
-import { Dispatch, RootState } from '../../store/store';
-import { User } from '../../typings/user';
+import { Header } from '@components/layout/AppHeader';
+import { Dispatch, RootState } from '@store/store';
+import { User } from '@typings/user';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const router = useRouter();
