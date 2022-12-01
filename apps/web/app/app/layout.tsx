@@ -39,16 +39,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	if (!userState) return null;
 
 	return (
-		<html lang="en">
-			{/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
-			<head />
-			<body>
-				<Header />
-				{children}
-			</body>
-		</html>
+		<div>
+			<Header />
+			{children}
+		</div>
 	);
 }

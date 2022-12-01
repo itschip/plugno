@@ -5,6 +5,7 @@ import (
 	"log"
 	"plugno-api/models"
 	"plugno-api/structs"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,4 +34,17 @@ func (jh *JobsHandler) GetAll(c *gin.Context) {
 	fmt.Println("JOBS:\n", jobs)
 
 	c.JSON(200, jobs)
+}
+
+func (jh *JobsHandler) GetOne(c *gin.Context) {
+	jobId := c.Query("id")
+	id, err := strconv.ParseInt(jobId, 0, 8)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	job, err := jh.jobModel.FindOne(id)
+
+	c.JSON(200, job)
 }

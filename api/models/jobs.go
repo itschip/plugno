@@ -14,6 +14,8 @@ type Job struct {
 	UserID           string  `json:"userId"`
 	AskingPrice      int64   `json:"askingPrice"`
 	Location         float32 `json:"location"`
+	Username         string  `json:"username"`
+	Email            string  `json:"email"`
 }
 
 type ShippingLocation struct {
@@ -23,6 +25,27 @@ type ShippingLocation struct {
 
 type JobModel struct {
 	DB *sql.DB
+}
+
+func (jm *JobModel) FindOne(id int64) (Job, error) {
+	var job Job
+	query := `SELECT jobs.title,
+       jobs.id,
+       jobs.description,
+       jobs.short_description as shortDescription,
+       jobs.asking_price      as askingPrice,
+       jobs.location,
+       jobs.user_id           as userId,
+       users.username,
+       users.email FROM jobs INNER JOIN users WHERE jobs.id = ? AND users.id = jobs.user_id;`
+
+	err := jm.DB.QueryRow(query, id).Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.Location, &job.UserID, &job.Username, &job.Email)
+	if err != nil {
+		log.Println(err.Error())
+		return Job{}, err
+	}
+
+	return job, nil
 }
 
 func (jm *JobModel) FindAll() []Job {

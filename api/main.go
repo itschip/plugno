@@ -39,7 +39,8 @@ func main() {
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
-	router.GET("/jobs/findAll", jobsHandler.GetAll)
+	router.GET("/jobs/getOne", jobsHandler.GetOne)
+	router.GET("/jobs/getAll", jobsHandler.GetAll)
 
 	authorized.Use(auth.Authorized())
 	{

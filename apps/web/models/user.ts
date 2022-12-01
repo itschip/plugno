@@ -8,8 +8,6 @@ export const auth = createModel<RootModel>()({
 	} as AuthState,
 	reducers: {
 		populate: (state, payload: User) => {
-			console.log(state);
-			console.log(payload);
 			return {
 				...state,
 				user: payload,
