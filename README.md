@@ -10,7 +10,7 @@ One of the most important things was for it to be quick, easy to use and trustwo
 Plug/Plugs will try to deliver a system where you access help from anyone, at anytime, securly. The main concept is called "Plugs".
 Plugs will have the option to list what they're capable of doing, and the time they're available (in realtime). Some might even be available at 3am.
 
-On the other hand, are jobs. These are your traditonal jobs which users can post, and anyone can offer to help in exchange for $$$.
+On the other hand, are jobs. These are your traditional jobs which users can post, and anyone can offer to help in exchange for $$$.
 
 Clearly, the "Plugs" will the most interesting concecpt of the application, and how to perfect it's use case. It'll be an exciting project which I hope
 to keep open-source. (plz don't steal my idea. Contribute instead)
