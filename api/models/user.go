@@ -11,8 +11,28 @@ type User struct {
 	Email    string `json:"email"`
 }
 
+type UserCredentials struct {
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type UserModel struct {
 	DB *sql.DB
+}
+
+func (um *UserModel) GetUserCredentials(email string) (UserCredentials, error) {
+	var user UserCredentials
+
+	query := "SELECT id, username, email, password FROM users WHERE email = ?"
+	err := um.DB.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Email, &user.Password)
+	if err != nil {
+		log.Println(err.Error())
+		return UserCredentials{}, err
+	}
+
+	return user, nil
 }
 
 func (um *UserModel) GetUserFromEmail(email string) (User, error) {

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"plugno-api/models"
@@ -61,9 +62,7 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	// Check if user exists
 	user, err := auth.userModel.GetUserFromEmail(register.Email)
 	if err != nil {
-		log.Fatalln("Failed to query user: ", err.Error())
-		c.Writer.WriteHeader(http.StatusInternalServerError)
-		return
+		log.Println("No user found when registering", err.Error())
 	}
 
 	if user.Email != "" {
@@ -72,9 +71,18 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	// Create user
-	newUser, err := auth.userModel.CreateUser(register.Username, register.Email, register.Password)
+	// Hash password
+	hashedPassword, err := HashPassword(register.Password)
 	if err != nil {
+		log.Println(err.Error())
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// Create user
+	newUser, err := auth.userModel.CreateUser(register.Username, register.Email, hashedPassword)
+	if err != nil {
+		// FIXME: Proper error response
 		log.Println(err.Error())
 		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
@@ -111,22 +119,24 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 
 func (auth *AuthHandler) Login(c *gin.Context) {
 	var login LoginReq
-	err := c.BindJSON(&login)
+	err := c.ShouldBindJSON(&login)
 	if err != nil {
+		log.Println("Failed to bind JSON for login")
 		log.Println(err.Error())
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	if login.Email == "" || login.Password == "" {
+		fmt.Println("No email or password found")
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		c.Writer.Write([]byte("Missing field when trying to login"))
 		return
 	}
 
-	user, err := auth.userModel.GetUserFromEmail(login.Email)
+	user, err := auth.userModel.GetUserCredentials(login.Email)
 	if err != nil {
-		log.Fatalln("Failed to query user: ", err.Error())
+		log.Println("Failed to query user: ", err.Error())
 		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -135,6 +145,14 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 	if user.Email == "" {
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		c.Writer.Write([]byte("User does not exist"))
+		return
+	}
+
+	passwordMath := ComparePasswordHash(login.Password, user.Password)
+	if !passwordMath {
+		log.Println("Password does not match: ", err.Error())
+		c.Writer.WriteHeader(http.StatusUnauthorized)
+		c.Writer.Write([]byte("Password does not match"))
 		return
 	}
 

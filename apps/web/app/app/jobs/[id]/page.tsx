@@ -13,8 +13,6 @@ async function getJobData(id: number): Promise<DetailedJob> {
 export default async function JobPage({ params }: { params: { id: number } }) {
 	const jobData = await getJobData(params.id);
 
-	console.log('job data', jobData);
-
 	return (
 		<div className="h-screen bg-neutral-900">
 			<div className="w-full">
@@ -29,21 +27,28 @@ export default async function JobPage({ params }: { params: { id: number } }) {
 						</h3>
 					</span>
 					<div className="flex items-baseline space-x-8 mt-4">
-						<h1 className="text-white text-5xl font-extrabold">{jobData.title}</h1>
+						<h1 className="text-white text-3xl md:text-5xl font-extrabold">{jobData.title}</h1>
+						<p className="text-gray-300 block md:hidden text-2xl font-bold mt-4">
+							{jobData.askingPrice} NOK
+						</p>
 					</div>
 					<p className="text-md text-gray-300 mt-2">{jobData.shortDescription}</p>
-					<p className="text-gray-300 text-3xl font-bold mt-4">{jobData.askingPrice} NOK</p>
+					<p className="text-gray-300 text-3xl font-bold mt-4 hidden md:block">
+						{jobData.askingPrice} NOK
+					</p>
 
 					<div className="mt-8 flex items-start justify-start space-x-8">
 						<img src="/sofa.jpeg" className="rounded-md w-full max-w-lg" />
-						<div>
+						<div className="hidden md:block">
 							<p className="text-gray-300 fle-grow text-lg">{jobData.description}</p>
 							<button className="bg-rose-500/60 border border-rose-600/60 px-2 py-2 rounded-md text-white hover:bg-rose-600/60 mt-8">
 								Send melding
 							</button>
 						</div>
 					</div>
-					<div className="mt-2"></div>
+					<div className="mt-2 block md:hidden">
+						<p className="text-gray-300 flex-grow text-lg">{jobData.description}</p>
+					</div>
 				</div>
 			</div>
 		</div>
