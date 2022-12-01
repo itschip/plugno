@@ -7,8 +7,8 @@ WIP - Not a representation of the final product
 
 After seeing the low amount of well-defined online services offering user-to-user help, I looked into creating a solution myself.
 One of the most important things was for it to be quick, easy to use and trustworthty for the user-to-user.
-Plug/Plugs will try to deliver a system where you access help from anyone, at anytime. This concept is called "Plugs".
-Plugs will also have the option to list what they're capable of doing, and the time they're available (in realtime)
+Plug/Plugs will try to deliver a system where you access help from anyone, at anytime, securly. The main concept is called "Plugs".
+Plugs will have the option to list what they're capable of doing, and the time they're available (in realtime). Some might even be available at 3am.
 
 On the other hand, are jobs. These are your traditonal jobs which users can post, and anyone can offer to help in exchange for $$$.
 
