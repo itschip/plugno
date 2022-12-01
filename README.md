@@ -1,4 +1,4 @@
-# Plug or Plugs, idk
+# Plugs.no
 
 <img width="1512" alt="Screenshot 2022-11-29 at 17 31 01" src="https://user-images.githubusercontent.com/59088889/204587361-9a3683d8-06bc-4b60-806f-f58eb274c6b7.png">
 WIP - Not a representation of the final product
