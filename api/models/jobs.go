@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 )
 
@@ -23,6 +22,14 @@ type ShippingLocation struct {
 	To   string `json:"to"`
 }
 
+type JobObject struct {
+	Title            string
+	ShortDescription string
+	Description      string
+	AskingPrice      int
+	UserID           int
+}
+
 type JobModel struct {
 	DB *sql.DB
 }
@@ -34,12 +41,11 @@ func (jm *JobModel) FindOne(id int64) (Job, error) {
        jobs.description,
        jobs.short_description as shortDescription,
        jobs.asking_price      as askingPrice,
-       jobs.location,
        jobs.user_id           as userId,
        users.username,
        users.email FROM jobs INNER JOIN users WHERE jobs.id = ? AND users.id = jobs.user_id;`
 
-	err := jm.DB.QueryRow(query, id).Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.Location, &job.UserID, &job.Username, &job.Email)
+	err := jm.DB.QueryRow(query, id).Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.UserID, &job.Username, &job.Email)
 	if err != nil {
 		log.Println(err.Error())
 		return Job{}, err
@@ -54,7 +60,6 @@ func (jm *JobModel) FindAll() []Job {
                      description,
                      short_description AS shortDescription,
                      asking_price AS askingPrice,
-                     location,
                      user_id as userId
               FROM jobs`
 
@@ -68,14 +73,22 @@ func (jm *JobModel) FindAll() []Job {
 	jobs := []Job{}
 	for res.Next() {
 		var job Job
-		err := res.Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.Location, &job.UserID)
+		err := res.Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.UserID)
 		if err != nil {
 			log.Printf("Failed to scan jobs. Error: %s", err)
 		}
 		jobs = append(jobs, job)
 	}
 
-	fmt.Println("RAW QUERY:\n", jobs)
-
 	return jobs
+}
+
+func (jm *JobModel) Create(jobObject *JobObject) error {
+	query := `INSERT INTO jobs (title, short_description, description, asking_price, user_id) VALUES (?, ?, ?, ?, ?)`
+	_, err := jm.DB.Exec(query, jobObject.Title, jobObject.ShortDescription, jobObject.Description, jobObject.AskingPrice, jobObject.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

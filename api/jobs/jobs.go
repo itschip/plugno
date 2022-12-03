@@ -3,12 +3,21 @@ package jobs
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"plugno-api/models"
 	"plugno-api/structs"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
+
+type JobReq struct {
+	Title            string `json:"title"`
+	ShortDescription string `json:"shortDescription"`
+	Description      string `json:"description"`
+	AskingPrice      int    `json:"askingPrice"`
+	UserID           int    `json:"userId"`
+}
 
 type JobsHandler struct {
 	jobModel models.JobModel
@@ -21,17 +30,30 @@ func NewJobsHandler(s *structs.Server) *JobsHandler {
 }
 
 func (jh *JobsHandler) New(c *gin.Context) {
-	var postReq models.Job
-	err := c.ShouldBindJSON(&postReq)
+	var jobReq JobReq
+	err := c.ShouldBindJSON(&jobReq)
 	if err != nil {
 		log.Println(err.Error())
+		c.Writer.WriteHeader(http.StatusBadRequest)
 	}
+
+	fmt.Printf("New job post:\n %v", jobReq)
+
+	jobObject := &models.JobObject{
+		Title:            jobReq.Title,
+		Description:      jobReq.Description,
+		ShortDescription: jobReq.ShortDescription,
+		UserID:           jobReq.UserID,
+		AskingPrice:      jobReq.AskingPrice,
+	}
+
+	jh.jobModel.Create(jobObject)
+
+	c.JSON(200, "Created job")
 }
 
 func (jh *JobsHandler) GetAll(c *gin.Context) {
 	jobs := jh.jobModel.FindAll()
-
-	fmt.Println("JOBS:\n", jobs)
 
 	c.JSON(200, jobs)
 }

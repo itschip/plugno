@@ -64,7 +64,7 @@ export const Header = () => {
 							)}
 							<span className="absolute top-0 right-0 block h-1.5 w-1.5 rounded-full bg-rose-300 ring-2 ring-rose-400" />
 						</Link>
-						<NotificationMenu />
+						{/*<NotificationMenu /> */}
 					</div>
 					<div className="flex items-center justify-center group hover:cursor-pointer">
 						<div className="flex items-center space-x-4">
