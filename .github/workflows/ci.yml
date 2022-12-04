@@ -5,19 +5,20 @@ on:
   - pull_request
 
 jobs:
-  name: "Build & test Web"
-  runs-on: "ubuntu-latest"
+  build_web:
+    name: "Build & test Web"
+    runs-on: "ubuntu-latest"
 
-  steps:
-    - name: "Checkout"
-    - uses: "actions/checkout@v2"
+    steps:
+      - name: "Checkout"
+      - uses: "actions/checkout@v2"
 
-    - uses: pnpm/action-setup@v2.0.1
-      with:
-        version: latest
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: latest
 
-    - name: "Install deps"
-      run: pnpm install
+      - name: "Install deps"
+        run: pnpm install
 
-    - name: Build
-      run: pnpm web build
+      - name: Build
+        run: pnpm web build
