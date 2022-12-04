@@ -33,7 +33,9 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 							>
 								<item.icon
 									className={classes(
-										item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+										item.href === pathname
+											? 'text-gray-300'
+											: 'text-gray-400 group-hover:text-gray-300',
 										'mr-3 flex-shrink-0 h-5 w-5',
 									)}
 									aria-hidden="true"
