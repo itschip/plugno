@@ -39,12 +39,12 @@ func main() {
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
-	router.GET("/jobs/getOne", jobsHandler.GetOne)
-	router.GET("/jobs/getAll", jobsHandler.GetAll)
 
 	authorized.Use(auth.Authorized())
 	{
 		authorized.POST("/jobs/new", jobsHandler.New)
+		router.GET("/jobs/getOne", jobsHandler.GetOne)
+		router.GET("/jobs/getAll", jobsHandler.GetAll)
 	}
 
 	router.Run(":6001")

@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { Job } from '@typings/jobs';
 
 async function getJobs(): Promise<Job[]> {
-	const res = await fetch('http://localhost:6001/jobs/getAll');
+	const res = await fetch('http://localhost:6001/jobs/getAll', {
+		credentials: 'include',
+	});
 
 	if (!res.ok) {
 		throw new Error('Failed to fetch data');

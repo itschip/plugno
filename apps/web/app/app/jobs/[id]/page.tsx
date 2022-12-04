@@ -1,7 +1,9 @@
 import { DetailedJob, Job } from '@typings/jobs';
 
 async function getJobData(id: number): Promise<DetailedJob> {
-	const res = await fetch(`http://localhost:6001/jobs/getOne?id=${id}`);
+	const res = await fetch(`http://localhost:6001/jobs/getOne?id=${id}`, {
+		credentials: 'include',
+	});
 
 	if (!res.ok) {
 		throw new Error('Failed to find job');

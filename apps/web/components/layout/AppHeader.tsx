@@ -66,7 +66,10 @@ export const Header = () => {
 						</Link>
 						{/*<NotificationMenu /> */}
 					</div>
-					<div className="flex items-center justify-center group hover:cursor-pointer">
+					<Link
+						href="/app/profile/account"
+						className="flex items-center justify-center group hover:cursor-pointer"
+					>
 						<div className="flex items-center space-x-4">
 							<img
 								className="h-9 w-9 rounded-full"
@@ -79,7 +82,7 @@ export const Header = () => {
 								</p>
 							</div>
 						</div>
-					</div>
+					</Link>
 				</div>
 			</div>
 		</div>
