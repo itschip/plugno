@@ -51,6 +51,7 @@ importers:
     specifiers:
       "@headlessui/react": ^1.7.4
       "@heroicons/react": ^2.0.13
+      "@plugs/ui": workspace:^1.0.0
       "@rematch/core": ^2.2.0
       "@types/node": 18.11.9
       "@types/react": 18.0.25
@@ -67,6 +68,7 @@ importers:
     dependencies:
       "@headlessui/react": 1.7.4_biqbaboplfbrettd7655fr4n2y
       "@heroicons/react": 2.0.13_react@18.2.0
+      "@plugs/ui": link:../../packages/ui
       "@rematch/core": 2.2.0_redux@4.2.0
       "@types/node": 18.11.9
       "@types/react": 18.0.25
@@ -96,6 +98,23 @@ importers:
 
   packages/plug-ui:
     specifiers: {}
+
+  packages/ui:
+    specifiers:
+      autoprefixer: ^10.4.13
+      class-variance-authority: ^0.4.0
+      postcss: ^8.4.19
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      tailwindcss: ^3.2.4
+    dependencies:
+      class-variance-authority: 0.4.0
+    devDependencies:
+      autoprefixer: 10.4.13_postcss@8.4.19
+      postcss: 8.4.19
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      tailwindcss: 3.2.4_postcss@8.4.19
 
 packages:
   /@ampproject/remapping/2.2.0:
@@ -4343,6 +4362,18 @@ packages:
       define-property: 0.2.5
       isobject: 3.0.1
       static-extend: 0.1.2
+    dev: false
+
+  /class-variance-authority/0.4.0:
+    resolution:
+      {
+        integrity: sha512-74enNN8O9ZNieycac/y8FxqgyzZhZbxmCitAtAeUrLPlxjSd5zA7LfpprmxEcOmQBnaGs5hYhiSGnJ0mqrtBLQ==,
+      }
+    peerDependencies:
+      typescript: ">= 4.5.5 < 5"
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dev: false
 
   /clean-stack/2.2.0:
@@ -9463,7 +9494,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-    dev: false
 
   /react-is/16.13.1:
     resolution:
@@ -9657,7 +9687,6 @@ packages:
     engines: { node: ">=0.10.0" }
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /read-cache/1.0.0:
     resolution:
@@ -10132,7 +10161,6 @@ packages:
       }
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /semver/5.7.1:
     resolution:

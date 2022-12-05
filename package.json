@@ -12,6 +12,7 @@
     "dev": "turbo run dev --parallel",
     "mobile": "pnpm --filter @plugs/mobile",
     "web": "pnpm --filter @plugs/web",
+    "ui": "pnpm --filter @plugs/ui",
     "api": "cd ./api && go run main.go",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
