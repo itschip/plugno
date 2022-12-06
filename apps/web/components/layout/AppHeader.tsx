@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { ChatBubbleLeftIcon as ChatIconOutline } from '@heroicons/react/24/outline';
-import { NotificationMenu } from '../header/NotificationMenu';
+//import { NotificationMenu } from '../header/NotificationMenu';
 import { RootState } from '@store/store';
 import { classes } from '@utils/css';
 import { usePathname } from 'next/navigation';
@@ -56,7 +56,7 @@ export const Header = () => {
 				</div>
 				<div className="flex space-x-5 xl:space-x-8 items-center">
 					<div className="items-center space-x-4 hidden md:flex">
-						<Link href="chat" className="relative inline-block">
+						<Link href="/app/chat" className="relative inline-block">
 							{path === 'chat' ? (
 								<ChatIconOutline className="h-7 w-7 text-rose-600 fill-rose-500 cursor-pointer" />
 							) : (

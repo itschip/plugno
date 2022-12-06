@@ -22,7 +22,7 @@ func Authorized() gin.HandlerFunc {
 
 		if err != nil {
 			c.Writer.WriteHeader(http.StatusUnauthorized)
-			c.Writer.Write([]byte("You are unauthorized"))
+			c.Writer.Write([]byte("Unauthorized"))
 			c.Abort()
 			return
 		}

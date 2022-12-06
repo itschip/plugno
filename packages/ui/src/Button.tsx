@@ -1,10 +1,11 @@
 import React, { ButtonHTMLAttributes } from "react";
-import { cva, cx, type VariantProps } from "class-variance-authority";
+import { cva, cx, VariantProps } from "class-variance-authority";
 
-export type ButtonProps = VariantProps<typeof classes> &
-  ButtonHTMLAttributes<HTMLButtonElement> & {
-    children: React.ReactNode;
-  };
+interface ButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+}
+
+type ButtonProps = ButtonBaseProps & VariantProps<typeof classes>;
 
 const classes = cva("text-white py-2 px-3 rounded-md", {
   variants: {

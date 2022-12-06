@@ -1,6 +1,6 @@
 'use client';
 
-import { PhotoIcon } from '@heroicons/react/24/outline';
+import { Input } from '@plugs/ui';
 import { RootState } from '@store/store';
 import { ChangeEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -42,15 +42,15 @@ export default function NewJobView() {
 			<div className="w-full text-center">
 				<div className="mx-auto w-full py-10 px-3 xl:px-0">
 					<div>
-						<h1 className="text-white text-4xl font-extrabold">Legg ut ny jobb</h1>
+						<h1 className="text-white text-4xl font-extrabold">Legg ut ny jobb</h1>{' '}
 					</div>
 					<div className="mt-8 mx-auto max-w-xl">
 						<div>
-							<input
+							<Input
 								value={title}
 								onChange={(e) => setTitle(e.currentTarget.value)}
 								placeholder="Jobtittel"
-								className="bg-neutral-800 text-white border border-neutral-700 py-2 px-3 rounded-md w-full outline-none"
+								className="w-full"
 							/>
 						</div>
 						<div className="mt-4">
