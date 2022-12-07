@@ -13,8 +13,7 @@ export default function ProfileAccountPage() {
 		<div>
 			<h1 className="text-white font-extrabold text-3xl">Konto</h1>
 			<div className="mt-8 max-w-lg space-y-4">
-				<Input />
-				<input
+				<Input
 					value={username}
 					onChange={(e) => setUsername(e.currentTarget.value)}
 					className="bg-neutral-800 border border-neutral-700 w-full rounded-md py-2 px-3 outline-none text-white"

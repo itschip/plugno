@@ -7,11 +7,12 @@ interface ButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 type ButtonProps = ButtonBaseProps & VariantProps<typeof classes>;
 
-const classes = cva("text-white py-2 px-3 rounded-md", {
+const classes = cva("text-white rounded-md", {
   variants: {
     size: {
-      sm: "py-1 px-2",
-      md: "py-2 px-4",
+      sm: "px-2 py-1.5 text-sm",
+      md: "px-2 py-1.5",
+      lg: "py-2 px-4",
     },
     variant: {
       primary: [

@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 import { cva, cx, VariantProps } from "class-variance-authority";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> &
@@ -19,12 +19,10 @@ const classes = cva("rounded-md outline-none", {
   },
 });
 
-export const Input: React.FC<InputProps> = ({
-  size,
-  variant,
-  className,
-  ...props
-}) => {
-  className = cx(classes({ size, variant }), className);
-  return <input className={className} {...props} />;
-};
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ size, variant, className, ...props }, ref) => {
+    className = cx(classes({ size, variant }), className);
+    return <input ref={ref} className={className} {...props} />;
+  }
+);
+Input.displayName = "Input";
