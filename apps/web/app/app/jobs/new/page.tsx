@@ -1,9 +1,10 @@
 'use client';
 
-import { Input } from '@plugs/ui';
+import { Autocomplete, Input } from '@plugs/ui';
 import { RootState } from '@store/store';
 import { classes } from '@utils/css';
-import { ChangeEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
@@ -13,7 +14,7 @@ type JobForm = {
 	description: string;
 	price: string;
 };
-
+// TODO: Support translation
 const formError = {
 	title: 'Please fill in a title',
 	shortDescription: 'Please fill in a short description',
@@ -26,6 +27,7 @@ const ErrorMessage = ({ message }: { message: string }) => (
 );
 
 export default function NewJobView() {
+	const router = useRouter();
 	const user = useSelector((state: RootState) => state.auth.user);
 	const {
 		register,
@@ -57,6 +59,7 @@ export default function NewJobView() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				router.push('/app/jobs');
 				console.log(data);
 			});
 	};
@@ -118,6 +121,9 @@ export default function NewJobView() {
 									)}
 								/>
 								{errors.price?.type === 'required' && <ErrorMessage message={formError.price} />}
+							</div>
+							<div className="mt-2">
+								<Autocomplete />
 							</div>
 							{/* <div className="mt-8 flex items-center space-x-4">
 							<input

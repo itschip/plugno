@@ -8,6 +8,8 @@ export interface Job {
 	userId: string;
 	askingPrice: number;
 	location: number;
+	locationName: string;
+	createdAt: string;
 }
 
 export interface DetailedJob extends Omit<User, 'id'> {

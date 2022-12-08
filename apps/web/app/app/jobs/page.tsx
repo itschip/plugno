@@ -1,5 +1,12 @@
 import Link from 'next/link';
 import { Job } from '@typings/jobs';
+import { MapPinIcon } from '@heroicons/react/24/outline';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/nb';
+
+dayjs.extend(relativeTime);
+dayjs.locale('nb');
 
 async function getJobs(): Promise<Job[]> {
 	const res = await fetch('http://localhost:6001/jobs/getAll', {
@@ -31,28 +38,35 @@ export default async function JobsPage() {
 					</div>
 					<ul
 						role="list"
-						className="mt-8 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+						className="mt-8 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5 xl:gap-x-8"
 					>
 						{data &&
 							data.map((job) => (
 								<Link key={job.id} href={`/app/jobs/${job.id}`}>
 									<li className="relative group hover:bg-neutral-800 p-2 rounded-md cursor-pointer">
 										<div className="aspect-w-10 aspect-h-7 block w-full overflow-hidden rounded-lg relative">
-											<img
-												src="/sofa.jpeg"
-												alt=""
-												className="pointer-events-none object-cover group-hover:opacity-60"
-											/>
+											<span className="text-white absolute bottom-2 left-2 bg-rose-800 text-rose-300 rounded-full px-2 text-sm">
+												{job.askingPrice} NOK
+											</span>
+											<img src="/sofa.jpeg" alt="" className="pointer-events-none object-cover" />
 										</div>
 										<div className="mt-2">
-											<div className="flex items-start justify-between">
+											<div className="flex items-center justify-between">
 												<div>
-													<h3 className="block  text-white font-bold text-lg">{job.title}</h3>
+													<span className="text-gray-300 text-sm flex items-center">
+														<MapPinIcon className="h-5 w-5 mr-1" />
+														{job.locationName}
+													</span>
 												</div>
 												<div>
-													<span className="text-gray-300 font-semibold">{job.askingPrice} NOK</span>
+													<p className="text-gray-300 text-sm">
+														{dayjs().to(dayjs(job.createdAt))}
+													</p>
 												</div>
 											</div>
+											<h3 className="mt-4 block text-white font-semibold text-md break-words truncate">
+												{job.title}
+											</h3>
 											<p className="text-sm text-gray-300 mt-2">{job.shortDescription}</p>
 										</div>
 									</li>

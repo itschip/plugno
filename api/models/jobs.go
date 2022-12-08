@@ -13,8 +13,10 @@ type Job struct {
 	UserID           string  `json:"userId"`
 	AskingPrice      int64   `json:"askingPrice"`
 	Location         float32 `json:"location"`
+	LocationName     string  `json:"locationName"`
 	Username         string  `json:"username"`
 	Email            string  `json:"email"`
+	CreatedAt        string  `json:"createdAt"`
 }
 
 type ShippingLocation struct {
@@ -60,8 +62,10 @@ func (jm *JobModel) FindAll() []Job {
                      description,
                      short_description AS shortDescription,
                      asking_price AS askingPrice,
-                     user_id as userId
-              FROM jobs`
+                     user_id as userId,
+                     created_at as createdAt,
+                     location_name as locationName
+              FROM jobs ORDER BY createdAt DESC`
 
 	res, err := jm.DB.Query(query)
 	defer res.Close()
@@ -73,7 +77,7 @@ func (jm *JobModel) FindAll() []Job {
 	jobs := []Job{}
 	for res.Next() {
 		var job Job
-		err := res.Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.UserID)
+		err := res.Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.UserID, &job.CreatedAt, &job.LocationName)
 		if err != nil {
 			log.Printf("Failed to scan jobs. Error: %s", err)
 		}
