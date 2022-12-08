@@ -2,6 +2,7 @@ package main
 
 import (
 	"plugno-api/auth"
+	"plugno-api/chat"
 	"plugno-api/db"
 	"plugno-api/jobs"
 	"plugno-api/models"
@@ -22,6 +23,9 @@ func main() {
 	authHandler := auth.NewAuthHandler(server)
 	jobsHandler := jobs.NewJobsHandler(server)
 
+	_chat := chat.NewChat()
+	go _chat.Run()
+
 	router := gin.Default()
 
 	CORSHandler := cors.New(cors.Config{
@@ -39,6 +43,9 @@ func main() {
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
+	router.GET("/ws", func(ctx *gin.Context) {
+		chat.ServeWs(_chat, ctx)
+	})
 
 	authorized.Use(auth.Authorized())
 	{
