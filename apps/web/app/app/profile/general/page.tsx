@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@plugs/ui';
 
 export default function ProfileGeneralPage() {

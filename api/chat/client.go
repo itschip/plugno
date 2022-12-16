@@ -3,6 +3,7 @@ package chat
 import (
 	"bytes"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -108,6 +109,9 @@ func (c *Client) writePump() {
 }
 
 func ServeWs(chat *Chat, c *gin.Context) {
+	upgrader.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)
