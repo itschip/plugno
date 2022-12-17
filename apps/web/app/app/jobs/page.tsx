@@ -24,7 +24,7 @@ export default async function JobsPage() {
 	const data = await getJobs();
 
 	return (
-		<div className="h-full h-screen bg-neutral-900">
+		<div className="h-screen bg-neutral-900">
 			<div className="w-full">
 				<div className="mx-auto  xl:max-w-7xl py-10 px-3 xl:px-0">
 					<div className="flex items-center space-x-4">

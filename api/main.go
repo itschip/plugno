@@ -17,11 +17,14 @@ func main() {
 	conn := db.Open()
 
 	server := &structs.Server{
-		UserModel: models.UserModel{DB: conn},
-		JobModel:  models.JobModel{DB: conn},
+		UserModel:    models.UserModel{DB: conn},
+		JobModel:     models.JobModel{DB: conn},
+		MessageModel: models.MessageModel{DB: conn},
 	}
+
 	authHandler := auth.NewAuthHandler(server)
 	jobsHandler := jobs.NewJobsHandler(server)
+	chatHandler := chat.NewChatHandler(server)
 
 	_chat := chat.NewChat()
 	go _chat.Run()
@@ -44,7 +47,7 @@ func main() {
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
 	router.GET("/ws", func(ctx *gin.Context) {
-		chat.ServeWs(_chat, ctx)
+		chatHandler.ServeWs(_chat, ctx)
 	})
 
 	authorized.Use(auth.Authorized())

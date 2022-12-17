@@ -39,9 +39,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	if (!userState) return null;
 
 	return (
-		<div className="h-screen bg-neutral-900">
+		<div className="flex flex-col min-h-screen bg-neutral-900">
 			<Header />
-			<div className="">{children}</div>
+			<section>{children}</section>
 		</div>
 	);
 }

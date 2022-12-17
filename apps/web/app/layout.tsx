@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<head />
 			<body>
 				<Provider store={store}>
-					<div className="">{children}</div>
+					<div>{children}</div>
 				</Provider>
 			</body>
 		</html>

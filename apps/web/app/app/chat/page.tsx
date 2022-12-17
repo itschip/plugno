@@ -1,27 +1,16 @@
 'use client';
 
+import { Conversations } from '@components/chat/Conversations';
+import { RootState } from '@store/store';
 import { classes } from '@utils/css';
 import { useEffect, useState } from 'react';
-
-const conversations = [
-	{
-		id: 1,
-		username: 'Andrine',
-		postName: 'Move sofa',
-		active: true,
-	},
-	{
-		id: 2,
-		username: 'Christopher',
-		postName: 'Drive a car to my house',
-		active: false,
-	},
-];
+import { useSelector } from 'react-redux';
 
 export default function ChatPage() {
 	const [message, setMessage] = useState<string>('');
 	const [socket, setSocket] = useState<WebSocket | null>(null);
 	const [messages, setMessages] = useState<string[]>([]);
+	const user = useSelector((state: RootState) => state.auth.user);
 
 	useEffect(() => {
 		const _socket = new WebSocket('ws://localhost:6001/ws');
@@ -35,39 +24,32 @@ export default function ChatPage() {
 			};
 
 			socket.onmessage = (msg) => {
-				console.log('new data:', msg.data);
-				setMessages((curVal) => [...curVal, msg.data]);
+				console.log('new data:', msg);
+				const msgData = JSON.parse(msg.data);
+				setMessages((curVal) => [...curVal, msgData.message]);
+			};
+
+			socket.onclose = () => {
+				console.log('Socket is closed');
 			};
 		}
+
+		return () => {
+			socket?.close();
+		};
 	}, [socket]);
 
 	const handleSendMessage = () => {
-		socket?.send(message);
+		socket?.send(JSON.stringify({ userId: user?.id, message }));
 	};
 
 	return (
-		<div className="h-full bg-neutral-900">
+		<div className="bg-neutral-900">
 			<div className="mx-auto xl:max-w-7xl py-10 px-3 xl:px-0">
-				<div className="flex justify-start space-x-10 relative">
-					<div className="w-56 border-r border-neutral-700">
-						<h2 className="text-white font-bold text-lg">Samtaler</h2>
-						<div className="pr-4 mt-2 space-y-4">
-							{conversations.map((conversation) => (
-								<div
-									key={conversation.id}
-									className={classes(
-										'px-3 py-2 rounded-md ',
-										conversation.active ? 'bg-neutral-800' : '',
-									)}
-								>
-									<p className="text-white">{conversation.username}</p>
-									<p className="text-sm text-gray-400">{conversation.postName}</p>
-								</div>
-							))}
-						</div>
-					</div>
-					<div className="grow h-[600px] relative">
-						<div className="flex flex-col space-y-4">
+				<div className="flex justify-start space-x-10">
+					<Conversations />
+					<div className="grow w-full relative">
+						<div className="space-y-4 h-[600px] max-h-[600px] overflow-scroll overflow-x-hidden ">
 							{messages.map((msg) => (
 								<div className="flex items-stretch justify-start">
 									<div className="bg-neutral-800 py-3 px-3 rounded-md w-auto float-right min-w-[10%] max-w-[30%] break-words">
@@ -76,7 +58,7 @@ export default function ChatPage() {
 								</div>
 							))}
 						</div>
-						<div className="absolute bottom-0 w-full flex items-center justify-start space-x-4">
+						<div className="w-full flex items-center justify-start space-x-4 mt-4">
 							<input
 								value={message}
 								placeholder="Message..."

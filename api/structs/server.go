@@ -5,6 +5,7 @@ import (
 )
 
 type Server struct {
-	UserModel models.UserModel
-	JobModel  models.JobModel
+	UserModel    models.UserModel
+	JobModel     models.JobModel
+	MessageModel models.MessageModel
 }
