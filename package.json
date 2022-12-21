@@ -10,7 +10,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "mobile": "pnpm --filter @plugs/mobile",
+    "dev:native": "turbo run dev:native",
+    "native": "pnpm --filter @plugs/native",
     "web": "pnpm --filter @plugs/web",
     "ui": "pnpm --filter @plugs/ui",
     "api": "cd ./api && go run main.go",

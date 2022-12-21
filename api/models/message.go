@@ -44,3 +44,28 @@ func (mm *MessageModel) FindOne(messageId int64) (Message, error) {
 
 	return message, nil
 }
+
+func (mm *MessageModel) FindAll(conversationId int64) ([]Message, error) {
+	query := `SELECT messages.id, messages.message, user_id as userId, created_at as createdAt FROM messages`
+
+	res, err := mm.DB.Query(query)
+	defer res.Close()
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	messages := []Message{}
+	for res.Next() {
+		var message Message
+		err := res.Scan(&message.ID, &message.Message, &message.UserID, &message.CreatedAt)
+		if err != nil {
+			log.Println(err.Error())
+			return nil, err
+		}
+
+		messages = append(messages, message)
+	}
+
+	return messages, nil
+}

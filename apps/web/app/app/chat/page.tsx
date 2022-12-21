@@ -2,7 +2,6 @@
 
 import { Conversations } from '@components/chat/Conversations';
 import { RootState } from '@store/store';
-import { classes } from '@utils/css';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -51,7 +50,7 @@ export default function ChatPage() {
 					<div className="grow w-full relative">
 						<div className="space-y-4 h-[600px] max-h-[600px] overflow-scroll overflow-x-hidden ">
 							{messages.map((msg) => (
-								<div className="flex items-stretch justify-start">
+								<div key={msg} className="flex items-stretch justify-start">
 									<div className="bg-neutral-800 py-3 px-3 rounded-md w-auto float-right min-w-[10%] max-w-[30%] break-words">
 										<p className="text-white text-md">{msg}</p>
 									</div>

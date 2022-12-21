@@ -175,13 +175,19 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 
 	c.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
 	c.JSON(200, map[string]any{
-		"user":      user,
+		"user": map[string]any{
+			"id":       user.ID,
+			"username": user.Username,
+			"email":    user.Email,
+		},
+		"id_token":  tokenString,
 		"isSuccess": true,
 	})
 }
 
 func (auth *AuthHandler) User(c *gin.Context) {
 	cookie, err := c.Cookie("token")
+	fmt.Println("COOKIE: ", cookie)
 	if err != nil {
 		log.Println(err.Error())
 	}
