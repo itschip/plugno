@@ -7,3 +7,13 @@ export type UserResponse = {
   };
   isSuccess: boolean;
 };
+
+export type User = {
+  id: number;
+  username: string;
+  email: string;
+};
+
+export type AuthState = {
+  user: User | null;
+};

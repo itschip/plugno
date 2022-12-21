@@ -17,6 +17,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 			fetch('http://localhost:6001/user', {
 				credentials: 'include',
 				headers: {
+					Authorization: 'Bearer hello world',
 					'Content-Type': 'application/json',
 				},
 			})
