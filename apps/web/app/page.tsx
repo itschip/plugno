@@ -16,7 +16,7 @@ export default function Home() {
 					</Link>
 					<Link
 						href="/register"
-						className="bg-yellow-400 py-1.5 px-2.5 text-white font-medium rounded-md shadow-sm"
+						className="bg-black py-1.5 px-2.5 text-white font-medium rounded-md shadow-sm"
 					>
 						Register
 					</Link>
@@ -39,9 +39,9 @@ export default function Home() {
 								<div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
 									<a
 										href="#"
-										className="flex items-center justify-center rounded-md border border-neutral-700 bg-neutral-800 px-4 py-3 text-base font-medium text-white shadow-sm sm:px-8"
+										className="flex items-center justify-center rounded-md bg-black px-4 py-3 text-base font-medium text-white shadow-sm sm:px-8"
 									>
-										Om Plugs.no
+										Om Plug.no
 									</a>
 									<a
 										href="#"

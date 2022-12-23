@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"plugno-api/models"
 	"plugno-api/structs"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -189,16 +188,10 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 func (auth *AuthHandler) User(c *gin.Context) {
 	var cookie string
 
-	authToken := c.Request.Header.Get("Authorization")
-	cookie = strings.ReplaceAll(authToken, "Bearer ", "")
-
-	if cookie == "" {
-		fmt.Println("SHIT NO COOKIE")
-		cookie, err := c.Cookie("token")
-		fmt.Println("COOKIE: ", cookie)
-		if err != nil {
-			log.Println(err.Error())
-		}
+	cookie, err := c.Cookie("token")
+	fmt.Println("COOKIE: ", cookie)
+	if err != nil {
+		log.Println(err.Error())
 	}
 
 	token, err := jwt.ParseWithClaims(cookie, &Claims{}, func(t *jwt.Token) (interface{}, error) {

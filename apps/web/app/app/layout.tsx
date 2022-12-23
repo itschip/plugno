@@ -17,7 +17,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 			fetch('http://localhost:6001/user', {
 				credentials: 'include',
 				headers: {
-					Authorization: 'Bearer hello world',
 					'Content-Type': 'application/json',
 				},
 			})
@@ -40,7 +39,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	if (!userState) return null;
 
 	return (
-		<div className="flex flex-col min-h-screen bg-neutral-900">
+		<div className="flex flex-col min-h-screen bg-gray-100">
 			<Header />
 			<section>{children}</section>
 		</div>

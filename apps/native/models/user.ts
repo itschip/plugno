@@ -7,7 +7,7 @@ export const auth = createModel<RootModel>()({
     user: null,
   } as AuthState,
   reducers: {
-    populate: (state, payload: User) => {
+    populate: (state, payload: User | null) => {
       return {
         ...state,
         user: payload,

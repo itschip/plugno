@@ -3,7 +3,7 @@ import { classes } from '@utils/css';
 const conversations = [
 	{
 		id: 1,
-		username: 'Andrine',
+		username: 'Cat person',
 		postName: 'Move sofa',
 		active: true,
 	},

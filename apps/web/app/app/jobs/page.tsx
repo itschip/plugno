@@ -24,14 +24,14 @@ export default async function JobsPage() {
 	const data = await getJobs();
 
 	return (
-		<div className="h-screen bg-neutral-900">
+		<div className="h-screen bg-gray-100">
 			<div className="w-full">
 				<div className="mx-auto  xl:max-w-7xl py-10 px-3 xl:px-0">
 					<div className="flex items-center space-x-4">
-						<h1 className="text-white text-4xl font-extrabold">Jobber</h1>
+						<h1 className="text-black text-4xl font-extrabold">Jobber</h1>
 						<Link
 							href="/app/jobs/new"
-							className="py-1.5 px-2.5 rounded-md bg-rose-500/60 hover:bg-rose-600/60 border border-rose-600/60 text-white shadow-sm"
+							className="py-1.5 px-2.5 rounded-md bg-rose-500 hover:bg-rose-600 text-white shadow-sm"
 						>
 							Legg ut jobb
 						</Link>
@@ -43,9 +43,9 @@ export default async function JobsPage() {
 						{data &&
 							data.map((job) => (
 								<Link key={job.id} href={`/app/jobs/${job.id}`}>
-									<li className="relative group hover:bg-neutral-800 p-2 rounded-md cursor-pointer">
+									<li className="relative group hover:bg-gray-200 p-2 rounded-md cursor-pointer">
 										<div className="aspect-w-10 aspect-h-7 block w-full overflow-hidden rounded-lg relative">
-											<span className="text-white absolute bottom-2 left-2 bg-rose-800 text-rose-300 rounded-full px-2 text-sm">
+											<span className="text-white absolute bottom-2 left-2 bg-rose-300 text-rose-800 rounded-full px-2 text-sm">
 												{job.askingPrice} NOK
 											</span>
 											<img src="/sofa.jpeg" alt="" className="pointer-events-none object-cover" />
@@ -53,21 +53,21 @@ export default async function JobsPage() {
 										<div className="mt-2">
 											<div className="flex items-center justify-between">
 												<div>
-													<span className="text-gray-300 text-sm flex items-center">
+													<span className="text-gray-500 text-sm flex items-center">
 														<MapPinIcon className="h-5 w-5 mr-1" />
 														{job.locationName}
 													</span>
 												</div>
 												<div>
-													<p className="text-gray-300 text-sm">
+													<p className="text-gray-500 text-sm">
 														{dayjs().to(dayjs(job.createdAt))}
 													</p>
 												</div>
 											</div>
-											<h3 className="mt-4 block text-white font-semibold text-md break-words truncate">
+											<h3 className="mt-4 block text-black font-semibold text-md break-words truncate">
 												{job.title}
 											</h3>
-											<p className="text-sm text-gray-300 mt-2">{job.shortDescription}</p>
+											<p className="text-sm text-gray-500 mt-2">{job.shortDescription}</p>
 										</div>
 									</li>
 								</Link>

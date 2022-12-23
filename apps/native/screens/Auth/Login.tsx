@@ -54,7 +54,7 @@ export const LoginScreen = () => {
             autoCapitalize="none"
             placeholderTextColor="gray"
             style={{ fontSize: 18 }}
-            className="bg-gray-300 py-3 px-3 w-full rounded-md border border-gray-300"
+            className="bg-gray-200 py-3 px-3 w-full rounded-md border border-gray-300"
           />
         </View>
 
@@ -67,7 +67,7 @@ export const LoginScreen = () => {
             secureTextEntry
             placeholderTextColor="gray"
             style={{ fontSize: 18 }}
-            className="bg-gray-300 py-3 px-3 w-full rounded-md border border-gray-300"
+            className="bg-gray-200 py-3 px-3 w-full rounded-md border border-gray-300"
           />
         </View>
 

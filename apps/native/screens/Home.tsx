@@ -1,4 +1,4 @@
-import { Text, SafeAreaView, View } from "react-native";
+import { Text, SafeAreaView, View, ImageBackground } from "react-native";
 
 export const Home = () => {
   return (
@@ -11,7 +11,17 @@ export const Home = () => {
         </View>
 
         <View className="bg-gray-400 flex-2 h-48 w-[200px] rounded-lg relative">
-          <Text className="absolute text-white font-bold bottom-2 right-4 text-3xl">
+          <ImageBackground
+            resizeMode="cover"
+            style={{
+              flex: 1,
+              justifyContent: "center",
+            }}
+            source={{
+              uri: "https://media.istockphoto.com/id/1095330908/vector/city-street-map.jpg?s=612x612&w=0&k=20&c=pDt1LMofvdygE3IL2SUqLNPBwZcHXu744zirZ4DQXRo=",
+            }}
+          />
+          <Text className="absolute text-gray-400 font-bold bottom-2 right-4 text-3xl">
             Map
           </Text>
         </View>

@@ -2,7 +2,7 @@ import { classes } from '@utils/css';
 
 export default function View() {
 	return (
-		<div className="bg-neutral-900 h-screen">
+		<div className="bg-gray-100 h-screen">
 			<div className="w-full">
 				<div className="mx-auto max-w-2xl lg:max-w-5xl xl:max-w-7xl py-10 px-5 lg:px-0">
 					<h1 className="text-white text-4xl font-extrabold">Plugs</h1>
