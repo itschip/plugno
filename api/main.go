@@ -49,6 +49,7 @@ func main() {
 	router.GET("/ws", func(ctx *gin.Context) {
 		chatHandler.ServeWs(_chat, ctx)
 	})
+	router.GET("/track", jobsHandler.ServeTracker)
 
 	authorized.Use(auth.Authorized())
 	{
