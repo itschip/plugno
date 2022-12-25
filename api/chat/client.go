@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"plugno-api/models"
 	"plugno-api/structs"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -180,4 +181,22 @@ func (ch *ChatHandler) ServeWs(chat *Chat, c *gin.Context) {
 
 	go client.writePump()
 	go client.readPump()
+}
+
+func (ch *ChatHandler) FindMessages(g *gin.Context) {
+	param, found := g.Params.Get("conversationId")
+
+	if found {
+		convoId, err := strconv.ParseInt(param, 0, 8)
+		if err != nil {
+			log.Println(err.Error())
+		}
+
+		messages, err := ch.messageModel.FindAll(convoId)
+		if err != nil {
+			log.Println(err.Error())
+		}
+
+		fmt.Println(messages)
+	}
 }
