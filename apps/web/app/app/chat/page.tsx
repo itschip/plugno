@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { classes } from '../../../utils/css';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 type Message = {
 	id: string;
@@ -73,31 +76,46 @@ export default function ChatPage() {
 					<div className="grow w-full relative">
 						<div className="space-y-4 h-[550px] max-h-[550px] lg:h-[600px] lg:max-h-[600px] overflow-scroll overflow-x-hidden">
 							{messages.map((msg) => (
-								<div
-									key={msg.id}
-									className={classes(
-										'flex items-stretch justify-start',
-										msg?.userId == user?.id ? 'justify-end' : 'justify-start',
-									)}
-								>
+								<div key={msg.id}>
 									<div
 										className={classes(
-											'py-3 px-3 rounded-md w-auto',
-											'max-w-[80%] break-words',
-											msg?.userId == user?.id
-												? 'bg-rose-400 border border-rose-500'
-												: 'bg-gray-200 border border-gray-300',
+											'flex items-center justify-start space-x-2',
+											msg?.userId == user?.id ? 'justify-end' : 'justify-start',
 										)}
 									>
-										<p
+										{msg?.userId !== user?.id && (
+											<img
+												className="h-9 w-9 rounded-full"
+												src="https://avatars.githubusercontent.com/u/59088889?v=4"
+											/>
+										)}
+										<div
 											className={classes(
-												'text-md',
-												msg?.userId == user?.id ? 'text-white' : 'text-black',
+												'py-3 px-3 rounded-md w-auto',
+												'max-w-[80%] break-words',
+												msg?.userId == user?.id
+													? 'bg-rose-400 border border-rose-500'
+													: 'bg-gray-200 border border-gray-300',
 											)}
 										>
-											{msg.message}
-										</p>
+											<p
+												className={classes(
+													'text-md',
+													msg?.userId == user?.id ? 'text-white' : 'text-black',
+												)}
+											>
+												{msg.message}
+											</p>
+										</div>
 									</div>
+									<p
+										className={classes(
+											'flex text-sm text-gray-500',
+											msg?.userId === user?.id ? 'justify-end' : 'justify-start',
+										)}
+									>
+										{dayjs(msg.createdAt).fromNow()}
+									</p>
 								</div>
 							))}
 						</div>
