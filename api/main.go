@@ -16,15 +16,15 @@ import (
 func main() {
 	conn := db.Open()
 
-	server := &structs.Server{
+	server := structs.Server{
 		UserModel:    models.UserModel{DB: conn},
 		JobModel:     models.JobModel{DB: conn},
 		MessageModel: models.MessageModel{DB: conn},
 	}
 
-	authHandler := auth.NewAuthHandler(server)
-	jobsHandler := jobs.NewJobsHandler(server)
-	chatHandler := chat.NewChatHandler(server)
+	authHandler := auth.NewAuthHandler(&server)
+	jobsHandler := jobs.NewJobsHandler(&server)
+	chatHandler := chat.NewChatHandler(&server)
 
 	_chat := chat.NewChat()
 	go _chat.Run()
@@ -50,6 +50,8 @@ func main() {
 		chatHandler.ServeWs(_chat, ctx)
 	})
 	router.GET("/track", jobsHandler.ServeTracker)
+
+	router.GET("/messages/getAll", chatHandler.FindMessages)
 
 	authorized.Use(auth.Authorized())
 	{

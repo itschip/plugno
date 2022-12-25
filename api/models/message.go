@@ -9,7 +9,7 @@ import (
 type Message struct {
 	ID        int    `json:"id"`
 	Message   string `json:"message"`
-	UserID    string `json:"userId"`
+	UserID    int    `json:"userId"`
 	CreatedAt string `json:"createdAt"`
 	UpdatedAt string `json:"updatedAt"`
 }
@@ -68,4 +68,8 @@ func (mm *MessageModel) FindAll(conversationId int64) ([]Message, error) {
 	}
 
 	return messages, nil
+}
+
+func (mm *MessageModel) FindAllConversations() string {
+	return "hello"
 }
