@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LoginScreen } from "./screens/Auth/Login";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState, store } from "./store";
@@ -11,6 +11,8 @@ import { Profile } from "./screens/Profile";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Plugs } from "./screens/Plugs";
 import { Text, TouchableOpacity, View } from "react-native";
+import { ChatScreen } from "./screens/Chat";
+import { ChatStack } from "./stacks/ChatStack";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -18,8 +20,6 @@ const Tab = createBottomTabNavigator();
 function Container() {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<Dispatch>();
-
-  console.log("FUCK YOU", user);
 
   useLayoutEffect(() => {
     (async () => {
@@ -44,16 +44,6 @@ function Container() {
 
   return (
     <>
-      {/*<View className="absolute bottom-24 rounded-md right-4 left-4 z-[999999] bg-white shadow-sm px-2 py-4 px-4 flex justify-between flex-row items-center">
-        <View>
-          <Text className="font-semibold">Plug is on the way</Text>
-        </View>
-        <View>
-          <TouchableOpacity>
-            <Feather name="map-pin" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>*/}
       <NavigationContainer>
         {!user ? (
           <Stack.Navigator>
@@ -87,6 +77,20 @@ function Container() {
                 tabBarIcon: ({ focused }) => (
                   <Ionicons
                     name="flash"
+                    size={24}
+                    color={focused ? "black" : "gray"}
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Chat"
+              component={ChatStack}
+              options={{
+                tabBarShowLabel: false,
+                tabBarIcon: ({ focused }) => (
+                  <Ionicons
+                    name="chatbox-outline"
                     size={24}
                     color={focused ? "black" : "gray"}
                   />

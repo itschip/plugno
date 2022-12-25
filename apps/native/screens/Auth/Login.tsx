@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import {
-  Image,
   SafeAreaView,
   Text,
   TextInput,

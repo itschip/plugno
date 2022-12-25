@@ -34,6 +34,7 @@ importers:
       "@types/react-native": ~0.70.6
       expo: ~47.0.8
       expo-status-bar: ~1.4.2
+      jwt-decode: ^3.1.2
       nativewind: ^2.0.11
       react: 18.1.0
       react-dom: 18.1.0
@@ -54,6 +55,7 @@ importers:
       "@rematch/core": 2.2.0_redux@4.2.0
       expo: 47.0.8_@babel+core@7.20.2
       expo-status-bar: 1.4.2
+      jwt-decode: 3.1.2
       nativewind: 2.0.11_f3xea42f6zrwqyr5c6mbkdauxa
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
@@ -7763,6 +7765,13 @@ packages:
       array-includes: 3.1.6
       object.assign: 4.1.4
     dev: true
+
+  /jwt-decode/3.1.2:
+    resolution:
+      {
+        integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==,
+      }
+    dev: false
 
   /kind-of/3.2.2:
     resolution:
