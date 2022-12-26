@@ -11,11 +11,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Feather } from "@expo/vector-icons";
 import { MessagesScrollView } from "../components/chat/MessageScrollView";
+import { classes } from "../utils/css";
+
+type Message = {
+  id: string;
+  createdAt: string;
+  message: string;
+  updatedAt: string;
+  userId: number;
+};
 
 export const ChatConversation = () => {
   const [message, setMessage] = useState<string>("");
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
@@ -33,8 +42,7 @@ export const ChatConversation = () => {
         console.log("new data:", msg);
         const msgData = JSON.parse(msg.data);
 
-        console.log("New messsage", msgData);
-        setMessages((curVal) => [...curVal, msgData.message]);
+        setMessages((curVal) => [...curVal, msgData]);
       };
 
       socket.onclose = () => {
@@ -47,6 +55,17 @@ export const ChatConversation = () => {
     };
   }, [socket]);
 
+  useEffect(() => {
+    fetch("http://localhost:6001/messages/getAll?conversationId=1", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("all messages", data);
+        setMessages(data);
+      });
+  }, []);
+
   const handleSendMessage = () => {
     socket?.send(JSON.stringify({ userId: user?.id, message }));
     setMessage("");
@@ -54,11 +73,28 @@ export const ChatConversation = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
-      <ScrollView className="flex-2 grow space-y-2 mt-2 px-3 mb-4">
-        {messages.map((message) => (
-          <View key={message} className="flex items-stretch justify-start">
-            <View className="bg-gray-200 border border-gray-300 py-3 px-3 rounded-md w-auto float-right min-w-[10%] max-w-[50%] break-words">
-              <Text>{message}</Text>
+      <ScrollView className="grow space-y-2 mt-2 px-3 mb-4">
+        {messages.map((msg) => (
+          <View key={msg.id}>
+            <View
+              className={classes("flex items-stretch justify-start space-x-2")}
+            >
+              <View
+                className={classes(
+                  "py-3 px-3 rounded-md w-auto max-w-[80%] break-words",
+                  msg.userId == user?.id
+                    ? "bg-rose-400 border border-rose-500"
+                    : "bg-gray-200 border border-gray-300"
+                )}
+              >
+                <Text
+                  className={classes(
+                    msg.userId === user?.id ? "text-white" : ""
+                  )}
+                >
+                  {msg.message}
+                </Text>
+              </View>
             </View>
           </View>
         ))}

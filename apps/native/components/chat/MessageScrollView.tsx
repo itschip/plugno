@@ -3,10 +3,12 @@ import { ScrollView, Text, View } from "react-native";
 
 type MessagesScrollViewProps = {
   messages: string[];
+  userId: number;
 };
 
 export const MessagesScrollView: React.FC<MessagesScrollViewProps> = ({
   messages,
+  userId,
 }) => {
   return (
     <ScrollView className="flex-2 grow">
