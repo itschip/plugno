@@ -36,7 +36,7 @@ type JobModel struct {
 	DB *sql.DB
 }
 
-func (jm *JobModel) FindOne(id int64) (Job, error) {
+func (model *JobModel) FindOne(id int64) (Job, error) {
 	var job Job
 	query := `SELECT jobs.title,
        jobs.id,
@@ -47,7 +47,7 @@ func (jm *JobModel) FindOne(id int64) (Job, error) {
        users.username,
        users.email FROM jobs INNER JOIN users WHERE jobs.id = ? AND users.id = jobs.user_id;`
 
-	err := jm.DB.QueryRow(query, id).Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.UserID, &job.Username, &job.Email)
+	err := model.DB.QueryRow(query, id).Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.UserID, &job.Username, &job.Email)
 	if err != nil {
 		log.Println(err.Error())
 		return Job{}, err

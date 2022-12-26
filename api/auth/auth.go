@@ -94,7 +94,7 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 	}
 
 	expiryDate := time.Now().Add(1 * time.Hour)
-	claims := &Claims{
+	claims := Claims{
 		ID:       int(newUser.ID),
 		Email:    newUser.Email,
 		Username: newUser.Username,
@@ -103,7 +103,7 @@ func (auth *AuthHandler) RegisterUser(c *gin.Context) {
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &claims)
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusInternalServerError)
@@ -157,7 +157,7 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 	}
 
 	expiryDate := time.Now().Add(1 * time.Hour)
-	claims := &Claims{
+	claims := Claims{
 		ID:       int(user.ID),
 		Email:    user.Email,
 		Username: user.Username,
@@ -166,7 +166,7 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &claims)
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusInternalServerError)
@@ -189,7 +189,6 @@ func (auth *AuthHandler) User(c *gin.Context) {
 	var cookie string
 
 	cookie, err := c.Cookie("token")
-	fmt.Println("COOKIE: ", cookie)
 	if err != nil {
 		log.Println(err.Error())
 	}

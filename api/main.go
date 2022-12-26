@@ -6,6 +6,7 @@ import (
 	"plugno-api/db"
 	"plugno-api/jobs"
 	"plugno-api/models"
+	"plugno-api/profile"
 	"plugno-api/structs"
 	"time"
 
@@ -20,11 +21,13 @@ func main() {
 		UserModel:    models.UserModel{DB: conn},
 		JobModel:     models.JobModel{DB: conn},
 		MessageModel: models.MessageModel{DB: conn},
+		ProfileModel: models.ProfileModel{DB: conn},
 	}
 
 	authHandler := auth.NewAuthHandler(&server)
 	jobsHandler := jobs.NewJobsHandler(&server)
 	chatHandler := chat.NewChatHandler(&server)
+	profileHandler := profile.NewProfileHandler(&server)
 
 	_chat := chat.NewChat()
 	go _chat.Run()
@@ -46,18 +49,22 @@ func main() {
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
+
 	router.GET("/ws", func(ctx *gin.Context) {
 		chatHandler.ServeWs(_chat, ctx)
 	})
+
 	router.GET("/track", jobsHandler.ServeTracker)
 
 	router.GET("/messages/getAll", chatHandler.FindMessages)
 
+	router.GET("/profile/get", profileHandler.Get)
+
 	authorized.Use(auth.Authorized())
 	{
 		authorized.POST("/jobs/new", jobsHandler.New)
-		router.GET("/jobs/getOne", jobsHandler.GetOne)
-		router.GET("/jobs/getAll", jobsHandler.GetAll)
+		authorized.GET("/jobs/getOne", jobsHandler.GetOne)
+		authorized.GET("/jobs/getAll", jobsHandler.GetAll)
 	}
 
 	router.Run(":6001")
