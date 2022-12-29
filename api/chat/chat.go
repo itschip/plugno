@@ -33,8 +33,8 @@ func (c *Chat) Run() {
 	for {
 		select {
 		case client := <-c.register:
-			c.clients[client] = true
 			connections := c.rooms[client.roomId]
+
 			if connections == nil {
 				connections = make(map[*Client]bool)
 				c.rooms[client.roomId] = connections
@@ -43,8 +43,9 @@ func (c *Chat) Run() {
 			c.rooms[client.roomId][client] = true
 		case client := <-c.unregister:
 			connections := c.rooms[client.roomId]
-			fmt.Println("CONNECTIONS:", connections)
+
 			if _, ok := connections[client]; ok {
+				fmt.Println("UNREG CLIENT:", connections[client])
 				delete(connections, client)
 				close(client.send)
 			}

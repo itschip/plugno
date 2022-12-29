@@ -46,7 +46,7 @@ export default function ChatPage() {
 		}
 
 		return () => {
-			socket?.close();
+			socket?.close(1000, 'Closed chat page');
 		};
 	}, [socket]);
 
