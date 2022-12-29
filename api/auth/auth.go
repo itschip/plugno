@@ -187,7 +187,6 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 
 func (auth *AuthHandler) User(c *gin.Context) {
 	var cookie string
-
 	cookie, err := c.Cookie("token")
 	if err != nil {
 		log.Println(err.Error())
@@ -203,6 +202,8 @@ func (auth *AuthHandler) User(c *gin.Context) {
 	}
 
 	claims := token.Claims.(*Claims)
+
+	fmt.Println("claims", claims)
 
 	user, err := auth.userModel.GetUser(claims.ID)
 	if err != nil {

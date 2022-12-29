@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 )
 
@@ -39,8 +38,6 @@ func (mm *MessageModel) FindOne(messageId int64) (Message, error) {
 		log.Println(err.Error())
 		return Message{}, nil
 	}
-
-	fmt.Println("FOUND MESSAGE:", message)
 
 	return message, nil
 }

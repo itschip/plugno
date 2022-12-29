@@ -11,6 +11,9 @@ dayjs.locale('nb');
 async function getJobs(): Promise<Job[]> {
 	const res = await fetch('http://localhost:6001/jobs/getAll', {
 		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+		},
 	});
 
 	if (!res.ok) {

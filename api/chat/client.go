@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"plugno-api/models"
 	"plugno-api/structs"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -28,10 +27,13 @@ func NewChatHandler(s *structs.Server) *ChatHandler {
 type RawMessage struct {
 	Message string `json:"message"`
 	UserID  int    `json:"userId"`
+	RoomID  string `json:"roomId"`
 }
 
 type Client struct {
 	chat *Chat
+
+	roomId string
 
 	conn *websocket.Conn
 
@@ -92,6 +94,8 @@ func (c *Client) readPump() {
 
 		err = d.Decode(&rawMessage)
 
+		fmt.Println("NEW MESSAGE", rawMessage)
+
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -108,13 +112,18 @@ func (c *Client) readPump() {
 			return
 		}
 
-		body, err := json.Marshal(newMessage)
 		if err != nil {
 			fmt.Println("Failed to send new essage:", err.Error())
 			return
 		}
 
-		c.chat.broadcast <- body
+		body, _ := json.Marshal(newMessage)
+
+		var wsMsg Message
+		wsMsg.data = body
+		wsMsg.roomId = rawMessage.RoomID
+
+		c.chat.broadcast <- wsMsg
 	}
 }
 
@@ -170,7 +179,11 @@ func (ch *ChatHandler) ServeWs(chat *Chat, c *gin.Context) {
 		return
 	}
 
+	roomId := c.Param("roomId")
+	fmt.Println("websocket room id: ", roomId)
+
 	client := &Client{
+		roomId:       roomId,
 		chat:         chat,
 		conn:         conn,
 		send:         make(chan []byte, 256),
@@ -181,31 +194,4 @@ func (ch *ChatHandler) ServeWs(chat *Chat, c *gin.Context) {
 
 	go client.writePump()
 	go client.readPump()
-}
-
-func (ch *ChatHandler) FindConversations(g *gin.Context) {
-	conversations := ch.messageModel.FindAllConversations()
-
-	g.JSON(200, conversations)
-}
-
-func (ch *ChatHandler) FindMessages(g *gin.Context) {
-	param := g.Query("conversationId")
-
-	if param == "" {
-		g.JSON(400, "Failed to fetch messsages. Missing conversation id")
-		return
-	}
-
-	convoId, err := strconv.ParseInt(param, 0, 8)
-	if err != nil {
-		log.Println(err.Error())
-	}
-
-	messages, err := ch.messageModel.FindAll(convoId)
-	if err != nil {
-		log.Println(err.Error())
-	}
-
-	g.JSON(200, messages)
 }

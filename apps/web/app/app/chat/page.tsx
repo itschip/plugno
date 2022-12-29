@@ -25,7 +25,7 @@ export default function ChatPage() {
 	const user = useSelector((state: RootState) => state.auth.user);
 
 	useEffect(() => {
-		const _socket = new WebSocket('ws://localhost:6001/ws');
+		const _socket = new WebSocket('ws://localhost:6001/ws/3');
 		setSocket(_socket);
 	}, []);
 
@@ -36,9 +36,7 @@ export default function ChatPage() {
 			};
 
 			socket.onmessage = (msg) => {
-				console.log('new data:', msg);
 				const msgData = JSON.parse(msg.data);
-				console.log('msgData', msgData);
 				setMessages((curVal) => [...curVal, msgData]);
 			};
 
@@ -53,18 +51,17 @@ export default function ChatPage() {
 	}, [socket]);
 
 	useEffect(() => {
-		fetch('http://localhost:6001/messages/getAll?conversationId=1', {
+		fetch('http://localhost:6001/messages/GetAll?conversationId=1', {
 			method: 'GET',
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log('all messages', data);
 				setMessages(data);
 			});
 	}, []);
 
 	const handleSendMessage = () => {
-		socket?.send(JSON.stringify({ userId: user?.id, message }));
+		socket?.send(JSON.stringify({ userId: user?.id, message, roomId: '3' }));
 		setMessage('');
 	};
 

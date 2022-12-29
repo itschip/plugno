@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LoginScreen } from "./screens/Auth/Login";
 import { useLayoutEffect } from "react";
@@ -13,6 +13,7 @@ import { Plugs } from "./screens/Plugs";
 import { Text, TouchableOpacity, View } from "react-native";
 import { ChatScreen } from "./screens/Chat";
 import { ChatStack } from "./stacks/ChatStack";
+import { RequestScreen } from "./screens/Request";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,78 +46,111 @@ function Container() {
   return (
     <>
       <NavigationContainer>
-        {!user ? (
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerTintColor: "black", headerTransparent: true }}
-            />
-          </Stack.Navigator>
-        ) : (
-          <Tab.Navigator>
-            <Tab.Screen
-              name="Home"
-              component={Home}
-              options={{
-                tabBarShowLabel: false,
-                tabBarIcon: ({ focused }) => (
-                  <Feather
-                    name="home"
-                    size={24}
-                    color={focused ? "black" : "gray"}
-                  />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Plugs"
-              component={Plugs}
-              options={{
-                tabBarShowLabel: false,
-                tabBarIcon: ({ focused }) => (
-                  <Ionicons
-                    name="flash"
-                    size={24}
-                    color={focused ? "black" : "gray"}
-                  />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Chat"
-              component={ChatStack}
-              options={{
-                tabBarShowLabel: false,
-                tabBarIcon: ({ focused }) => (
-                  <Ionicons
-                    name="chatbox-outline"
-                    size={24}
-                    color={focused ? "black" : "gray"}
-                  />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Profile"
-              component={Profile}
-              options={{
-                tabBarShowLabel: false,
-                tabBarIcon: ({ focused }) => (
-                  <Feather
-                    name="user"
-                    size={24}
-                    color={focused ? "black" : "gray"}
-                  />
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        )}
+        <ScreensContainer />
       </NavigationContainer>
     </>
   );
 }
+
+const ScreensContainer = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const navigation = useNavigation();
+
+  return (
+    <>
+      {!user ? (
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerTintColor: "black", headerTransparent: true }}
+          />
+        </Stack.Navigator>
+      ) : (
+        <Tab.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarShowLabel: false,
+              headerRight: () => (
+                <TouchableOpacity
+                  className="mr-4"
+                  onPress={() => navigation.navigate("Chat")}
+                >
+                  <Ionicons name="chatbox-outline" size={24} color={"black"} />
+                </TouchableOpacity>
+              ),
+              tabBarIcon: ({ focused }) => (
+                <Feather
+                  name="home"
+                  size={24}
+                  color={focused ? "black" : "gray"}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Plugs"
+            component={Plugs}
+            options={{
+              tabBarShowLabel: false,
+              tabBarIcon: ({ focused }) => (
+                <Ionicons
+                  name="flash"
+                  size={24}
+                  color={focused ? "black" : "gray"}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Request"
+            component={RequestScreen}
+            options={{
+              tabBarShowLabel: false,
+              tabBarIcon: ({ focused }) => (
+                <Feather
+                  name="plus-circle"
+                  size={24}
+                  color={focused ? "black" : "gray"}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Chat"
+            component={ChatStack}
+            options={{
+              tabBarShowLabel: false,
+              tabBarIcon: ({ focused }) => (
+                <Ionicons
+                  name="chatbox-outline"
+                  size={24}
+                  color={focused ? "black" : "gray"}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              tabBarShowLabel: false,
+              tabBarIcon: ({ focused }) => (
+                <Feather
+                  name="user"
+                  size={24}
+                  color={focused ? "black" : "gray"}
+                />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      )}
+    </>
+  );
+};
 
 function App() {
   return (

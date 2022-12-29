@@ -1,9 +1,18 @@
 package chat
 
+import "fmt"
+
+type Message struct {
+	data   []byte
+	roomId string
+}
+
 type Chat struct {
 	clients map[*Client]bool
 
-	broadcast chan []byte
+	rooms map[string]map[*Client]bool
+
+	broadcast chan Message
 
 	register chan *Client
 
@@ -12,9 +21,10 @@ type Chat struct {
 
 func NewChat() *Chat {
 	return &Chat{
-		broadcast:  make(chan []byte),
+		broadcast:  make(chan Message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
+		rooms:      make(map[string]map[*Client]bool),
 		clients:    make(map[*Client]bool),
 	}
 }
@@ -24,18 +34,30 @@ func (c *Chat) Run() {
 		select {
 		case client := <-c.register:
 			c.clients[client] = true
+			connections := c.rooms[client.roomId]
+			if connections == nil {
+				connections = make(map[*Client]bool)
+				c.rooms[client.roomId] = connections
+			}
+
+			c.rooms[client.roomId][client] = true
 		case client := <-c.unregister:
-			if _, ok := c.clients[client]; ok {
-				delete(c.clients, client)
+			connections := c.rooms[client.roomId]
+			fmt.Println("CONNECTIONS:", connections)
+			if _, ok := connections[client]; ok {
+				delete(connections, client)
 				close(client.send)
 			}
+
 		case message := <-c.broadcast:
-			for client := range c.clients {
+			connections := c.rooms[message.roomId]
+
+			for client := range connections {
 				select {
-				case client.send <- message:
+				case client.send <- message.data:
 				default:
 					close(client.send)
-					delete(c.clients, client)
+					delete(connections, client)
 				}
 			}
 		}

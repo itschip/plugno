@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -13,7 +14,7 @@ func Authorized() gin.HandlerFunc {
 		var err error
 		cookie, err := c.Cookie("token")
 		if err != nil {
-			log.Println(err.Error())
+			log.Println("Failed getting cookie: ", err.Error())
 		}
 
 		_, err = jwt.ParseWithClaims(cookie, &Claims{}, func(t *jwt.Token) (interface{}, error) {
@@ -21,6 +22,8 @@ func Authorized() gin.HandlerFunc {
 		})
 
 		if err != nil {
+			fmt.Println("NOT AUTH")
+			fmt.Println("MIddleware: ", err.Error())
 			c.Writer.WriteHeader(http.StatusUnauthorized)
 			c.Writer.Write([]byte("Unauthorized"))
 			c.Abort()

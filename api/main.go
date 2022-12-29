@@ -44,27 +44,23 @@ func main() {
 
 	router.Use(CORSHandler)
 
-	authorized := router.Group("/")
-
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
 
-	router.GET("/ws", func(ctx *gin.Context) {
+	router.GET("/ws/:roomId", func(ctx *gin.Context) {
 		chatHandler.ServeWs(_chat, ctx)
 	})
 
-	router.GET("/track", jobsHandler.ServeTracker)
-
-	router.GET("/messages/getAll", chatHandler.FindMessages)
-
 	router.GET("/profile/get", profileHandler.Get)
+	router.GET("/jobs/getAll", jobsHandler.GetAll)
 
+	authorized := router.Group("/")
 	authorized.Use(auth.Authorized())
 	{
+		authorized.GET("/messages/getAll", chatHandler.FindMessages)
 		authorized.POST("/jobs/new", jobsHandler.New)
 		authorized.GET("/jobs/getOne", jobsHandler.GetOne)
-		authorized.GET("/jobs/getAll", jobsHandler.GetAll)
 	}
 
 	router.Run(":6001")
