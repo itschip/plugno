@@ -40,6 +40,11 @@ export const RequestScreen = () => {
     })();
   }, [debouncedPlace]);
 
+  const handleChangePlace = (place: string) => {
+    setPlace(place);
+    setOpen(false);
+  };
+
   return (
     <SafeAreaView>
       <View className="mt-4 px-4 space-y-4">
@@ -60,11 +65,12 @@ export const RequestScreen = () => {
             placeholder="Sted"
           />
           <View>
-            {suggestions?.predictions.length !== 0 && (
-              <View className="bg-gray-200 border border-gray-400 w-full mt-1 rounded-md shadow-sm absolute -bottom-24">
+            {suggestions?.predictions.length !== 0 && open && (
+              <View className="bg-gray-200 border border-gray-400 w-full mt-1 rounded-md shadow-sm absolute">
                 {suggestions?.predictions.map((place) => (
                   <TouchableOpacity
-                    onPress={() => setPlace(place.description)}
+                    key={place.description}
+                    onPress={() => handleChangePlace(place.description)}
                     className="px-2 py-3 border-b border-gray-400 flex flex-row space-x-2 items-center"
                   >
                     <Feather name="map-pin" size={20} color="gray" />

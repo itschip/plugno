@@ -8,7 +8,12 @@ import (
 )
 
 func (ch *ChatHandler) FindConversations(g *gin.Context) {
-	conversations := ch.messageModel.FindAllConversations()
+	conversations, err := ch.messageModel.FindAllConversations()
+	if err != nil {
+		log.Println(err.Error())
+		g.JSON(500, "Failed to get conversation")
+		return
+	}
 
 	g.JSON(200, conversations)
 }
@@ -26,7 +31,7 @@ func (ch *ChatHandler) FindMessages(g *gin.Context) {
 		log.Println(err.Error())
 	}
 
-	messages, err := ch.messageModel.FindAll(convoId)
+	messages, err := ch.messageModel.FindAllMessages(convoId)
 	if err != nil {
 		log.Println(err.Error())
 	}

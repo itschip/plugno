@@ -10,7 +10,6 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Feather } from "@expo/vector-icons";
-import { MessagesScrollView } from "../components/chat/MessageScrollView";
 import { classes } from "../utils/css";
 
 type Message = {
@@ -39,7 +38,6 @@ export const ChatConversation = () => {
       };
 
       socket.onmessage = (msg) => {
-        console.log("new data:", msg);
         const msgData = JSON.parse(msg.data);
 
         setMessages((curVal) => [...curVal, msgData]);

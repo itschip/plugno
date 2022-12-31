@@ -54,11 +54,12 @@ func main() {
 
 	router.GET("/profile/get", profileHandler.Get)
 	router.GET("/jobs/getAll", jobsHandler.GetAll)
+	router.GET("/conversations/getAll", chatHandler.FindConversations)
+	router.GET("/messages/getAll", chatHandler.FindMessages)
 
 	authorized := router.Group("/")
 	authorized.Use(auth.Authorized())
 	{
-		authorized.GET("/messages/getAll", chatHandler.FindMessages)
 		authorized.POST("/jobs/new", jobsHandler.New)
 		authorized.GET("/jobs/getOne", jobsHandler.GetOne)
 	}

@@ -100,8 +100,6 @@ func (c *Client) readPump() {
 
 		err = d.Decode(&rawMessage)
 
-		fmt.Println("NEW MESSAGE", rawMessage)
-
 		if err != nil {
 			fmt.Println(err.Error())
 		}
