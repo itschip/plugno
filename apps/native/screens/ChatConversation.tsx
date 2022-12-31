@@ -27,7 +27,7 @@ export const ChatConversation = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    const _socket = new WebSocket("ws://localhost:6001/ws");
+    const _socket = new WebSocket("ws://localhost:6001/ws/3");
     setSocket(_socket);
   }, []);
 
@@ -65,7 +65,7 @@ export const ChatConversation = () => {
   }, []);
 
   const handleSendMessage = () => {
-    socket?.send(JSON.stringify({ userId: user?.id, message }));
+    socket?.send(JSON.stringify({ userId: user?.id, message, roomId: "3" }));
     setMessage("");
   };
 

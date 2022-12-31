@@ -45,7 +45,6 @@ func (c *Chat) Run() {
 			connections := c.rooms[client.roomId]
 
 			if _, ok := connections[client]; ok {
-				fmt.Println("UNREG CLIENT:", connections[client])
 				delete(connections, client)
 				close(client.send)
 			}
@@ -56,6 +55,7 @@ func (c *Chat) Run() {
 			for client := range connections {
 				select {
 				case client.send <- message.data:
+					fmt.Println("new message", string(message.data))
 				default:
 					close(client.send)
 					delete(connections, client)

@@ -13,6 +13,9 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
+func hello() {
+}
+
 type RegisterReq struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
@@ -183,6 +186,19 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 		"id_token":  tokenString,
 		"isSuccess": true,
 	})
+}
+
+func GetUserFromCookie(cookie string) *Claims {
+	token, err := jwt.ParseWithClaims(cookie, &Claims{}, func(t *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		return nil
+	}
+
+	claims := token.Claims.(*Claims)
+
+	return claims
 }
 
 func (auth *AuthHandler) User(c *gin.Context) {

@@ -2,12 +2,9 @@ import { classes } from '@utils/css';
 
 type Conversation = {
 	id: number;
-	/**
-	 * JSON string of participants
-	 */
-	conversationList: string;
 	lastMessageId: number;
 	createdAt: string;
+	username: string;
 };
 
 async function getConversations(): Promise<Conversation[]> {
@@ -29,7 +26,7 @@ export default async function Conversations() {
 			<div className="pr-4 mt-2 space-y-4">
 				{conversations.map((conversation) => (
 					<div key={conversation.id} className={classes('px-3 py-2 rounded-md bg-gray-300')}>
-						<p className="text-black">{conversation.conversationList}</p>
+						<p className="text-black">{conversation.username}</p>
 						<p className="text-sm text-gray-500">{conversation.id}</p>
 					</div>
 				))}

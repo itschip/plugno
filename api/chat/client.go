@@ -100,6 +100,8 @@ func (c *Client) readPump() {
 
 		err = d.Decode(&rawMessage)
 
+		fmt.Println(rawMessage.RoomID)
+
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -123,9 +125,10 @@ func (c *Client) readPump() {
 
 		body, _ := json.Marshal(newMessage)
 
-		var wsMsg Message
-		wsMsg.data = body
-		wsMsg.roomId = rawMessage.RoomID
+		wsMsg := Message{
+			data:   body,
+			roomId: rawMessage.RoomID,
+		}
 
 		c.chat.broadcast <- wsMsg
 	}

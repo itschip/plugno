@@ -45,23 +45,31 @@ export const RequestScreen = () => {
     setOpen(false);
   };
 
+  const handlePlaceText = (value: string) => {
+    setPlace(value);
+    if (value.trim()) {
+      setOpen(true);
+    }
+  };
+
   return (
-    <SafeAreaView>
+    <SafeAreaView className="bg-white flex-1">
       <View className="mt-4 px-4 space-y-4">
         <TextInput
-          className="px-3 py-3 bg-gray-200 border border-gray-400 rounded-md"
+          className="px-3 py-4 bg-gray-100 border border-gray-200 rounded-md text-[16px]"
           placeholder="Tittel"
+          placeholderTextColor="darkgray"
         />
         <TextInput
-          className="px-3 py-3 bg-gray-200 border border-gray-400 rounded-md"
+          className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
           placeholder="Beskrivelse"
         />
 
         <View className="mt-8 relative z-[99999]">
           <TextInput
             value={place}
-            onChangeText={setPlace}
-            className="px-3 py-3 bg-gray-200 border border-gray-400 rounded-md"
+            onChangeText={handlePlaceText}
+            className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
             placeholder="Sted"
           />
           <View>
@@ -85,7 +93,7 @@ export const RequestScreen = () => {
         </View>
 
         <TextInput
-          className="px-3 py-3 bg-gray-200 border border-gray-400 rounded-md"
+          className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
           placeholder="Telefonnummer"
         />
       </View>

@@ -2,13 +2,21 @@ package chat
 
 import (
 	"log"
+	"plugno-api/auth"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (ch *ChatHandler) FindConversations(g *gin.Context) {
-	conversations, err := ch.messageModel.FindAllConversations()
+	cookie, err := g.Cookie("token")
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	claims := auth.GetUserFromCookie(cookie)
+
+	conversations, err := ch.messageModel.FindAllConversations(claims.ID)
 	if err != nil {
 		log.Println(err.Error())
 		g.JSON(500, "Failed to get conversation")

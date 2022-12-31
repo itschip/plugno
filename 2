@@ -8,13 +8,10 @@ import (
 )
 
 type Conversation struct {
-	ID            int    `json:"id"`
-	LastMessageID int    `json:"lastMessageId"`
-	CreatedAt     string `json:"createdAt"`
-	Username      string `json:"username"`
-	Avatar        string `json:"avatar"`
-	JobID         int    `json:"jobId"`
-	JobTitle      string `json:"jobTitle"`
+	ID               int    `json:"id"`
+	ConversationList string `json:"conversationList"`
+	LastMessageID    int    `json:"lastMessageId"`
+	CreatedAt        string `json:"createdAt"`
 }
 
 type ConversationParticipant struct {
@@ -126,15 +123,10 @@ func (model *MessageModel) CreateConversation(conversationList []string) {
 	}
 }
 
-func (mm *MessageModel) FindAllConversations(userId int) ([]Conversation, error) {
-	query := `SELECT c.id, c.last_message_id AS lastMessageId, c.createdAt, u.username, u.avatar, j.id, j.title
-                FROM conversations c
-                JOIN conversation_participants cp on c.id = cp.conversation_id
-                JOIN users u on cp.user_id = u.id
-                JOIN jobs j on c.job_id = j.id
-                WHERE cp.user_id != ?`
+func (mm *MessageModel) FindAllConversations() ([]Conversation, error) {
+	query := `SELECT id, conversation_list AS conversationList, last_message_id AS lastMessageId, createdAt FROM conversations`
 
-	res, err := mm.DB.Query(query, userId)
+	res, err := mm.DB.Query(query)
 	defer res.Close()
 
 	if err != nil {
@@ -145,7 +137,7 @@ func (mm *MessageModel) FindAllConversations(userId int) ([]Conversation, error)
 	conversations := []Conversation{}
 	for res.Next() {
 		var conversation Conversation
-		err := res.Scan(&conversation.ID, &conversation.LastMessageID, &conversation.CreatedAt, &conversation.Username, &conversation.Avatar, &conversation.JobID, &conversation.JobTitle)
+		err := res.Scan(&conversation.ID, &conversation.ConversationList, &conversation.LastMessageID, &conversation.CreatedAt)
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err
