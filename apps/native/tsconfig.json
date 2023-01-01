@@ -1,6 +1,10 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "paths": {
+      "@api/*": ["./api/*"],
+      "@typings/*": ["./typings/*"]
+    },
     "strict": true
   }
 }

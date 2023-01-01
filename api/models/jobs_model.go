@@ -43,6 +43,11 @@ type PlugJobObject struct {
 	Avatar      string `json:"avatar"`
 }
 
+type PlugAcceptObject struct {
+	JobID  int `json:"jobId"`
+	PlugID int `json:"plugId"`
+}
+
 type JobModel struct {
 	DB *sql.DB
 }
@@ -141,4 +146,15 @@ func (model *JobModel) FindAllPlugJobs(userId int) ([]PlugJobObject, error) {
 	}
 
 	return plugJobs, nil
+}
+
+func (model *JobModel) CreateAcceptedPlugJob(jobAcceptObject *PlugAcceptObject) error {
+	query := "INSERT INTO accepted_jobs (job_id, plug_id, status) VALUES (?, ?, ?)"
+
+	_, err := model.DB.Exec(query, jobAcceptObject.JobID, jobAcceptObject.PlugID, "accepted")
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

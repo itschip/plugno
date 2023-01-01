@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Profile } from "./screens/Profile";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Plugs } from "./screens/Plugs";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { ChatStack } from "./stacks/ChatStack";
 import { RequestScreen } from "./screens/Request";
 
@@ -94,22 +94,20 @@ const ScreensContainer = () => {
               ),
             }}
           />
-          {role === "user" && (
-            <Tab.Screen
-              name="Plugs"
-              component={Plugs}
-              options={{
-                tabBarShowLabel: false,
-                tabBarIcon: ({ focused }) => (
-                  <Ionicons
-                    name="flash"
-                    size={24}
-                    color={focused ? "white" : "gray"}
-                  />
-                ),
-              }}
-            />
-          )}
+          <Tab.Screen
+            name="Plugs"
+            component={Plugs}
+            options={{
+              tabBarShowLabel: false,
+              tabBarIcon: ({ focused }) => (
+                <Ionicons
+                  name="flash"
+                  size={24}
+                  color={focused ? "white" : "gray"}
+                />
+              ),
+            }}
+          />
           {role === "user" && (
             <Tab.Screen
               name="Request"

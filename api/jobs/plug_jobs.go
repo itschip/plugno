@@ -26,7 +26,7 @@ func (handler *JobsHandler) GetAllPlugJobs(ctx *gin.Context) {
 	cookie, err := ctx.Cookie("token")
 	if err != nil {
 		log.Println(err.Error())
-		ctx.JSON(500, "Failed to find plug jobs")
+		ctx.JSON(http.StatusInternalServerError, "Failed to find plug jobs")
 		return
 	}
 	claims := auth.GetUserFromCookie(cookie)
@@ -34,9 +34,29 @@ func (handler *JobsHandler) GetAllPlugJobs(ctx *gin.Context) {
 	plugJobs, err := handler.jobModel.FindAllPlugJobs(claims.ID)
 	if err != nil {
 		log.Println(err.Error())
-		ctx.JSON(500, "Failed to find plug jobs")
+		ctx.JSON(http.StatusInternalServerError, "Failed to find plug jobs")
 		return
 	}
 
 	ctx.JSON(200, plugJobs)
+}
+
+func (handler *JobsHandler) AcceptPlugJob(ctx *gin.Context) {
+	var jobAcceptObject models.PlugAcceptObject
+
+	err := ctx.ShouldBindJSON(&jobAcceptObject)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusBadRequest, "Missing fields for accepting plug job")
+		return
+	}
+
+	err = handler.jobModel.CreateAcceptedPlugJob(&jobAcceptObject)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, "Failed to accept plug job")
+		return
+	}
+
+	ctx.JSON(200, nil)
 }
