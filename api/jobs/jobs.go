@@ -51,19 +51,6 @@ func (handler *JobsHandler) New(c *gin.Context) {
 	c.JSON(200, "Created job")
 }
 
-func (handler *JobsHandler) NewPlugJob(ctx *gin.Context) {
-	var plugJobReq models.PlugJobObject
-
-	err := ctx.ShouldBindJSON(&plugJobReq)
-	if err != nil {
-		log.Println(err.Error())
-		ctx.Writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	handler.jobModel.CreatePlugJob(&plugJobReq)
-}
-
 func (handler *JobsHandler) GetAll(c *gin.Context) {
 	jobs := handler.jobModel.FindAll()
 

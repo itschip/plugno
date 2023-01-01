@@ -33,11 +33,14 @@ type JobObject struct {
 }
 
 type PlugJobObject struct {
+	ID          int    `json:"id,omitempty"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Place       string `json:"place"`
 	UserID      int    `json:"userId"`
 	PhoneNumber string `json:"phoneNumber"`
+	Username    string `json:"username,omitempty"`
+	Avatar      string `json:"avatar"`
 }
 
 type JobModel struct {
@@ -114,4 +117,28 @@ func (model *JobModel) CreatePlugJob(jobObject *PlugJobObject) error {
 	}
 
 	return nil
+}
+
+func (model *JobModel) FindAllPlugJobs(userId int) ([]PlugJobObject, error) {
+	query := "SELECT pj.*, u.username, u.avatar FROM plug_jobs pj JOIN users u on pj.user_id = u.id"
+
+	rows, err := model.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	plugJobs := []PlugJobObject{}
+	for rows.Next() {
+		var plugJob PlugJobObject
+
+		err := rows.Scan(&plugJob.ID, &plugJob.Title, &plugJob.Description, &plugJob.Place, &plugJob.PhoneNumber, &plugJob.UserID, &plugJob.Username, &plugJob.Avatar)
+		if err != nil {
+			return nil, err
+		}
+
+		plugJobs = append(plugJobs, plugJob)
+	}
+
+	return plugJobs, nil
 }

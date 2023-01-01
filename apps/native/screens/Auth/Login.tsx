@@ -39,10 +39,12 @@ export const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-gray-100">
+    <SafeAreaView className="flex-1 items-center justify-center bg-black">
       <View className="w-full px-8 space-y-4">
         <View>
-          <Text className="text-center text-8xl font-extrabold">PLUG</Text>
+          <Text className="text-center text-white text-8xl font-extrabold">
+            PLUG
+          </Text>
         </View>
         <View>
           <TextInput
@@ -52,8 +54,9 @@ export const LoginScreen = () => {
             keyboardType="email-address"
             autoCapitalize="none"
             placeholderTextColor="gray"
+            cursorColor="white"
             style={{ fontSize: 18 }}
-            className="bg-gray-200 py-3 px-3 w-full rounded-md border border-gray-300"
+            className="bg-neutral-800 py-3 px-3 w-full rounded-md border border-neutral-700 text-white"
           />
         </View>
 
@@ -66,16 +69,17 @@ export const LoginScreen = () => {
             secureTextEntry
             placeholderTextColor="gray"
             style={{ fontSize: 18 }}
-            className="bg-gray-200 py-3 px-3 w-full rounded-md border border-gray-300"
+            cursorColor="white"
+            className="bg-neutral-800 py-3 px-3 w-full rounded-md border border-neutral-700 text-white"
           />
         </View>
 
         <View>
           <TouchableOpacity
             onPress={handleLogin}
-            className="bg-black hover:bg-yellow-600 px-2 py-2.5 rounded-md"
+            className="px-2 py-2.5 rounded-md bg-neutral-600"
           >
-            <Text className="text-white text-lg text-center font-bold">
+            <Text className="text-white text-xl text-center font-semibold">
               Log in
             </Text>
           </TouchableOpacity>
