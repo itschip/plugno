@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -35,8 +35,11 @@ export const ChatScreen = () => {
   );
 
   return (
-    <SafeAreaView>
-      <FlatList renderItem={renderItem} data={conversations} />
+    <SafeAreaView className="bg-black flex-1">
+      <View className="px-4">
+        <Text className="text-white text-3xl font-extrabold">Chat</Text>
+      </View>
+      <FlatList renderItem={renderItem} data={conversations} className="mt-2" />
     </SafeAreaView>
   );
 };
@@ -49,20 +52,20 @@ const Item = ({ item }: { item: Conversation }) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("Conversation")}
-      className="p-4 w-full border-b border-gray-300 flex "
+      className="p-4 w-full border-b border-neutral-600"
     >
       <View className="flex flex-row justify-between items-center">
         <View className="flex flex-row justify-start space-x-4 items-center">
           <Image
             source={{ uri: item.avatar }}
-            className="h-10 w-10 rounded-full"
+            className="h-12 w-12 rounded-full"
           />
-          <Text className="font-medium text-black text-xl">
+          <Text className="font-medium text-white text-xl">
             {item.username}
           </Text>
         </View>
         <View>
-          <Text>{item.jobTitle}</Text>
+          <Text className="text-white text-lg">{item.jobTitle}</Text>
         </View>
       </View>
     </TouchableOpacity>

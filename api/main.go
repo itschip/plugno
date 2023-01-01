@@ -53,7 +53,10 @@ func main() {
 	})
 
 	router.GET("/profile/get", profileHandler.Get)
+
 	router.GET("/jobs/getAll", jobsHandler.GetAll)
+	router.POST("/jobs/newPlugJob", jobsHandler.NewPlugJob)
+
 	router.GET("/conversations/getAll", chatHandler.FindConversations)
 	router.GET("/messages/getAll", chatHandler.FindMessages)
 

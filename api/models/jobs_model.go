@@ -32,6 +32,14 @@ type JobObject struct {
 	UserID           int
 }
 
+type PlugJobObject struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Place       string `json:"place"`
+	UserID      int    `json:"userId"`
+	PhoneNumber string `json:"phoneNumber"`
+}
+
 type JobModel struct {
 	DB *sql.DB
 }
@@ -90,6 +98,17 @@ func (jm *JobModel) FindAll() []Job {
 func (jm *JobModel) Create(jobObject *JobObject) error {
 	query := `INSERT INTO jobs (title, short_description, description, asking_price, user_id) VALUES (?, ?, ?, ?, ?)`
 	_, err := jm.DB.Exec(query, jobObject.Title, jobObject.ShortDescription, jobObject.Description, jobObject.AskingPrice, jobObject.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (model *JobModel) CreatePlugJob(jobObject *PlugJobObject) error {
+	query := `INSERT INTO plug_jobs (title, description, place, phone_number) VALUES (?, ?, ?, ?)`
+
+	_, err := model.DB.Exec(query, jobObject.Title, jobObject.Description, jobObject.Place, jobObject.PhoneNumber)
 	if err != nil {
 		return err
 	}

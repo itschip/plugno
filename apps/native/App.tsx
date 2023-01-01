@@ -11,7 +11,6 @@ import { Profile } from "./screens/Profile";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Plugs } from "./screens/Plugs";
 import { Text, TouchableOpacity, View } from "react-native";
-import { ChatScreen } from "./screens/Chat";
 import { ChatStack } from "./stacks/ChatStack";
 import { RequestScreen } from "./screens/Request";
 
@@ -19,7 +18,6 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function Container() {
-  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<Dispatch>();
 
   useLayoutEffect(() => {
@@ -53,7 +51,7 @@ function Container() {
 }
 
 const ScreensContainer = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user, role } = useSelector((state: RootState) => state.auth);
   const navigation = useNavigation();
 
   return (
@@ -67,7 +65,13 @@ const ScreensContainer = () => {
           />
         </Stack.Navigator>
       ) : (
-        <Tab.Navigator>
+        <Tab.Navigator
+          screenOptions={{
+            headerShadowVisible: false,
+            tabBarStyle: { backgroundColor: "black", borderTopWidth: 0 },
+            headerShown: false,
+          }}
+        >
           <Tab.Screen
             name="Home"
             component={Home}
@@ -85,39 +89,43 @@ const ScreensContainer = () => {
                 <Feather
                   name="home"
                   size={24}
-                  color={focused ? "black" : "gray"}
+                  color={focused ? "white" : "gray"}
                 />
               ),
             }}
           />
-          <Tab.Screen
-            name="Plugs"
-            component={Plugs}
-            options={{
-              tabBarShowLabel: false,
-              tabBarIcon: ({ focused }) => (
-                <Ionicons
-                  name="flash"
-                  size={24}
-                  color={focused ? "black" : "gray"}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Request"
-            component={RequestScreen}
-            options={{
-              tabBarShowLabel: false,
-              tabBarIcon: ({ focused }) => (
-                <Feather
-                  name="plus-circle"
-                  size={24}
-                  color={focused ? "black" : "gray"}
-                />
-              ),
-            }}
-          />
+          {role === "user" && (
+            <Tab.Screen
+              name="Plugs"
+              component={Plugs}
+              options={{
+                tabBarShowLabel: false,
+                tabBarIcon: ({ focused }) => (
+                  <Ionicons
+                    name="flash"
+                    size={24}
+                    color={focused ? "white" : "gray"}
+                  />
+                ),
+              }}
+            />
+          )}
+          {role === "user" && (
+            <Tab.Screen
+              name="Request"
+              component={RequestScreen}
+              options={{
+                tabBarShowLabel: false,
+                tabBarIcon: ({ focused }) => (
+                  <Feather
+                    name="plus-circle"
+                    size={24}
+                    color={focused ? "white" : "gray"}
+                  />
+                ),
+              }}
+            />
+          )}
           <Tab.Screen
             name="Chat"
             component={ChatStack}
@@ -127,7 +135,7 @@ const ScreensContainer = () => {
                 <Ionicons
                   name="chatbox-outline"
                   size={24}
-                  color={focused ? "black" : "gray"}
+                  color={focused ? "white" : "gray"}
                 />
               ),
             }}
@@ -141,7 +149,7 @@ const ScreensContainer = () => {
                 <Feather
                   name="user"
                   size={24}
-                  color={focused ? "black" : "gray"}
+                  color={focused ? "white" : "gray"}
                 />
               ),
             }}

@@ -4,6 +4,7 @@ import { AuthState, User } from "../typings/user";
 
 export const auth = createModel<RootModel>()({
   state: {
+    role: "user",
     user: null,
   } as AuthState,
   reducers: {
@@ -11,6 +12,12 @@ export const auth = createModel<RootModel>()({
       return {
         ...state,
         user: payload,
+      };
+    },
+    changeRole: (state, isPlugEnabled: boolean) => {
+      return {
+        ...state,
+        role: isPlugEnabled ? "plug" : "user",
       };
     },
   },
