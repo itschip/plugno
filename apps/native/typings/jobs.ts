@@ -7,6 +7,7 @@ export type TPlugJobResponse = {
   phoneNumber: string;
   username: string;
   avatar: string;
+  isAccepted: boolean;
 };
 
 export type TJobsState = {

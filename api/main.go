@@ -51,6 +51,7 @@ func main() {
 	router.GET("/ws/:roomId", func(ctx *gin.Context) {
 		chatHandler.ServeWs(_chat, ctx)
 	})
+	router.GET("/jobs/tracking", jobsHandler.ServeTracker)
 
 	router.GET("/profile/get", profileHandler.Get)
 

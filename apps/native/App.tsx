@@ -13,6 +13,7 @@ import { Plugs } from "./screens/Plugs";
 import { TouchableOpacity } from "react-native";
 import { ChatStack } from "./stacks/ChatStack";
 import { RequestScreen } from "./screens/Request";
+import { TrackingProvider } from "./providers/TrackingProvider";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,7 +45,9 @@ function Container() {
   return (
     <>
       <NavigationContainer>
-        <ScreensContainer />
+        <TrackingProvider>
+          <ScreensContainer />
+        </TrackingProvider>
       </NavigationContainer>
     </>
   );

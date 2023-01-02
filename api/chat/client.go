@@ -49,7 +49,6 @@ const (
 
 	pingPeriod = (pongWait * 9) / 10
 
-	// idk
 	maxMessageSize = 512
 )
 
@@ -180,6 +179,7 @@ func (ch *ChatHandler) ServeWs(chat *Chat, c *gin.Context) {
 	upgrader.CheckOrigin = func(r *http.Request) bool {
 		return true
 	}
+
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)

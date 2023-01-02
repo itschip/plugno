@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../store";
+import { classes } from "../utils/css";
 
 export const Plugs = () => {
   const dispatch = useDispatch<Dispatch>();
@@ -61,10 +62,21 @@ const ListItem = ({ item }: { item: TPlugJobResponse }) => {
 
       <View className="mt-4">
         <TouchableOpacity
+          disabled={item.isAccepted}
           onPress={handleAcceptJob}
-          className="bg-rose-500 px-2 py-3 rounded-md"
+          className={classes(
+            "px-2 py-3 rounded-md",
+            item.isAccepted ? "bg-neutral-700" : "bg-rose-500"
+          )}
         >
-          <Text className="text-white font-bold text-center">Accept</Text>
+          <Text
+            className={classes(
+              "text-center font-bold",
+              item.isAccepted ? "text-neutral-400" : "text-white"
+            )}
+          >
+            {item.isAccepted ? "Accepted" : "Accept"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

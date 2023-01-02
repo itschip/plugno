@@ -5,6 +5,7 @@ import { RootModel } from ".";
 export const jobs = createModel<RootModel>()({
   state: {
     plugs: null as TPlugJobResponse[] | null,
+    activeJob: null,
   },
   reducers: {
     populatePlugJobs: (state, payload: TPlugJobResponse[] | null) => {

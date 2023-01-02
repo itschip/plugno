@@ -39,6 +39,7 @@ type PlugJobObject struct {
 	Place       string `json:"place"`
 	UserID      int    `json:"userId"`
 	PhoneNumber string `json:"phoneNumber"`
+	IsAccepted  bool   `json:"isAccepted"`
 	Username    string `json:"username,omitempty"`
 	Avatar      string `json:"avatar"`
 }
@@ -137,7 +138,7 @@ func (model *JobModel) FindAllPlugJobs(userId int) ([]PlugJobObject, error) {
 	for rows.Next() {
 		var plugJob PlugJobObject
 
-		err := rows.Scan(&plugJob.ID, &plugJob.Title, &plugJob.Description, &plugJob.Place, &plugJob.PhoneNumber, &plugJob.UserID, &plugJob.Username, &plugJob.Avatar)
+		err := rows.Scan(&plugJob.ID, &plugJob.Title, &plugJob.Description, &plugJob.Place, &plugJob.PhoneNumber, &plugJob.UserID, &plugJob.IsAccepted, &plugJob.Username, &plugJob.Avatar)
 		if err != nil {
 			return nil, err
 		}
