@@ -75,8 +75,6 @@ func (client *TrackingClient) readTrackerMessage() {
 			log.Println(err.Error())
 		}
 
-		log.Printf("New message: %s", message)
-
 		client.broadcast <- message
 	}
 }

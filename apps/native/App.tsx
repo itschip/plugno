@@ -14,6 +14,7 @@ import { TouchableOpacity } from "react-native";
 import { ChatStack } from "./stacks/ChatStack";
 import { RequestScreen } from "./screens/Request";
 import { TrackingProvider } from "./providers/TrackingProvider";
+import { HomeStack } from "./stacks/HomeStack";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,7 +78,7 @@ const ScreensContainer = () => {
         >
           <Tab.Screen
             name="Home"
-            component={Home}
+            component={HomeStack}
             options={{
               tabBarShowLabel: false,
               headerRight: () => (
