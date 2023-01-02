@@ -82,12 +82,23 @@ func (client *TrackingClient) readTrackerMessage() {
 }
 
 func (client *TrackingClient) writeTrackingMessage() {
+	ticker := time.NewTicker(pingPeriod)
+	defer func() {
+		ticker.Stop()
+		client.conn.Close()
+	}()
+
 	for {
 		select {
 		case message, ok := <-client.broadcast:
 			fmt.Println("NEW TRACKING MESSAGE:", string(message))
 			if !ok {
 				fmt.Println("Failed to track message")
+			}
+		case <-ticker.C:
+			client.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			if err := client.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+				return
 			}
 		}
 	}
