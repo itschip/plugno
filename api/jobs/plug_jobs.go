@@ -60,3 +60,13 @@ func (handler *JobsHandler) AcceptPlugJob(ctx *gin.Context) {
 
 	ctx.JSON(200, nil)
 }
+
+func (handler *JobsHandler) GetActiveJob(ctx *gin.Context) {
+	activeJob, err := handler.jobModel.GetActiveJob(1)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(500, "Failed to get active job")
+	}
+
+	ctx.JSON(200, activeJob)
+}

@@ -5,7 +5,6 @@ import { useLayoutEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState, store } from "./store";
-import { Home } from "./screens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Profile } from "./screens/Profile";
 import { Feather, Ionicons } from "@expo/vector-icons";
@@ -15,9 +14,10 @@ import { ChatStack } from "./stacks/ChatStack";
 import { RequestScreen } from "./screens/Request";
 import { TrackingProvider } from "./providers/TrackingProvider";
 import { HomeStack } from "./stacks/HomeStack";
+import { RootStackParamList } from "@typings/navigation";
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootStackParamList>();
 
 function Container() {
   const dispatch = useDispatch<Dispatch>();

@@ -4,13 +4,13 @@ import "fmt"
 
 type Message struct {
 	data   []byte
-	roomId string
+	roomId int
 }
 
 type Chat struct {
 	clients map[*Client]bool
 
-	rooms map[string]map[*Client]bool
+	rooms map[int]map[*Client]bool
 
 	broadcast chan Message
 
@@ -24,7 +24,7 @@ func NewChat() *Chat {
 		broadcast:  make(chan Message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
-		rooms:      make(map[string]map[*Client]bool),
+		rooms:      make(map[int]map[*Client]bool),
 		clients:    make(map[*Client]bool),
 	}
 }

@@ -7,9 +7,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { HomeScreenNavigationProp } from "@typings/navigation";
 
 export const Home = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   return (
     <SafeAreaView className="bg-gray-100">

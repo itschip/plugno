@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"plugno-api/models"
 	"plugno-api/structs"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -27,13 +28,13 @@ func NewChatHandler(s *structs.Server) *ChatHandler {
 type RawMessage struct {
 	Message string `json:"message"`
 	UserID  int    `json:"userId"`
-	RoomID  string `json:"roomId"`
+	RoomID  int    `json:"roomId"`
 }
 
 type Client struct {
 	chat *Chat
 
-	roomId string
+	roomId int
 
 	conn *websocket.Conn
 
@@ -105,7 +106,7 @@ func (c *Client) readPump() {
 			fmt.Println(err.Error())
 		}
 
-		insertId, err := c.messageModel.Create(rawMessage.Message, rawMessage.UserID)
+		insertId, err := c.messageModel.Create(rawMessage.Message, rawMessage.UserID, rawMessage.RoomID)
 		if err != nil {
 			fmt.Println("Failed to create message:", err.Error())
 			return
@@ -186,11 +187,17 @@ func (ch *ChatHandler) ServeWs(chat *Chat, c *gin.Context) {
 		return
 	}
 
-	roomId := c.Param("roomId")
+	_roomId := c.Param("roomId")
+	roomId, err := strconv.ParseInt(_roomId, 0, 8)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
 	fmt.Println("websocket room id: ", roomId)
 
 	client := &Client{
-		roomId:       roomId,
+		roomId:       int(roomId),
 		chat:         chat,
 		conn:         conn,
 		send:         make(chan []byte, 256),

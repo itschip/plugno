@@ -1,4 +1,5 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { ConversationScreenNavigationProp } from "@typings/navigation";
 import { useCallback, useState } from "react";
 import {
   SafeAreaView,
@@ -47,11 +48,11 @@ export const ChatScreen = () => {
 const renderItem = ({ item }: { item: Conversation }) => <Item item={item} />;
 
 const Item = ({ item }: { item: Conversation }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ConversationScreenNavigationProp>();
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Conversation")}
+      onPress={() => navigation.navigate("Conversation", { id: item.id })}
       className="p-4 w-full border-b border-neutral-600"
     >
       <View className="flex flex-row justify-between items-center">

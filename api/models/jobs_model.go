@@ -49,6 +49,18 @@ type PlugAcceptObject struct {
 	PlugID int `json:"plugId"`
 }
 
+type ActiveJobObject struct {
+	ID          int    `json:"id"`
+	JobID       int    `json:"jobId"`
+	CreatedAt   string `json:"createdAt"`
+	UpdatedAt   string `json:"updatedAt"`
+	Status      string `json:"status"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Username    string `json:"username"`
+	Avatar      string `json:"avatar"`
+}
+
 type JobModel struct {
 	DB *sql.DB
 }
@@ -158,4 +170,39 @@ func (model *JobModel) CreateAcceptedPlugJob(jobAcceptObject *PlugAcceptObject) 
 	}
 
 	return nil
+}
+
+func (model *JobModel) GetActiveJob(jobId int) (*ActiveJobObject, error) {
+	var activeJob ActiveJobObject
+
+	query := `select aj.id,
+       aj.job_id,
+       aj.created_at,
+       aj.updated_at,
+       aj.status,
+       pj.title,
+       pj.description,
+       u.username,
+       u.avatar
+    from accepted_jobs aj
+         join plug_jobs pj on aj.job_id = ?
+         join users u on aj.plug_id = u.id
+    where pj.is_accepted = 1`
+
+	err := model.DB.QueryRow(query, jobId).Scan(
+		&activeJob.ID,
+		&activeJob.JobID,
+		&activeJob.CreatedAt,
+		&activeJob.UpdatedAt,
+		&activeJob.Status,
+		&activeJob.Title,
+		&activeJob.Description,
+		&activeJob.Username,
+		&activeJob.Avatar,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &activeJob, nil
 }

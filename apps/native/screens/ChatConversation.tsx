@@ -11,6 +11,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Feather } from "@expo/vector-icons";
 import { classes } from "../utils/css";
+import { useRoute } from "@react-navigation/native";
+import {
+  ConversationScreenNavigationProp,
+  ConversationScreenRouteProp,
+} from "@typings/navigation";
 
 type Message = {
   id: string;
@@ -25,6 +30,10 @@ export const ChatConversation = () => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const {
+    params: { id: conversationId },
+  } = useRoute<ConversationScreenRouteProp>();
 
   useEffect(() => {
     const _socket = new WebSocket("ws://localhost:6001/ws/3");
@@ -54,28 +63,39 @@ export const ChatConversation = () => {
   }, [socket]);
 
   useEffect(() => {
-    fetch("http://localhost:6001/messages/getAll?conversationId=1", {
-      method: "GET",
-    })
+    fetch(
+      `http://localhost:6001/messages/getAll?conversationId=${conversationId}`,
+      {
+        method: "GET",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
-        console.log("all messages", data);
         setMessages(data);
       });
-  }, []);
+  }, [conversationId]);
 
   const handleSendMessage = () => {
-    socket?.send(JSON.stringify({ userId: user?.id, message, roomId: "3" }));
+    socket?.send(
+      JSON.stringify({
+        userId: user?.id,
+        message,
+        roomId: conversationId,
+      })
+    );
     setMessage("");
   };
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
-      <ScrollView className="grow space-y-2 mt-2 px-3 mb-4">
+      <ScrollView className="grow w-full space-y-2 mt-2 px-3 mb-4">
         {messages.map((msg) => (
           <View key={msg.id}>
             <View
-              className={classes("flex items-stretch justify-start space-x-2")}
+              className={classes(
+                "flex flex-row items-stretch space-x-2",
+                msg.userId == user?.id ? "justify-end" : "justify-start"
+              )}
             >
               <View
                 className={classes(

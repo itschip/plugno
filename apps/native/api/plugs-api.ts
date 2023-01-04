@@ -1,4 +1,4 @@
-import { TPlugJobResponse } from "@typings/jobs";
+import { TActiveJob, TPlugJobResponse } from "@typings/jobs";
 
 export const fetchPlugJogs = async (): Promise<TPlugJobResponse[]> => {
   const res = await fetch("http://localhost:6001/jobs/findPlugJobs", {
@@ -18,6 +18,15 @@ export const acceptPlugJob = async (jobId: number, plugId: number) => {
     body: JSON.stringify({ jobId, plugId }),
   });
 
+  const response = await res.json();
+
+  return response;
+};
+
+export const fetchActiveJobs = async (): Promise<TActiveJob> => {
+  const res = await fetch("http://localhost:6001/jobs/getActiveJob");
+
+  // TOOD: Error handling
   const response = await res.json();
 
   return response;

@@ -36,10 +36,10 @@ type MessageModel struct {
 	DB *sql.DB
 }
 
-func (mm *MessageModel) Create(message string, userId int) (int64, error) {
-	query := `INSERT INTO messages (message, user_id) VALUES (?, ?)`
+func (mm *MessageModel) Create(message string, userId int, conversationId int) (int64, error) {
+	query := `INSERT INTO messages (message, user_id, conversation_id) VALUES (?, ?, ?)`
 
-	result, err := mm.DB.Exec(query, message, userId)
+	result, err := mm.DB.Exec(query, message, userId, conversationId)
 	if err != nil {
 		return 0, err
 	}
