@@ -36,9 +36,9 @@ export const ChatConversation = () => {
   } = useRoute<ConversationScreenRouteProp>();
 
   useEffect(() => {
-    const _socket = new WebSocket("ws://localhost:6001/ws/3");
+    const _socket = new WebSocket(`ws://localhost:6001/ws/${conversationId}`);
     setSocket(_socket);
-  }, []);
+  }, [conversationId]);
 
   useEffect(() => {
     if (socket) {

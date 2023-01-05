@@ -70,7 +70,16 @@ func (client *TrackingClient) readTrackerMessage() {
 	for {
 		_, message, err := client.conn.ReadMessage()
 		if err != nil {
-			log.Println(err.Error())
+
+			if websocket.IsCloseError(err, 1000) {
+				log.Printf("Tracking Closed with 1000: %v", err)
+				break
+			}
+
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("Tracking Error: %v", err)
+			}
+			break
 		}
 
 		client.broadcast <- message

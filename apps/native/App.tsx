@@ -9,7 +9,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Profile } from "./screens/Profile";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Plugs } from "./screens/Plugs";
-import { TouchableOpacity } from "react-native";
 import { ChatStack } from "./stacks/ChatStack";
 import { RequestScreen } from "./screens/Request";
 import { TrackingProvider } from "./providers/TrackingProvider";
@@ -65,14 +64,14 @@ const ScreensContainer = () => {
           <Stack.Screen
             name="Login"
             component={LoginScreen}
-            options={{ headerTintColor: "black", headerTransparent: true }}
+            options={{ headerTintColor: "white", headerTransparent: true }}
           />
         </Stack.Navigator>
       ) : (
         <Tab.Navigator
           screenOptions={{
             headerShadowVisible: false,
-            tabBarStyle: { backgroundColor: "black", borderTopWidth: 0 },
+            tabBarStyle: { backgroundColor: "white", borderTopWidth: 0 },
             headerShown: false,
           }}
         >
@@ -81,19 +80,11 @@ const ScreensContainer = () => {
             component={HomeStack}
             options={{
               tabBarShowLabel: false,
-              headerRight: () => (
-                <TouchableOpacity
-                  className="mr-4"
-                  onPress={() => navigation.navigate("Chat")}
-                >
-                  <Ionicons name="chatbox-outline" size={24} color={"black"} />
-                </TouchableOpacity>
-              ),
               tabBarIcon: ({ focused }) => (
                 <Feather
                   name="home"
                   size={24}
-                  color={focused ? "white" : "gray"}
+                  color={focused ? "black" : "gray"}
                 />
               ),
             }}
@@ -107,7 +98,7 @@ const ScreensContainer = () => {
                 <Ionicons
                   name="flash"
                   size={24}
-                  color={focused ? "white" : "gray"}
+                  color={focused ? "black" : "gray"}
                 />
               ),
             }}
@@ -122,7 +113,7 @@ const ScreensContainer = () => {
                   <Feather
                     name="plus-circle"
                     size={24}
-                    color={focused ? "white" : "gray"}
+                    color={focused ? "black" : "gray"}
                   />
                 ),
               }}
@@ -137,7 +128,7 @@ const ScreensContainer = () => {
                 <Ionicons
                   name="chatbox-outline"
                   size={24}
-                  color={focused ? "white" : "gray"}
+                  color={focused ? "black" : "gray"}
                 />
               ),
             }}
@@ -151,7 +142,7 @@ const ScreensContainer = () => {
                 <Feather
                   name="user"
                   size={24}
-                  color={focused ? "white" : "gray"}
+                  color={focused ? "black" : "gray"}
                 />
               ),
             }}

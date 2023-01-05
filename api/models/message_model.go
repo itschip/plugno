@@ -127,14 +127,14 @@ func (model *MessageModel) CreateConversation(conversationList []string) {
 }
 
 func (mm *MessageModel) FindAllConversations(userId int) ([]Conversation, error) {
-	query := `SELECT c.id, c.last_message_id AS lastMessageId, c.createdAt, u.username, u.avatar, j.id, j.title
-                FROM conversations c
-                JOIN conversation_participants cp on c.id = cp.conversation_id
-                JOIN users u on cp.user_id = u.id
-                JOIN jobs j on c.job_id = j.id
-                WHERE cp.user_id != ?`
+	query := `select c.id, c.last_message_id, c.createdAt, u.username, u.avatar, j.id, j.title
+                from conversations c
+                join conversation_participants cp on c.id = cp.conversation_id
+                join users u on cp.user_id = u.id
+                join jobs j on c.job_id = j.id
+            where cp.user_id != ? and exists(select * from conversation_participants where user_id = ? and conversation_id = c.id)`
 
-	res, err := mm.DB.Query(query, userId)
+	res, err := mm.DB.Query(query, userId, userId)
 	defer res.Close()
 
 	if err != nil {

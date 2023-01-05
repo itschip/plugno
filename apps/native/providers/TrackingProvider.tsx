@@ -39,6 +39,7 @@ export const TrackingProvider = ({
 
     return () => {
       trackingSocket?.close(1000, "Closed chat page");
+      console.log("Tracking socket closed");
     };
   }, [trackingSocket]);
 

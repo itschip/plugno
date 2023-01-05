@@ -73,5 +73,8 @@ func (handler *JobsHandler) GetActiveJob(ctx *gin.Context) {
 	ctx.JSON(200, activeJob)
 }
 
+func (handler *JobsHandler) GetActiveJobStatus() {
+}
+
 func (handler *JobsHandler) UpdateActiveJob(ctx *gin.Context) {
 }
