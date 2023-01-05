@@ -67,8 +67,6 @@ func (client *TrackingClient) readTrackerMessage() {
 		return nil
 	})
 
-	fmt.Println("websocket connected")
-
 	for {
 		_, message, err := client.conn.ReadMessage()
 		if err != nil {
@@ -81,6 +79,7 @@ func (client *TrackingClient) readTrackerMessage() {
 
 func (client *TrackingClient) writeTrackingMessage() {
 	ticker := time.NewTicker(pingPeriod)
+
 	defer func() {
 		ticker.Stop()
 		client.conn.Close()
@@ -90,6 +89,7 @@ func (client *TrackingClient) writeTrackingMessage() {
 		select {
 		case message, ok := <-client.broadcast:
 			fmt.Println("NEW TRACKING MESSAGE:", string(message))
+
 			if !ok {
 				fmt.Println("Failed to track message")
 			}

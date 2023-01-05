@@ -38,7 +38,7 @@ func (handler *JobsHandler) GetAllPlugJobs(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(200, plugJobs)
+	ctx.JSON(http.StatusOK, plugJobs)
 }
 
 func (handler *JobsHandler) AcceptPlugJob(ctx *gin.Context) {
@@ -47,6 +47,7 @@ func (handler *JobsHandler) AcceptPlugJob(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&jobAcceptObject)
 	if err != nil {
 		log.Println(err.Error())
+
 		ctx.JSON(http.StatusBadRequest, "Missing fields for accepting plug job")
 		return
 	}
@@ -54,11 +55,12 @@ func (handler *JobsHandler) AcceptPlugJob(ctx *gin.Context) {
 	err = handler.jobModel.CreateAcceptedPlugJob(&jobAcceptObject)
 	if err != nil {
 		log.Println(err.Error())
+
 		ctx.JSON(http.StatusInternalServerError, "Failed to accept plug job")
 		return
 	}
 
-	ctx.JSON(200, nil)
+	ctx.JSON(http.StatusOK, nil)
 }
 
 func (handler *JobsHandler) GetActiveJob(ctx *gin.Context) {
@@ -69,4 +71,7 @@ func (handler *JobsHandler) GetActiveJob(ctx *gin.Context) {
 	}
 
 	ctx.JSON(200, activeJob)
+}
+
+func (handler *JobsHandler) UpdateActiveJob(ctx *gin.Context) {
 }
