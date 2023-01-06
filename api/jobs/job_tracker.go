@@ -1,6 +1,8 @@
 package jobs
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -22,20 +24,62 @@ const (
 
 var upgrader = websocket.Upgrader{}
 
+// TODO: Add a job room map
 type Tracking struct {
-	clients map[*TrackingClient]bool
+	clients    map[*TrackingClient]bool
+	register   chan *TrackingClient
+	unregister chan *TrackingClient
 
 	broadcast chan []byte
 }
 
 type TrackingClient struct {
-	conn      *websocket.Conn
-	broadcast chan []byte
-	send      chan []byte
+	tracking *Tracking
+	conn     *websocket.Conn
+	send     chan []byte
+}
+
+type TrackingMessage struct {
+	Type  string `json:"type"`
+	JobID int    `json:"jobId"`
+}
+
+func NewTracking() *Tracking {
+	return &Tracking{
+		clients:    make(map[*TrackingClient]bool),
+		broadcast:  make(chan []byte),
+		register:   make(chan *TrackingClient),
+		unregister: make(chan *TrackingClient),
+	}
+}
+
+func (tracking *Tracking) RunTracking() {
+	for {
+		select {
+		// Register a new client for the tracking map
+		case client := <-tracking.register:
+			tracking.clients[client] = true
+		case client := <-tracking.unregister:
+			if _, ok := tracking.clients[client]; ok {
+				delete(tracking.clients, client)
+				close(client.send)
+			}
+		case message := <-tracking.broadcast:
+			for client := range tracking.clients {
+				select {
+				case client.send <- message:
+					fmt.Printf("New message from RunTracking: %s\n", message)
+				default:
+					close(client.send)
+					delete(tracking.clients, client)
+				}
+			}
+		}
+	}
 }
 
 // Websocket connection for tracking job and where the plug currently is
-func (jh *JobsHandler) ServeTracker(c *gin.Context) {
+func (jh *JobsHandler) ServeTracker(tracking *Tracking, c *gin.Context) {
 	upgrader.CheckOrigin = func(r *http.Request) bool {
 		return true
 	}
@@ -46,10 +90,12 @@ func (jh *JobsHandler) ServeTracker(c *gin.Context) {
 	}
 
 	trackingClient := &TrackingClient{
-		conn:      conn,
-		send:      make(chan []byte, 256),
-		broadcast: make(chan []byte, 256),
+		tracking: tracking,
+		conn:     conn,
+		send:     make(chan []byte, 256),
 	}
+
+	trackingClient.tracking.register <- trackingClient
 
 	go trackingClient.readTrackerMessage()
 	go trackingClient.writeTrackingMessage()
@@ -82,7 +128,29 @@ func (client *TrackingClient) readTrackerMessage() {
 			break
 		}
 
-		client.broadcast <- message
+		var trackingMessage TrackingMessage
+		reader := bytes.NewReader(message)
+		decoded := json.NewDecoder(reader)
+		err = decoded.Decode(&trackingMessage)
+		if err != nil {
+			log.Printf("Failed to decode tracking message: %v", err.Error())
+			return
+		}
+
+		switch messageType := trackingMessage.Type; messageType {
+		case "accepted":
+			fmt.Printf("Job ID %v accepted", trackingMessage.JobID)
+		case "in_transit":
+			fmt.Printf("Job ID %v is in transit", trackingMessage.JobID)
+		case "active":
+			fmt.Printf("Job ID %v is active", trackingMessage.JobID)
+		case "completed":
+			fmt.Printf("Job ID %v is completed", trackingMessage.JobID)
+		default:
+			fmt.Println("No message type.")
+		}
+
+		client.tracking.broadcast <- message
 	}
 }
 
@@ -96,12 +164,26 @@ func (client *TrackingClient) writeTrackingMessage() {
 
 	for {
 		select {
-		case message, ok := <-client.broadcast:
+		case message, ok := <-client.send:
 			fmt.Println("NEW TRACKING MESSAGE:", string(message))
 
+			client.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
-				fmt.Println("Failed to track message")
+				client.conn.WriteMessage(websocket.CloseMessage, []byte{})
+				return
 			}
+
+			w, err := client.conn.NextWriter(websocket.TextMessage)
+			if err != nil {
+				return
+			}
+
+			w.Write(message)
+
+			if err := w.Close(); err != nil {
+				return
+			}
+
 		case <-ticker.C:
 			client.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := client.conn.WriteMessage(websocket.PingMessage, nil); err != nil {

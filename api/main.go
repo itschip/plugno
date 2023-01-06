@@ -32,6 +32,9 @@ func main() {
 	_chat := chat.NewChat()
 	go _chat.Run()
 
+	_tracking := jobs.NewTracking()
+	go _tracking.RunTracking()
+
 	router := gin.Default()
 
 	CORSHandler := cors.New(cors.Config{
@@ -51,7 +54,9 @@ func main() {
 	router.GET("/ws/:roomId", func(ctx *gin.Context) {
 		chatHandler.ServeWs(_chat, ctx)
 	})
-	router.GET("/jobs/tracking", jobsHandler.ServeTracker)
+	router.GET("/jobs/tracking", func(ctx *gin.Context) {
+		jobsHandler.ServeTracker(_tracking, ctx)
+	})
 
 	router.GET("/profile/get", profileHandler.Get)
 

@@ -15,7 +15,10 @@ export type TActiveJob = {
   jobId: number;
   createdAt: string;
   updatedAt: string;
-  status: "accepted";
+  status: string;
+  tracking_status: {
+    [key: string]: boolean;
+  };
   title: string;
   description: string;
   username: string;

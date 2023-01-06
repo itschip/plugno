@@ -1,10 +1,29 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "../store";
+
+export enum TrackingStatus {
+  Accepted = "accepted",
+  InTransit = "in_transit",
+  Active = "active",
+  Completed = "completed",
+}
+
+type SendSocketMessage = {
+  type: TrackingStatus;
+  jobId: number;
+};
 
 type TrackingContextProps = {
-  sendTrackingMessage: () => void;
+  sendTrackingMessage: (socketMessage: SendSocketMessage) => void;
 };
 
 const TrackingContext = createContext<TrackingContextProps>(null);
+
+type TrackingSocketResponse = {
+  jobId: number;
+  type: TrackingStatus;
+};
 
 export const TrackingProvider = ({
   children,
@@ -12,6 +31,7 @@ export const TrackingProvider = ({
   children: React.ReactNode;
 }) => {
   const [trackingSocket, setTrackingSocket] = useState<WebSocket | null>(null);
+  const dispatch = useDispatch<Dispatch>();
 
   // const handleOpenSocket = () => {};
 
@@ -28,8 +48,11 @@ export const TrackingProvider = ({
       };
 
       trackingSocket.onmessage = (msg) => {
-        const msgData = JSON.parse(msg.data);
-        console.log(msgData);
+        const msgData = JSON.parse(msg.data) as TrackingSocketResponse;
+
+        console.log("hello world");
+
+        dispatch.jobs.updateTrackingStatus(msgData.type);
       };
 
       trackingSocket.onclose = () => {
@@ -43,8 +66,8 @@ export const TrackingProvider = ({
     };
   }, [trackingSocket]);
 
-  const handleSendSocketMessage = () => {
-    trackingSocket?.send("Hello bro");
+  const handleSendSocketMessage = (socketMessage: SendSocketMessage) => {
+    trackingSocket?.send(JSON.stringify(socketMessage));
   };
 
   /* useEffect(() => {
