@@ -13,23 +13,8 @@ import { useEffect, useState } from "react";
 import { fetchActiveJobs } from "@api/plugs-api";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../store";
-import {
-  TrackingStatus,
-  useTrackingContext,
-} from "../providers/TrackingProvider";
-import { classes } from "../utils/css";
 import { ActiveJobPlugView } from "./ActiveJobPlugView";
-
-const TRACKING_STATUS = {
-  accepted: "Accepted",
-  in_transit: "In transit",
-  active: "Active",
-  completed: "Completed",
-};
-
-// Client gets value (ex. accepted)
-
-const TRACKING_ICON = {};
+import { TrackingItem } from "../components/tracking/TrackingItem";
 
 export const ActiveJobs = () => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0));
@@ -38,7 +23,6 @@ export const ActiveJobs = () => {
   const dispatch = useDispatch<Dispatch>();
   const { activeJob } = useSelector((state: RootState) => state.jobs);
   const { role } = useSelector((state: RootState) => state.auth);
-  const { sendTrackingMessage } = useTrackingContext();
 
   useEffect(() => {
     fetchActiveJobs().then((data) => dispatch.jobs.populateActiveJob(data));
@@ -88,57 +72,41 @@ export const ActiveJobs = () => {
 
         <Text>Current status: {activeJob.status}</Text>
 
-        <View className="mt-8 space-y-4">
-          <View className="flex flex-row justify-start items-center space-x-4">
-            <View className="rounded-full h-8 w-8 bg-green-100 border border-green-100 flex items-center justify-center">
-              <Ionicons name="checkmark-sharp" size={20} color="#166534" />
+        {activeJob.status && activeJob.tracking_status && (
+          <View className="mt-8 space-y-4">
+            <View>
+              <TrackingItem
+                label={`@${activeJob.username} har godatt jobben.`}
+                active={activeJob.status === "accepted"}
+                completed={activeJob.tracking_status["accepted"] === true}
+              />
             </View>
-            <Text className="text-gray-600 text-[16px] font-semibold">
-              @{activeJob?.username} har godtatt jobben.
-            </Text>
-          </View>
 
-          {activeJob.tracking_status && (
-            <View className="flex flex-row justify-start items-center space-x-4">
-              <View
-                className={classes(
-                  "rounded-full h-8 w-8 flex items-center justify-center",
-                  activeJob.status === "in_transit"
-                    ? "bg-indigo-100 border border-indigo-100"
-                    : activeJob.tracking_status["in_transit"] === true
-                    ? "bg-green-100 border border-green-100"
-                    : "bg-gray-100 border border-gray-100"
-                )}
-              >
-                {activeJob.status === "in_transit" ? (
-                  <Animated.View style={{ transform: [{ rotate: spin }] }}>
-                    <Ionicons name="sync-sharp" size={24} color="#3730a3" />
-                  </Animated.View>
-                ) : (
-                  <Ionicons
-                    name="checkmark-sharp"
-                    size={20}
-                    color={
-                      activeJob.tracking_status["in_transit"] === true
-                        ? "#166534"
-                        : "#1f2937"
-                    }
-                  />
-                )}
-              </View>
-              <Text className="text-gray-600 text-[16px] font-semibold">
-                Plugen er på vei.
-              </Text>
+            <View>
+              <TrackingItem
+                label="Plugen er på vei."
+                active={activeJob.status === "in_transit"}
+                completed={activeJob.tracking_status["in_transit"] === true}
+              />
             </View>
-          )}
 
-          <View className="flex flex-row justify-start items-center space-x-4">
-            <View className="rounded-full h-8 w-8 bg-gray-100 border border-gray-100 flex items-center justify-center">
-              <Ionicons name="checkmark-sharp" size={20} color="#1f2937" />
+            <View>
+              <TrackingItem
+                label="Jobben utføres."
+                active={activeJob.status === "active"}
+                completed={activeJob.tracking_status["active"] === true}
+              />
             </View>
-            <Text className="text-gray-600 text-[16px]">Jobb utført.</Text>
+
+            <View>
+              <TrackingItem
+                label="Jobben er utført og betalt."
+                active={activeJob.status === "completed"}
+                completed={activeJob.tracking_status["completed"] === true}
+              />
+            </View>
           </View>
-        </View>
+        )}
       </View>
 
       <View className="mt-4 absolute bottom-10 px-4 left-0 right-0">
