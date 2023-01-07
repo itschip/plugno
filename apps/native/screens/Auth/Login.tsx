@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   SafeAreaView,
@@ -15,6 +16,8 @@ export const LoginScreen = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const dispatch = useDispatch<Dispatch>();
+
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     fetch("http://localhost:6001/login", {
@@ -84,6 +87,12 @@ export const LoginScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text className="text-white text-center text-lg font-medium">
+            Lag bruker.
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

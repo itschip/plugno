@@ -14,6 +14,7 @@ import { RequestScreen } from "./screens/Request";
 import { TrackingProvider } from "./providers/TrackingProvider";
 import { HomeStack } from "./stacks/HomeStack";
 import { RootStackParamList } from "@typings/navigation";
+import { RegisterScreen } from "./screens/Auth/Register";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -55,7 +56,6 @@ function Container() {
 
 const ScreensContainer = () => {
   const { user, role } = useSelector((state: RootState) => state.auth);
-  const navigation = useNavigation();
 
   return (
     <>
@@ -65,6 +65,11 @@ const ScreensContainer = () => {
             name="Login"
             component={LoginScreen}
             options={{ headerTintColor: "white", headerTransparent: true }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       ) : (
