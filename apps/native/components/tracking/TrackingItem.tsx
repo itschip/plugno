@@ -1,10 +1,38 @@
-import { Animated, Text, View } from "react-native";
+import { Animated, Easing, Text, View } from "react-native";
 import { classes } from "../../utils/css";
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 
 type TrackingItemProps = { label: string; active: boolean; completed: boolean };
 
 export const TrackingItem: React.FC<TrackingItemProps> = (item) => {
+  const [spinValue, setSpinValue] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 3000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+
+    if (item.active) {
+      anim.start();
+    }
+
+    return () => {
+      anim.reset();
+      anim.stop();
+    };
+  }, [item.active]);
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
+  });
+
   return (
     <View className="flex flex-row justify-start items-center space-x-4">
       <View
@@ -20,7 +48,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = (item) => {
         {item.completed ? (
           <Ionicons name="checkmark-sharp" size={20} color={"#166534"} />
         ) : item.active ? (
-          <Animated.View style={{}}>
+          <Animated.View style={{ transform: [{ rotate: spin }] }}>
             <Ionicons name="sync-sharp" size={24} color="#3730a3" />
           </Animated.View>
         ) : (

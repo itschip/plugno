@@ -17,8 +17,6 @@ import { ActiveJobPlugView } from "./ActiveJobPlugView";
 import { TrackingItem } from "../components/tracking/TrackingItem";
 
 export const ActiveJobs = () => {
-  const [spinValue, setSpinValue] = useState(new Animated.Value(0));
-
   const navigation = useNavigation();
   const dispatch = useDispatch<Dispatch>();
   const { activeJob } = useSelector((state: RootState) => state.jobs);
@@ -28,29 +26,6 @@ export const ActiveJobs = () => {
     fetchActiveJobs().then((data) => dispatch.jobs.populateActiveJob(data));
     console.log("populate active job");
   }, [dispatch.jobs]);
-
-  useEffect(() => {
-    const anim = Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 3000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    );
-
-    anim.start();
-
-    return () => {
-      anim.reset();
-      anim.stop();
-    };
-  }, []);
-
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
 
   // TODO: Eventually refactor to a FlatList, with dyanmic job page
 
