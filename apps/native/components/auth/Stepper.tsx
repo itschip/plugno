@@ -43,22 +43,26 @@ export const Stepper: React.FC<StepperProps> = ({ steps }) => {
                     : "border border-gray-300"
                 )}
               >
-                <step.icon
-                  name={step.iconName}
-                  color={
-                    activeStep > index
-                      ? "#166534"
-                      : index === activeStep
-                      ? "#9f1239"
-                      : "black"
-                  }
-                  size={20}
-                />
+                {activeStep > index ? (
+                  <Feather name="check" color="#166534" size={24} />
+                ) : (
+                  <step.icon
+                    name={step.iconName}
+                    color={
+                      activeStep > index
+                        ? ""
+                        : index === activeStep
+                        ? "#9f1239"
+                        : "black"
+                    }
+                    size={20}
+                  />
+                )}
               </View>
               {index + 1 !== steps.length && (
                 <View
                   className={classes(
-                    "border w-44",
+                    "border w-24",
                     activeStep > index ? "border-gray-300" : "border-gray-300"
                   )}
                 />

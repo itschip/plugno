@@ -12,7 +12,7 @@ import { PlacesResponse } from "../typings/gcp";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
-const API_KEY = "AIzaSyAk7iCk58fp8Do5N5S8FcFZdm4f8iHIi2Q";
+const API_KEY = "";
 
 export const RequestScreen = () => {
   const [title, setTitle] = useState<string>("");

@@ -1,42 +1,57 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { Stepper } from "../../components/auth/Stepper";
-import { RoleSelection } from "../../components/auth/steps/RoleSelection";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { Stepper } from "@components/auth/Stepper";
+import { RoleSelection } from "@components/auth/steps/RoleSelection";
+import { UserInfo } from "@components/auth/steps/UserInfo";
+import { FormProvider, useForm } from "react-hook-form";
+import { RegisterFormData } from "@typings/form";
 
 export const RegisterScreen = () => {
-  const [roleSelected, setRoleSelected] = useState<"plug" | "user">("plug");
+  const methods = useForm<RegisterFormData>({
+    defaultValues: { role: "plug" },
+  });
   const navigation = useNavigation();
+
+  const role = methods.watch("role");
 
   return (
     <SafeAreaView className="bg-white flex-1">
-      <View className="px-4">
-        <TouchableOpacity onPress={navigation.goBack}>
-          <Text>Tilbake</Text>
+      <View className="px-4 flex flex-row">
+        <TouchableOpacity
+          onPress={navigation.goBack}
+          className="bg-gray-100 rounded-full px-4 py-1"
+        >
+          <Feather name="arrow-left" size={18} color="#1f2937" />
         </TouchableOpacity>
       </View>
       <View className="px-4 mt-4">
-        <Text className="text-black font-extrabold text-2xl">Lag bruker.</Text>
+        <Text className="text-black font-extrabold text-3xl">Lag bruker.</Text>
       </View>
 
       <View className="px-4 mt-6">
-        <Stepper
-          steps={[
-            {
-              icon: Feather,
-              iconName: "users",
-              component: (
-                <RoleSelection role={roleSelected} setRole={setRoleSelected} />
-              ),
-            },
-            {
-              icon: Feather,
-              iconName: "edit",
-              component: <View></View>,
-            },
-          ]}
-        />
+        <FormProvider {...methods}>
+          <Stepper
+            steps={[
+              {
+                icon: Feather,
+                iconName: "users",
+                component: <RoleSelection />,
+              },
+              {
+                icon: Feather,
+                iconName: "edit",
+                component: <UserInfo />,
+              },
+              {
+                icon: Ionicons,
+                iconName: "checkmark-done-sharp",
+                component: <View></View>,
+              },
+            ]}
+          />
+        </FormProvider>
       </View>
     </SafeAreaView>
   );

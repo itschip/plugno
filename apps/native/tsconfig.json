@@ -3,7 +3,10 @@
   "compilerOptions": {
     "paths": {
       "@api/*": ["./api/*"],
-      "@typings/*": ["./typings/*"]
+      "@typings/*": ["./typings/*"],
+      "@components/*": ["./components/*"],
+      "@screens/*": ["./screens/*"],
+      "@utils/*": ["./utils/*"]
     },
     "strict": true
   }
