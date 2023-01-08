@@ -8,6 +8,7 @@ import (
 	"plugno-api/models"
 	"plugno-api/profile"
 	"plugno-api/structs"
+	"plugno-api/tracking"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -28,11 +29,12 @@ func main() {
 	jobsHandler := jobs.NewJobsHandler(&server)
 	chatHandler := chat.NewChatHandler(&server)
 	profileHandler := profile.NewProfileHandler(&server)
+	trackingHandler := tracking.NewTrackingHandler(&server)
 
 	_chat := chat.NewChat()
 	go _chat.Run()
 
-	_tracking := jobs.NewTracking()
+	_tracking := tracking.NewTracking()
 	go _tracking.RunTracking()
 
 	router := gin.Default()
@@ -55,7 +57,7 @@ func main() {
 		chatHandler.ServeWs(_chat, ctx)
 	})
 	router.GET("/jobs/tracking", func(ctx *gin.Context) {
-		jobsHandler.ServeTracker(_tracking, ctx)
+		trackingHandler.ServeTracker(_tracking, ctx)
 	})
 
 	router.GET("/profile/get", profileHandler.Get)

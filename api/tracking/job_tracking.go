@@ -1,4 +1,4 @@
-package jobs
+package tracking
 
 import (
 	"bytes"
@@ -79,7 +79,7 @@ func (tracking *Tracking) RunTracking() {
 }
 
 // Websocket connection for tracking job and where the plug currently is
-func (jh *JobsHandler) ServeTracker(tracking *Tracking, c *gin.Context) {
+func (handler *TrackingHandler) ServeTracker(tracking *Tracking, c *gin.Context) {
 	upgrader.CheckOrigin = func(r *http.Request) bool {
 		return true
 	}
