@@ -22,7 +22,7 @@ func NewProfileHandler(s *structs.Server) *ProfileHandler {
 func (handler *ProfileHandler) Get(c *gin.Context) {
 	profileId := c.Query("profileId")
 	if profileId != "" {
-		c.JSON(400, "Missing profile ID.")
+		c.JSON(http.StatusBadRequest, "Missing profile ID.")
 	}
 
 	pId, err := strconv.ParseInt(profileId, 0, 8)
@@ -35,5 +35,8 @@ func (handler *ProfileHandler) Get(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "Failed to get profile.")
 	}
 
-	c.JSON(200, profile)
+	c.JSON(http.StatusOK, profile)
+}
+
+func (handler *ProfileHandler) Update(c *gin.Context) {
 }

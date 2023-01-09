@@ -19,6 +19,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.1",
+    "@commitlint/config-conventional": "^17.4.0",
     "eslint": "latest",
     "eslint-config-custom": "workspace:^1.0.0",
     "husky": "^8.0.2",
