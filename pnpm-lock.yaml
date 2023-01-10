@@ -37,6 +37,8 @@ importers:
       "@types/react": ~18.0.14
       "@types/react-native": ~0.70.6
       expo: ~47.0.8
+      expo-device: ~5.0.0
+      expo-notifications: ~0.17.0
       expo-status-bar: ~1.4.2
       jwt-decode: ^3.1.2
       nativewind: ^2.0.11
@@ -59,6 +61,8 @@ importers:
       "@react-navigation/native-stack": 6.9.7_snzv4adhpz5nxsvfocyhhxk7km
       "@rematch/core": 2.2.0_redux@4.2.0
       expo: 47.0.8_@babel+core@7.20.2
+      expo-device: 5.0.0_expo@47.0.8
+      expo-notifications: 0.17.0_expo@47.0.8
       expo-status-bar: 1.4.2
       jwt-decode: 3.1.2
       nativewind: 2.0.11_f3xea42f6zrwqyr5c6mbkdauxa
@@ -2691,6 +2695,13 @@ packages:
       }
     dev: true
 
+  /@ide/backoff/1.0.0:
+    resolution:
+      {
+        integrity: sha512-F0YfUDjvT+Mtt/R4xdl2X0EYCHMMiJqNLdxHD++jDT5ydEFIyqbCHh51Qx2E211dgZprPKhV7sHmnXKpLuvc5g==,
+      }
+    dev: false
+
   /@jest/create-cache-key-function/29.3.1:
     resolution:
       {
@@ -4236,6 +4247,18 @@ packages:
       }
     dev: false
 
+  /assert/2.0.0:
+    resolution:
+      {
+        integrity: sha512-se5Cd+js9dXJnu6Ag2JFc00t+HmHOen+8Q+L7O9zI0PqQXr20uk2J0XQqMxZEeo5U50o8Nvmmx7dZrl+Ufr35A==,
+      }
+    dependencies:
+      es6-object-assign: 1.1.0
+      is-nan: 1.3.2
+      object-is: 1.1.5
+      util: 0.12.5
+    dev: false
+
   /assign-symbols/1.0.0:
     resolution:
       {
@@ -4318,6 +4341,14 @@ packages:
       postcss: 8.4.19
       postcss-value-parser: 4.2.0
     dev: true
+
+  /available-typed-arrays/1.0.5:
+    resolution:
+      {
+        integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==,
+      }
+    engines: { node: ">= 0.4" }
+    dev: false
 
   /babel-core/7.0.0-bridge.0_@babel+core@7.20.2:
     resolution:
@@ -4459,6 +4490,13 @@ packages:
       babel-plugin-syntax-trailing-function-commas: 7.0.0-beta.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /badgin/1.2.3:
+    resolution:
+      {
+        integrity: sha512-NQGA7LcfCpSzIbGRbkgjgdWkjy7HI+Th5VLxTJfW5EeaAf3fnS+xWQaQOCYiny+q6QSvxqoSO04vCx+4u++EJw==,
+      }
     dev: false
 
   /balanced-match/1.0.2:
@@ -4770,7 +4808,6 @@ packages:
     dependencies:
       function-bind: 1.1.1
       get-intrinsic: 1.1.3
-    dev: true
 
   /caller-callsite/2.0.0:
     resolution:
@@ -5700,7 +5737,6 @@ packages:
     dependencies:
       has-property-descriptors: 1.0.0
       object-keys: 1.1.1
-    dev: true
 
   /define-property/0.2.5:
     resolution:
@@ -6053,6 +6089,13 @@ packages:
       is-date-object: 1.0.5
       is-symbol: 1.0.4
     dev: true
+
+  /es6-object-assign/1.1.0:
+    resolution:
+      {
+        integrity: sha512-MEl9uirslVwqQU369iHNWZXsI8yaZYGg/D65aOgZkeyFJwHYSxilf7rQzXKI7DdDuBPrBXbfk3sl9hJhmd5AUw==,
+      }
+    dev: false
 
   /escalade/3.1.1:
     resolution:
@@ -6433,6 +6476,18 @@ packages:
       - supports-color
     dev: false
 
+  /expo-device/5.0.0_expo@47.0.8:
+    resolution:
+      {
+        integrity: sha512-FWlbOUMzAjHojLER8fnS42vLT7aqZ7IoEY+nw/RqmW17SA3GE2lzcYxRYZs1vAIgDnLzcS5CQMp08Eu+EXih1g==,
+      }
+    peerDependencies:
+      expo: "*"
+    dependencies:
+      expo: 47.0.8_@babel+core@7.20.2
+      ua-parser-js: 0.7.32
+    dev: false
+
   /expo-error-recovery/4.0.1_expo@47.0.8:
     resolution:
       {
@@ -6503,6 +6558,29 @@ packages:
     dependencies:
       compare-versions: 3.6.0
       invariant: 2.2.4
+    dev: false
+
+  /expo-notifications/0.17.0_expo@47.0.8:
+    resolution:
+      {
+        integrity: sha512-PPjV5WaL5iIKAqi/qsNUVf0g4htz+Mx+6tZ/Py7vIurAHbA2PymgV7UPSEB1gUbhzi5PZMGj/DNFJpSZwgqmNg==,
+      }
+    peerDependencies:
+      expo: "*"
+    dependencies:
+      "@expo/image-utils": 0.3.22
+      "@ide/backoff": 1.0.0
+      abort-controller: 3.0.0
+      assert: 2.0.0
+      badgin: 1.2.3
+      expo: 47.0.8_@babel+core@7.20.2
+      expo-application: 5.0.1_expo@47.0.8
+      expo-constants: 14.0.2_expo@47.0.8
+      fs-extra: 9.1.0
+      uuid: 3.4.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
     dev: false
 
   /expo-status-bar/1.4.2:
@@ -6849,6 +6927,15 @@ packages:
       }
     dev: false
 
+  /for-each/0.3.3:
+    resolution:
+      {
+        integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==,
+      }
+    dependencies:
+      is-callable: 1.2.7
+    dev: false
+
   /for-in/1.0.2:
     resolution:
       {
@@ -7038,7 +7125,6 @@ packages:
       function-bind: 1.1.1
       has: 1.0.3
       has-symbols: 1.0.3
-    dev: true
 
   /get-port/3.2.0:
     resolution:
@@ -7218,6 +7304,15 @@ packages:
       merge2: 1.4.1
       slash: 3.0.0
 
+  /gopd/1.0.1:
+    resolution:
+      {
+        integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==,
+      }
+    dependencies:
+      get-intrinsic: 1.1.3
+    dev: false
+
   /graceful-fs/4.2.10:
     resolution:
       {
@@ -7288,7 +7383,6 @@ packages:
       }
     dependencies:
       get-intrinsic: 1.1.3
-    dev: true
 
   /has-symbols/1.0.3:
     resolution:
@@ -7296,7 +7390,6 @@ packages:
         integrity: sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==,
       }
     engines: { node: ">= 0.4" }
-    dev: true
 
   /has-tostringtag/1.0.0:
     resolution:
@@ -7306,7 +7399,6 @@ packages:
     engines: { node: ">= 0.4" }
     dependencies:
       has-symbols: 1.0.3
-    dev: true
 
   /has-value/0.3.1:
     resolution:
@@ -7696,6 +7788,17 @@ packages:
       kind-of: 6.0.3
     dev: false
 
+  /is-arguments/1.1.1:
+    resolution:
+      {
+        integrity: sha512-8Q7EARjzEnKpt/PCD7e1cgUS0a6X8u5tdSiMqXhojOdoV9TsMsiO+9VLC5vAmO8N7/GmXn7yjR8qnA6bVAEzfA==,
+      }
+    engines: { node: ">= 0.4" }
+    dependencies:
+      call-bind: 1.0.2
+      has-tostringtag: 1.0.0
+    dev: false
+
   /is-arrayish/0.2.1:
     resolution:
       {
@@ -7751,7 +7854,6 @@ packages:
         integrity: sha512-1BC0BVFhS/p0qtw6enp8e+8OD0UrK0oFLztSjNzhcKA3WDuJxxAPXzPuPtKkjEY9UUoEWlX/8fgKeu2S8i9JTA==,
       }
     engines: { node: ">= 0.4" }
-    dev: true
 
   /is-core-module/2.11.0:
     resolution:
@@ -7880,6 +7982,16 @@ packages:
       }
     engines: { node: ">=8" }
 
+  /is-generator-function/1.0.10:
+    resolution:
+      {
+        integrity: sha512-jsEjy9l3yiXEQ+PsXdmBwEPcOxaXWLspKdplFUVI9vq1iZgIekeC0L167qeu86czQaxed3q/Uzuw0swL0irL8A==,
+      }
+    engines: { node: ">= 0.4" }
+    dependencies:
+      has-tostringtag: 1.0.0
+    dev: false
+
   /is-glob/2.0.1:
     resolution:
       {
@@ -7915,6 +8027,17 @@ packages:
     engines: { node: ">=0.10.0" }
     dependencies:
       is-glob: 2.0.1
+    dev: false
+
+  /is-nan/1.3.2:
+    resolution:
+      {
+        integrity: sha512-E+zBKpQ2t6MEo1VsonYmluk9NxGrbzpeeLC2xIViuO2EjU2xsXsBPwTr3Ykv9l08UYEVEdWeRZNouaZqF6RN0w==,
+      }
+    engines: { node: ">= 0.4" }
+    dependencies:
+      call-bind: 1.0.2
+      define-properties: 1.1.4
     dev: false
 
   /is-negative-zero/2.0.2:
@@ -8073,6 +8196,20 @@ packages:
     dependencies:
       text-extensions: 1.9.0
     dev: true
+
+  /is-typed-array/1.1.10:
+    resolution:
+      {
+        integrity: sha512-PJqgEHiWZvMpaFZ3uTc8kHPM4+4ADTlDniuQL7cU/UDA0Ql7F70yGfHph3cLNe+c9toaigv+DFzTJKhc2CtO6A==,
+      }
+    engines: { node: ">= 0.4" }
+    dependencies:
+      available-typed-arrays: 1.0.5
+      call-bind: 1.0.2
+      for-each: 0.3.3
+      gopd: 1.0.1
+      has-tostringtag: 1.0.0
+    dev: false
 
   /is-unicode-supported/0.1.0:
     resolution:
@@ -9884,13 +10021,23 @@ packages:
       }
     dev: true
 
+  /object-is/1.1.5:
+    resolution:
+      {
+        integrity: sha512-3cyDsyHgtmi7I7DfSSI2LDp6SK2lwvtbg0p0R1e0RvTqF5ceGx+K2dfSjm1bKDMVCFEDAQvy+o8c6a7VujOddw==,
+      }
+    engines: { node: ">= 0.4" }
+    dependencies:
+      call-bind: 1.0.2
+      define-properties: 1.1.4
+    dev: false
+
   /object-keys/1.1.1:
     resolution:
       {
         integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==,
       }
     engines: { node: ">= 0.4" }
-    dev: true
 
   /object-visit/1.0.1:
     resolution:
@@ -13220,6 +13367,19 @@ packages:
         integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==,
       }
 
+  /util/0.12.5:
+    resolution:
+      {
+        integrity: sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==,
+      }
+    dependencies:
+      inherits: 2.0.4
+      is-arguments: 1.1.1
+      is-generator-function: 1.0.10
+      is-typed-array: 1.1.10
+      which-typed-array: 1.1.9
+    dev: false
+
   /utils-merge/1.0.1:
     resolution:
       {
@@ -13368,6 +13528,21 @@ packages:
       {
         integrity: sha512-B+enWhmw6cjfVC7kS8Pj9pCrKSc5txArRyaYGe088shv/FGWH+0Rjx/xPgtsWfsUtS27FkP697E4DDhgrgoc0Q==,
       }
+    dev: false
+
+  /which-typed-array/1.1.9:
+    resolution:
+      {
+        integrity: sha512-w9c4xkx6mPidwp7180ckYWfMmvxpjlZuIudNtDf4N/tTAUB8VJbX25qZoAsrtGuYNnGw3pa0AXgbGKRB8/EceA==,
+      }
+    engines: { node: ">= 0.4" }
+    dependencies:
+      available-typed-arrays: 1.0.5
+      call-bind: 1.0.2
+      for-each: 0.3.3
+      gopd: 1.0.1
+      has-tostringtag: 1.0.0
+      is-typed-array: 1.1.10
     dev: false
 
   /which/1.3.1:

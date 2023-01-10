@@ -1,7 +1,7 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LoginScreen } from "./screens/Auth/Login";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState, store } from "./store";
@@ -15,6 +15,8 @@ import { TrackingProvider } from "./providers/TrackingProvider";
 import { HomeStack } from "./stacks/HomeStack";
 import { RootStackParamList } from "@typings/navigation";
 import { RegisterScreen } from "./screens/Auth/Register";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -22,7 +24,7 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 function Container() {
   const dispatch = useDispatch<Dispatch>();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       const id_token = await AsyncStorage.getItem("id_token");
 
@@ -54,8 +56,34 @@ function Container() {
   );
 }
 
+const registerForPushNotificationsAsync = async () => {
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    const token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+};
+
 const ScreensContainer = () => {
   const { user, role } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (user) {
+      registerForPushNotificationsAsync();
+    }
+  }, [user]);
 
   return (
     <>
