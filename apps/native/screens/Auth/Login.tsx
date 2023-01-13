@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { API_URL } from "@utils/env";
 import { useState } from "react";
 import {
   SafeAreaView,
@@ -20,7 +21,7 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    fetch("http://localhost:6001/login", {
+    fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

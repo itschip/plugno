@@ -1,4 +1,4 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LoginScreen } from "./screens/Auth/Login";
 import { useEffect } from "react";
@@ -17,6 +17,7 @@ import { RootStackParamList } from "@typings/navigation";
 import { RegisterScreen } from "./screens/Auth/Register";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import { API_URL } from "@utils/env";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -24,11 +25,13 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 function Container() {
   const dispatch = useDispatch<Dispatch>();
 
+  console.log("API URL", API_URL);
+
   useEffect(() => {
     (async () => {
       const id_token = await AsyncStorage.getItem("id_token");
 
-      fetch("http://localhost:6001/user", {
+      fetch(`${API_URL}/user`, {
         headers: {
           Authorization: `Bearer ${id_token}`,
         },
@@ -70,7 +73,7 @@ const registerForPushNotificationsAsync = async () => {
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    console.log("PUSH TOKEN:", token);
   } else {
     alert("Must use physical device for Push Notifications");
   }

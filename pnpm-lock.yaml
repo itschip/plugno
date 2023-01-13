@@ -37,6 +37,7 @@ importers:
       "@types/react": ~18.0.14
       "@types/react-native": ~0.70.6
       expo: ~47.0.8
+      expo-constants: ~14.0.2
       expo-device: ~5.0.0
       expo-notifications: ~0.17.0
       expo-status-bar: ~1.4.2
@@ -61,6 +62,7 @@ importers:
       "@react-navigation/native-stack": 6.9.7_snzv4adhpz5nxsvfocyhhxk7km
       "@rematch/core": 2.2.0_redux@4.2.0
       expo: 47.0.8_@babel+core@7.20.2
+      expo-constants: 14.0.2_expo@47.0.8
       expo-device: 5.0.0_expo@47.0.8
       expo-notifications: 0.17.0_expo@47.0.8
       expo-status-bar: 1.4.2

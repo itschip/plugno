@@ -1,3 +1,4 @@
+import { API_URL } from "@utils/env";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "../store";
@@ -36,7 +37,7 @@ export const TrackingProvider = ({
   // const handleOpenSocket = () => {};
 
   useEffect(() => {
-    const _socket = new WebSocket("ws://localhost:6001/jobs/tracking");
+    const _socket = new WebSocket(`ws://${API_URL}/jobs/tracking`);
 
     setTrackingSocket(_socket);
   }, []);
