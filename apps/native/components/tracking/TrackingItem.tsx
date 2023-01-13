@@ -52,7 +52,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = (item) => {
             <Ionicons name="sync-sharp" size={24} color="#3730a3" />
           </Animated.View>
         ) : (
-          <Ionicons name="checkmark-sharp" size={20} color={"#1f2937"} />
+          <Ionicons name="timer-outline" size={20} color={"#1f2937"} />
         )}
       </View>
       <Text className="text-gray-600 text-[16px] font-semibold">

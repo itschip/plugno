@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -32,4 +33,23 @@ func Authorized() gin.HandlerFunc {
 
 		c.Next()
 	}
+}
+
+func GetTokenFromRequest(c *gin.Context) (string, error) {
+	var cookie string
+	cookie, err := c.Cookie("token")
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	// If we dont find any cookie in the request, we try to look for the token in the header
+	if cookie == "" {
+		cookie = c.GetHeader("Authorization")
+	}
+
+	if cookie == "" {
+		return "", errors.New("No token found")
+	}
+
+	return cookie, nil
 }

@@ -1,7 +1,8 @@
 import { TActiveJob, TPlugJobResponse } from "@typings/jobs";
+import { API_URL } from "@utils/env";
 
 export const fetchPlugJogs = async (): Promise<TPlugJobResponse[]> => {
-  const res = await fetch("http://localhost:6001/jobs/findPlugJobs", {
+  const res = await fetch(`${API_URL}/jobs/findPlugJobs`, {
     headers: {
       "Content-Type": "application/json",
     },

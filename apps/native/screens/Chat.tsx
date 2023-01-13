@@ -1,5 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { ConversationScreenNavigationProp } from "@typings/navigation";
+import { API_URL } from "@utils/env";
 import { useCallback, useState } from "react";
 import {
   SafeAreaView,
@@ -27,11 +29,20 @@ export const ChatScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetch("http://localhost:6001/conversations/getAll")
-        .then((res) => res.json())
-        .then((data) => {
-          setConversations(data);
-        });
+      console.log("FOCUS");
+      AsyncStorage.getItem("id_token").then((idToken) => {
+        fetch(`${API_URL}/conversations/getAll`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${idToken}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setConversations(data);
+          });
+      });
     }, [])
   );
 

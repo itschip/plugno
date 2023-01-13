@@ -9,9 +9,10 @@ import (
 )
 
 func (ch *ChatHandler) FindConversations(g *gin.Context) {
-	cookie, err := g.Cookie("token")
+	cookie, err := auth.GetTokenFromRequest(g)
 	if err != nil {
 		log.Println(err.Error())
+		g.JSON(401, "Unauthorized")
 	}
 
 	claims := auth.GetUserFromCookie(cookie)
