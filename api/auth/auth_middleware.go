@@ -13,7 +13,7 @@ import (
 func Authorized() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err error
-		cookie, err := c.Cookie("token")
+		cookie, err := GetTokenFromRequest(c)
 		if err != nil {
 			log.Println("Failed getting cookie: ", err.Error())
 		}

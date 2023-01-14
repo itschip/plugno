@@ -23,12 +23,13 @@ func (handler *JobsHandler) NewPlugJob(ctx *gin.Context) {
 }
 
 func (handler *JobsHandler) GetAllPlugJobs(ctx *gin.Context) {
-	cookie, err := ctx.Cookie("token")
+	cookie, err := auth.GetTokenFromRequest(ctx)
 	if err != nil {
 		log.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, "Failed to find plug jobs")
 		return
 	}
+
 	claims := auth.GetUserFromCookie(cookie)
 
 	plugJobs, err := handler.jobModel.FindAllPlugJobs(claims.ID)

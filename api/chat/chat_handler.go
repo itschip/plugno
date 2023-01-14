@@ -2,6 +2,7 @@ package chat
 
 import (
 	"log"
+	"net/http"
 	"plugno-api/auth"
 	"strconv"
 
@@ -12,7 +13,7 @@ func (ch *ChatHandler) FindConversations(g *gin.Context) {
 	cookie, err := auth.GetTokenFromRequest(g)
 	if err != nil {
 		log.Println(err.Error())
-		g.JSON(401, "Unauthorized")
+		g.JSON(http.StatusUnauthorized, "Unauthorized")
 	}
 
 	claims := auth.GetUserFromCookie(cookie)
@@ -20,18 +21,18 @@ func (ch *ChatHandler) FindConversations(g *gin.Context) {
 	conversations, err := ch.messageModel.FindAllConversations(claims.ID)
 	if err != nil {
 		log.Println(err.Error())
-		g.JSON(500, "Failed to get conversation")
+		g.JSON(http.StatusInternalServerError, "Failed to get conversation")
 		return
 	}
 
-	g.JSON(200, conversations)
+	g.JSON(http.StatusOK, conversations)
 }
 
 func (ch *ChatHandler) FindMessages(g *gin.Context) {
 	param := g.Query("conversationId")
 
 	if param == "" {
-		g.JSON(400, "Failed to fetch messsages. Missing conversation id")
+		g.JSON(http.StatusBadRequest, "Failed to fetch messsages. Missing conversation id")
 		return
 	}
 
@@ -45,5 +46,5 @@ func (ch *ChatHandler) FindMessages(g *gin.Context) {
 		log.Println(err.Error())
 	}
 
-	g.JSON(200, messages)
+	g.JSON(http.StatusOK, messages)
 }
