@@ -64,13 +64,13 @@ export const RequestScreen = () => {
   return (
     <SafeAreaView className="bg-white flex-1">
       <View className="mt-4 px-4 space-y-4">
-        <TextInput
+        {/*<TextInput
           value={title}
           onChangeText={setTitle}
           className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
           placeholder="Tittel"
           placeholderTextColor="darkgray"
-        />
+        />*/}
         <TextInput
           value={description}
           onChangeText={setDescription}

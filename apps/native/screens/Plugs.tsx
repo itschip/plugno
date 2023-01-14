@@ -18,15 +18,10 @@ export const Plugs = () => {
   const plugJobs = useSelector((state: RootState) => state.jobs.plugs);
 
   useEffect(() => {
-    console.log("WTF DUDE");
     fetchPlugJogs().then((data) => {
-      console.log("HOLY SHIT");
-      console.log(data);
       dispatch.jobs.populatePlugJobs(data);
     });
   }, []);
-
-  console.log("RERENDER PLUGS");
 
   return (
     <SafeAreaView className="bg-black flex-1 px-4">
@@ -34,7 +29,7 @@ export const Plugs = () => {
         <Text className="text-white text-4xl font-extrabold">Jobs</Text>
       </View>
       <View className="px-4 mt-2">
-        {!plugJobs && <FlatList data={plugJobs} renderItem={renderItem} />}
+        {plugJobs && <FlatList data={plugJobs} renderItem={renderItem} />}
       </View>
     </SafeAreaView>
   );

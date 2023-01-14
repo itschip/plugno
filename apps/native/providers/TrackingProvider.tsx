@@ -1,4 +1,4 @@
-import { API_URL } from "@utils/env";
+import { WEBSOCKET_URL } from "@utils/env";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "../store";
@@ -37,7 +37,7 @@ export const TrackingProvider = ({
   // const handleOpenSocket = () => {};
 
   useEffect(() => {
-    const _socket = new WebSocket(`ws://${API_URL}/jobs/tracking`);
+    const _socket = new WebSocket(`ws://${WEBSOCKET_URL}/jobs/tracking`);
 
     setTrackingSocket(_socket);
   }, []);
@@ -57,7 +57,7 @@ export const TrackingProvider = ({
       };
 
       trackingSocket.onclose = () => {
-        console.log("Socket is closed");
+        console.log("Tracking socket is closed");
       };
     }
 

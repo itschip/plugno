@@ -5,11 +5,9 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  Animated,
-  Easing,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchActiveJobs } from "@api/plugs-api";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../store";

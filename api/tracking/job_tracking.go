@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/itschip/expogo"
 )
 
 const (
@@ -34,9 +35,10 @@ type Tracking struct {
 }
 
 type TrackingClient struct {
-	tracking *Tracking
-	conn     *websocket.Conn
-	send     chan []byte
+	tracking   *Tracking
+	conn       *websocket.Conn
+	send       chan []byte
+	expoClient *expogo.ExpoClient
 }
 
 type TrackingMessage struct {
@@ -84,16 +86,24 @@ func (handler *TrackingHandler) ServeTracker(tracking *Tracking, c *gin.Context)
 		return true
 	}
 
+	log.Println("Serving tracker")
+
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err.Error())
 	}
 
+	expoClient := expogo.NewExpoClient(nil)
+
 	trackingClient := &TrackingClient{
-		tracking: tracking,
-		conn:     conn,
-		send:     make(chan []byte, 256),
+		tracking:   tracking,
+		conn:       conn,
+		send:       make(chan []byte, 256),
+		expoClient: expoClient,
 	}
+
+	fmt.Println("Registering client")
+	log.Println(trackingClient)
 
 	trackingClient.tracking.register <- trackingClient
 
@@ -149,6 +159,12 @@ func (client *TrackingClient) readTrackerMessage() {
 		default:
 			fmt.Println("No message type.")
 		}
+
+		client.expoClient.SendPushNotification(&expogo.Notification{
+			To:    []string{"ExponentPushToken[jgjpK8NQcb4475rh2nn4K9]"},
+			Title: "Job Update",
+			Body:  "Your job has been updated",
+		})
 
 		client.tracking.broadcast <- message
 	}

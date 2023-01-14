@@ -1,4 +1,12 @@
-import { Text, SafeAreaView, View, Dimensions } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export const Home = () => {
   const screenWidth = Dimensions.get("window").width;
@@ -13,8 +21,8 @@ export const Home = () => {
           style={{ width: tileSize }}
           className="bg-black h-48 rounded-lg relative"
         >
-          <Text className="absolute text-white font-bold bottom-2 right-4 text-3xl">
-            Plugs
+          <Text className="absolute text-white font-bold bottom-2 right-2 text-2xl">
+            Finn en Plug
           </Text>
         </View>
 
@@ -22,10 +30,14 @@ export const Home = () => {
           style={{ width: tileSize }}
           className="bg-gray-400 h-48 rounded-lg relative"
         >
-          <Text className="absolute text-gray-400 font-bold bottom-2 right-4 text-3xl">
-            Map
+          <Text className="absolute text-gray-100 font-bold bottom-2 right-2 text-2xl">
+            Be om hjelp
           </Text>
         </View>
+      </View>
+      <View className="px-2 mt-4">
+        <Text className="text-2xl font-bold">Populære Plugs</Text>
+        <ScrollView horizontal></ScrollView>
       </View>
     </SafeAreaView>
   );

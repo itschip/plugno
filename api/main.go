@@ -40,7 +40,7 @@ func main() {
 	router := gin.Default()
 
 	CORSHandler := cors.New(cors.Config{
-		AllowAllOrigins:  true,
+		AllowOrigins:     []string{"http://localhost:3000", "http://192.168.10.139"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "HEAD"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		AllowCredentials: true,
@@ -69,7 +69,6 @@ func main() {
 
 	router.POST("/plugs/acceptJob", jobsHandler.AcceptPlugJob)
 
-	router.GET("/conversations/getAll", chatHandler.FindConversations)
 	router.GET("/messages/getAll", chatHandler.FindMessages)
 
 	authorized := router.Group("/")
@@ -77,6 +76,7 @@ func main() {
 	{
 		authorized.POST("/jobs/new", jobsHandler.New)
 		authorized.GET("/jobs/getOne", jobsHandler.GetOne)
+		authorized.GET("/conversations/getAll", chatHandler.FindConversations)
 	}
 
 	router.Run(":6001")

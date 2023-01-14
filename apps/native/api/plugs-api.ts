@@ -1,10 +1,14 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TActiveJob, TPlugJobResponse } from "@typings/jobs";
 import { API_URL } from "@utils/env";
 
 export const fetchPlugJogs = async (): Promise<TPlugJobResponse[]> => {
+  const idToken = await AsyncStorage.getItem("id_token");
+
   const res = await fetch(`${API_URL}/jobs/findPlugJobs`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `${idToken}`,
     },
   });
 
@@ -14,7 +18,7 @@ export const fetchPlugJogs = async (): Promise<TPlugJobResponse[]> => {
 };
 
 export const acceptPlugJob = async (jobId: number, plugId: number) => {
-  const res = await fetch("http://localhost:6001/plugs/acceptJob", {
+  const res = await fetch(`${API_URL}/plugs/acceptJob`, {
     method: "POST",
     body: JSON.stringify({ jobId, plugId }),
   });
@@ -25,7 +29,7 @@ export const acceptPlugJob = async (jobId: number, plugId: number) => {
 };
 
 export const fetchActiveJobs = async (): Promise<TActiveJob> => {
-  const res = await fetch("http://localhost:6001/jobs/getActiveJob");
+  const res = await fetch(`${API_URL}/jobs/getActiveJob`);
 
   // TOOD: Error handling
   const response = await res.json();
