@@ -285,3 +285,7 @@ func (auth *AuthHandler) RefreshToken(ctx *gin.Context) {
 	})
 	return
 }
+
+// TODO: Handle web as well
+func (auth *AuthHandler) Logout(c *gin.Context) {
+}

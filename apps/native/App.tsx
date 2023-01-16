@@ -73,7 +73,11 @@ function Container() {
       try {
         const accessToken = await AsyncStorage.getItem("plug:access_token");
         const refreshToken = await AsyncStorage.getItem("plug:refresh_token");
-        if (!accessToken || !refreshToken) return dispatch.auth.populate(null);
+        if (!accessToken || !refreshToken) {
+          dispatch.auth.populate(null);
+          setIsReady(true);
+          return;
+        }
 
         const user = await isUserLoggedIn(accessToken);
 
@@ -82,7 +86,9 @@ function Container() {
           const data = await refreshAccessToken(refreshToken);
 
           if (!data) {
-            return dispatch.auth.populate(null);
+            dispatch.auth.populate(null);
+            setIsReady(true);
+            return;
           }
 
           await AsyncStorage.setItem("plug:access_token", data.access_token);
@@ -97,6 +103,7 @@ function Container() {
       } catch (err) {
         console.log("Error validating user", err);
         dispatch.auth.populate(null);
+        setIsReady(true);
       }
     })();
   }, []);

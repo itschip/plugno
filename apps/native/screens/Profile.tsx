@@ -1,11 +1,21 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { ProfileScreenNavigationProp } from "@typings/navigation";
 import { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, Switch } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Switch,
+  TouchableOpacity,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../store";
 
 export const Profile = () => {
   const { user, role } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<Dispatch>();
+  //const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   const [plugEnabled, setPlugEnabled] = useState(role === "plug");
 
@@ -13,33 +23,40 @@ export const Profile = () => {
     setPlugEnabled((prev) => !prev);
   };
 
+  const handleLogOut = async () => {
+    await AsyncStorage.removeItem("plug:access_token");
+    await AsyncStorage.removeItem("plug:refresh_token");
+
+    dispatch.auth.populate(null);
+  };
+
   useEffect(() => {
     dispatch.auth.changeRole(plugEnabled);
   }, [plugEnabled, dispatch.auth]);
 
   return (
-    <SafeAreaView className="bg-black flex-1">
+    <SafeAreaView className="bg-white flex-1 relative">
       <View className="px-4">
-        <Text className="text-white text-3xl font-extrabold">Profil</Text>
+        <Text className="text-slate-500 text-3xl font-extrabold">Profil</Text>
       </View>
       <View className="mt-8 px-4 space-y-4">
         <View>
-          <Text className="mb-2 text-neutral-200 font-semibold text-xl">
+          <Text className="mb-2 text-slate-400 font-semibold text-xl">
             Brukernavn
           </Text>
-          <View className="bg-neutral-800 border border-neutral-700 px-2 py-3 rounded-md">
-            <Text className="font-semibold text-white text-lg">
+          <View className="bg-gray-100 border border-gray-200 px-2 py-3 rounded-md">
+            <Text className="font-semibold text-slate-500 text-lg">
               {user?.username}
             </Text>
           </View>
         </View>
 
         <View>
-          <Text className="mb-2 text-neutral-200 font-semibold text-xl">
+          <Text className="mb-2 text-slate-400 font-semibold text-xl">
             E-post
           </Text>
-          <View className="bg-neutral-800 border border-neutral-700 px-2 py-3 rounded-md">
-            <Text className="font-semibold text-white text-md text-lg">
+          <View className="bg-gray-100 border border-gray-200 px-2 py-3 rounded-md">
+            <Text className="font-semibold text-slate-500 text-md text-lg">
               {user?.email}
             </Text>
           </View>
@@ -47,7 +64,7 @@ export const Profile = () => {
       </View>
 
       <View className="px-4 mt-4">
-        <Text className="mb-2 text-neutral-200 font-semibold text-xl">
+        <Text className="mb-2 text-slate-400 font-semibold text-xl">
           Endre rolle til {role === "user" ? "Plug" : "Bruker"}
         </Text>
         <Switch
@@ -56,6 +73,17 @@ export const Profile = () => {
           value={plugEnabled}
           onValueChange={handleRoleChange}
         />
+      </View>
+
+      <View className="px-4 mt-4 absolute bottom-10 right-0 left-0">
+        <TouchableOpacity
+          className="px-3 py-3 bg-rose-100 rounded-md"
+          onPress={handleLogOut}
+        >
+          <Text className="text-rose-800 font-medium text-center text-md">
+            Logg ut
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

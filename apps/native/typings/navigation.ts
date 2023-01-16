@@ -1,5 +1,10 @@
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, CompositeNavigationProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+export type AuthStackParamList = {
+  Login: undefined;
+  Register: undefined;
+};
 
 export type RootStackParamList = {
   Home: undefined;
@@ -32,4 +37,14 @@ export type ConversationScreenNavigationProp = NativeStackNavigationProp<
 export type ConversationScreenRouteProp = RouteProp<
   ChatStackParamList,
   "Conversation"
+>;
+
+export type ProfileScreenNavigationPropTest = NativeStackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
+
+export type ProfileScreenNavigationProp = CompositeNavigationProp<
+  NativeStackNavigationProp<RootStackParamList, "Profile">,
+  NativeStackNavigationProp<AuthStackParamList>
 >;
