@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LoginScreen } from "./screens/Auth/Login";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState, store } from "./store";
@@ -18,35 +18,95 @@ import { RegisterScreen } from "./screens/Auth/Register";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { API_URL } from "@utils/env";
+import { User } from "@typings/user";
+import { Text, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
+const isUserLoggedIn = async (accessToken: string): Promise<User | null> => {
+  return new Promise((resolve, reject) => {
+    fetch(`${API_URL}/user`, {
+      headers: {
+        Authorization: `${accessToken}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          return resolve(null);
+        }
+
+        return res.json();
+      })
+      .then((data) => resolve(data))
+      .catch((err) => reject(err));
+  });
+};
+
+const refreshAccessToken = async (
+  refreshToken: string
+): Promise<{ access_token: string } | null> => {
+  return new Promise((resolve, reject) => {
+    fetch(`${API_URL}/refresh`, {
+      headers: {
+        Authorization: `${refreshToken}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          resolve(null);
+        }
+
+        return res.json();
+      })
+      .then((data) => resolve(data))
+      .catch((err) => reject(err));
+  });
+};
+
 function Container() {
   const dispatch = useDispatch<Dispatch>();
-
-  console.log("API URL", API_URL);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
-      const id_token = await AsyncStorage.getItem("id_token");
+      try {
+        const accessToken = await AsyncStorage.getItem("plug:access_token");
+        const refreshToken = await AsyncStorage.getItem("plug:refresh_token");
+        if (!accessToken || !refreshToken) return dispatch.auth.populate(null);
 
-      fetch(`${API_URL}/user`, {
-        headers: {
-          Authorization: `Bearer ${id_token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("user", data);
-          dispatch.auth.populate(data);
-        })
-        .catch((err) => {
-          console.log(`Error when getting user. Error: ${err}`);
-          dispatch.auth.populate(null);
-        });
+        const user = await isUserLoggedIn(accessToken);
+
+        if (!user) {
+          // TODO: Try to refresh token and log user in
+          const data = await refreshAccessToken(refreshToken);
+
+          if (!data) {
+            return dispatch.auth.populate(null);
+          }
+
+          await AsyncStorage.setItem("plug:access_token", data.access_token);
+          const user = await isUserLoggedIn(data.access_token);
+          dispatch.auth.populate(user);
+          setIsReady(true);
+          return;
+        }
+
+        dispatch.auth.populate(user);
+        setIsReady(true);
+      } catch (err) {
+        console.log("Error validating user", err);
+        dispatch.auth.populate(null);
+      }
     })();
   }, []);
+
+  if (!isReady)
+    return (
+      <View className="flex-1 bg-white items-center justify-center">
+        <Text className="font-extrabold text-3xl">Loading Plug.no...</Text>
+      </View>
+    );
 
   return (
     <>
@@ -74,8 +134,6 @@ const registerForPushNotificationsAsync = async () => {
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log("PUSH TOKEN:", token);
-  } else {
-    alert("Must use physical device for Push Notifications");
   }
 };
 
@@ -83,10 +141,8 @@ const ScreensContainer = () => {
   const { user, role } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    if (user) {
-      registerForPushNotificationsAsync();
-    }
-  }, [user]);
+    registerForPushNotificationsAsync();
+  }, []);
 
   return (
     <>

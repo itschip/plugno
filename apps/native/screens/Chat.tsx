@@ -30,7 +30,7 @@ export const ChatScreen = () => {
   useFocusEffect(
     useCallback(() => {
       console.log("FOCUS");
-      AsyncStorage.getItem("id_token").then((idToken) => {
+      AsyncStorage.getItem("plug:access_token").then((idToken) => {
         fetch(`${API_URL}/conversations/getAll`, {
           method: "GET",
           headers: {

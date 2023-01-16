@@ -33,7 +33,8 @@ export const LoginScreen = () => {
     })
       .then((res) => res.json())
       .then((data: UserResponse) => {
-        AsyncStorage.setItem("id_token", data.id_token);
+        AsyncStorage.setItem("plug:access_token", data.access_token);
+        AsyncStorage.setItem("plug:refresh_token", data.refresh_token);
 
         dispatch.auth.populate(data.user);
       })

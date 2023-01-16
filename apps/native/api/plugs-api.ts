@@ -3,7 +3,7 @@ import { TActiveJob, TPlugJobResponse } from "@typings/jobs";
 import { API_URL } from "@utils/env";
 
 export const fetchPlugJogs = async (): Promise<TPlugJobResponse[]> => {
-  const idToken = await AsyncStorage.getItem("id_token");
+  const idToken = await AsyncStorage.getItem("plug:access_token");
 
   const res = await fetch(`${API_URL}/jobs/findPlugJobs`, {
     headers: {

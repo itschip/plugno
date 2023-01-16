@@ -38,7 +38,6 @@ export const jobs = createModel<RootModel>()({
           status: payload,
           tracking_status: {
             ...state.activeJob.tracking_status,
-            [payload]: true,
           },
         },
       };

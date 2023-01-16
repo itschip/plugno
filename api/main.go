@@ -52,6 +52,7 @@ func main() {
 	router.POST("/register", authHandler.RegisterUser)
 	router.POST("/login", authHandler.Login)
 	router.GET("/user", authHandler.User)
+	router.GET("/refresh", authHandler.RefreshToken)
 
 	router.GET("/ws/:roomId", func(ctx *gin.Context) {
 		chatHandler.ServeWs(_chat, ctx)
