@@ -1,6 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { ProfileScreenNavigationProp } from "@typings/navigation";
 import { useEffect, useState } from "react";
 import {
   SafeAreaView,
@@ -15,7 +13,6 @@ import { Dispatch, RootState } from "../store";
 export const Profile = () => {
   const { user, role } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<Dispatch>();
-  //const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   const [plugEnabled, setPlugEnabled] = useState(role === "plug");
 
@@ -77,10 +74,10 @@ export const Profile = () => {
 
       <View className="px-4 mt-4 absolute bottom-10 right-0 left-0">
         <TouchableOpacity
-          className="px-3 py-3 bg-rose-100 rounded-md"
+          className="px-3 py-3 bg-red-100  rounded-md"
           onPress={handleLogOut}
         >
-          <Text className="text-rose-800 font-medium text-center text-md">
+          <Text className="text-red-800 font-medium text-center text-md">
             Logg ut
           </Text>
         </TouchableOpacity>

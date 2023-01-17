@@ -1,128 +1,76 @@
-import { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { useDebounce } from "../hooks/useDebounce";
-import { PlacesResponse } from "../typings/gcp";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { classes } from "@utils/css";
 
-const API_KEY = "";
+const requestOptions = [
+  {
+    id: 1,
+    title: "Frakt",
+    description: "Hjelp med å frakte ting",
+  },
+  {
+    id: 2,
+    title: "Dyrepass",
+    description: "Hjelp med å passe på dyr",
+  },
+  {
+    id: 3,
+    title: "Jeg trenger noe kjapt",
+    description: "Hjelp med å hente noe",
+  },
+];
 
 export const RequestScreen = () => {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [place, setPlace] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<PlacesResponse | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [open, setOpen] = useState<boolean>(false);
-
-  const user = useSelector((state: RootState) => state.auth.user);
-  const debouncedPlace = useDebounce(place, 500);
-
-  useEffect(() => {
-    (async () => {
-      const res = await fetch(
-        `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${debouncedPlace}&key=${API_KEY}`
-      );
-
-      const response = await res.json();
-      setSuggestions(response);
-    })();
-  }, [debouncedPlace]);
-
-  const handleChangePlace = (place: string) => {
-    setPlace(place);
-    setOpen(false);
-  };
-
-  const handlePlaceText = (value: string) => {
-    setPlace(value);
-    if (value.trim()) {
-      setOpen(true);
-    }
-  };
-
-  const handleCreateJob = async () => {
-    fetch("http://localhost:6001/jobs/newPlugJob", {
-      method: "POST",
-      body: JSON.stringify({
-        title,
-        description,
-        place,
-        phoneNumber,
-        userId: user?.id,
-      }),
-    });
-  };
+  const [selectedRequestType, setSelectedRequestType] = useState<number | null>(
+    null
+  );
 
   return (
     <SafeAreaView className="bg-white flex-1">
-      <View className="mt-4 px-4 space-y-4">
-        {/*<TextInput
-          value={title}
-          onChangeText={setTitle}
-          className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
-          placeholder="Tittel"
-          placeholderTextColor="darkgray"
-        />*/}
-        <TextInput
-          value={description}
-          onChangeText={setDescription}
-          multiline
-          className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px] h-32"
-          placeholder="Beskrivelse"
-        />
-
-        <View className="mt-8 relative z-[99999]">
-          <TextInput
-            value={place}
-            onChangeText={handlePlaceText}
-            className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
-            placeholder="Sted"
-          />
-          <View>
-            {suggestions?.predictions.length !== 0 && open && (
-              <View className="bg-gray-100 border border-gray-400 w-full mt-1 rounded-md shadow-xs absolute">
-                {suggestions?.predictions.map((place) => (
-                  <TouchableOpacity
-                    key={place.description}
-                    onPress={() => handleChangePlace(place.description)}
-                    className="px-2 py-3 border-b border-gray-400 flex flex-row space-x-2 items-center"
-                  >
-                    <Feather name="map-pin" size={20} color="gray" />
-                    <Text className="text-md font-medium">
-                      {place.description}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </View>
-        </View>
-
-        <TextInput
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
-          placeholder="Telefonnummer"
-        />
-
-        <View>
+      <View className="px-4 pt-10 space-y-4">
+        {requestOptions.map((option) => (
           <TouchableOpacity
-            onPress={handleCreateJob}
-            className="px-2 py-3 bg-black rounded-md"
+            key={option.id}
+            onPress={() => setSelectedRequestType(option.id)}
+            className={classes(
+              "border-2 h-28 px-4 rounded-md flex-row items-center space-x-8",
+              selectedRequestType === option.id
+                ? "border-green-200 bg-green-100"
+                : "border-gray-200 bg-gray-50"
+            )}
           >
-            <Text className="text-white font-bold text-lg text-center">
-              Legg ut jobb
-            </Text>
+            <View className="flex flex-row items-center justify-start space-x-2">
+              <View
+                className={classes(
+                  "rounded-full h-8 w-8 flex items-center justify-center",
+                  selectedRequestType === option.id
+                    ? "bg-green-200"
+                    : "bg-gray-200"
+                )}
+              >
+                <Ionicons
+                  name="checkmark-sharp"
+                  size={24}
+                  color={
+                    selectedRequestType === option.id ? "#166534" : "#1f2937"
+                  }
+                />
+              </View>
+            </View>
+
+            <View>
+              <Text className="text-2xl font-bold">{option.title}</Text>
+              <Text className="text-sm">{option.description}</Text>
+            </View>
           </TouchableOpacity>
-        </View>
+        ))}
+      </View>
+
+      <View className="mt-10 px-4">
+        <TouchableOpacity className="bg-gray-100 py-2 rounded-md">
+          <Text className="text-center font-medium text-lg">Fortsett</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
