@@ -6,3 +6,7 @@ export type RegisterFormData = {
   password: string;
   confirmPassword: string;
 };
+
+export type RequestFormData = {
+  requestType: "shipping" | "delivery";
+};

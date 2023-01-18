@@ -11,6 +11,7 @@ import {
   View,
   Image,
 } from "react-native";
+import { axiosInstance } from "../lib/axios-instance";
 
 type Conversation = {
   id: number;
@@ -30,18 +31,8 @@ export const ChatScreen = () => {
   useFocusEffect(
     useCallback(() => {
       console.log("FOCUS");
-      AsyncStorage.getItem("plug:access_token").then((idToken) => {
-        fetch(`${API_URL}/conversations/getAll`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${idToken}`,
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            setConversations(data);
-          });
+      axiosInstance.get<Conversation[]>("/conversations/getAll").then((res) => {
+        setConversations(res.data);
       });
     }, [])
   );
