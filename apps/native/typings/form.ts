@@ -9,4 +9,8 @@ export type RegisterFormData = {
 
 export type RequestFormData = {
   requestType: "shipping" | "delivery";
+  title: string;
+  description: string;
+  place: string;
+  phoneNumber: string;
 };

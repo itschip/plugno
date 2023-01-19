@@ -13,7 +13,8 @@
     },
     "extra": {
       "apiUrl": "http://192.168.10.139:6001",
-      "websocketUrl": "192.168.10.139:6001"
+      "websocketUrl": "192.168.10.139:6001",
+      "googlePlacesApi": "AIzaSyBaaMi-LR-PaEW_IrD0YYB0thBJzYBDxJI"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

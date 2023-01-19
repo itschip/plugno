@@ -1,19 +1,15 @@
 import { useEffect } from "react";
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ViewComponent,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useDebounce } from "../../hooks/useDebounce";
 import { PlacesResponse } from "../../typings/gcp";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useState } from "react";
-
-const API_KEY = "";
+import { RequestFormData } from "@typings/form";
+import { InputController } from "../../forms/InputController";
+import { GOOGLE_PLACES_API } from "@utils/env";
+import { axiosInstance } from "../../lib/axios-instance";
 
 export const DetailsFrom = () => {
   const [title, setTitle] = useState<string>("");
@@ -29,7 +25,7 @@ export const DetailsFrom = () => {
   useEffect(() => {
     (async () => {
       const res = await fetch(
-        `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${debouncedPlace}&key=${API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${debouncedPlace}&key=${GOOGLE_PLACES_API}`
       );
 
       const response = await res.json();
@@ -50,32 +46,21 @@ export const DetailsFrom = () => {
   };
 
   const handleCreateJob = async () => {
-    fetch("http://localhost:6001/jobs/newPlugJob", {
-      method: "POST",
-      body: JSON.stringify({
-        title,
-        description,
-        place,
-        phoneNumber,
-        userId: user?.id,
-      }),
+    axiosInstance.post("/jobs/newPlugJob", {
+      title,
+      description,
+      place,
+      phoneNumber,
+      userId: user?.id,
     });
   };
 
   return (
     <View className="mt-4 px-4 space-y-4">
-      {/*<TextInput
-          value={title}
-          onChangeText={setTitle}
-          className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
-          placeholder="Tittel"
-          placeholderTextColor="darkgray"
-        />*/}
-      <TextInput
-        value={description}
-        onChangeText={setDescription}
+      <InputController<RequestFormData>
+        name="description"
         multiline
-        className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px] h-32"
+        className="px-3 py-4 bg-gray-100 border border-gray-200 rounded-md text-[16px] h-32"
         placeholder="Beskrivelse"
       />
 
@@ -83,20 +68,20 @@ export const DetailsFrom = () => {
         <TextInput
           value={place}
           onChangeText={handlePlaceText}
-          className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
+          className="px-3 py-4 bg-gray-100 border border-gray-200 rounded-md text-[16px]"
           placeholder="Sted"
         />
         <View>
           {suggestions?.predictions.length !== 0 && open && (
-            <View className="bg-gray-100 border border-gray-400 w-full mt-1 rounded-md shadow-xs absolute">
+            <View className="bg-gray-100 border border-gray-200 w-full mt-1 rounded-md shadow-xs absolute">
               {suggestions?.predictions.map((place) => (
                 <TouchableOpacity
                   key={place.description}
                   onPress={() => handleChangePlace(place.description)}
-                  className="px-2 py-3 border-b border-gray-400 flex flex-row space-x-2 items-center"
+                  className="px-2 py-3 border-b border-gray-200 flex flex-row space-x-2 items-center"
                 >
-                  <Feather name="map-pin" size={20} color="gray" />
-                  <Text className="text-md font-medium">
+                  <Feather name="map-pin" size={20} color="#64748b" />
+                  <Text className="text-md text-slate-500 font-medium">
                     {place.description}
                   </Text>
                 </TouchableOpacity>
@@ -106,11 +91,10 @@ export const DetailsFrom = () => {
         </View>
       </View>
 
-      <TextInput
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        className="px-3 py-4 bg-gray-100 border border-gray-300 rounded-md text-[16px]"
+      <InputController<RequestFormData>
         placeholder="Telefonnummer"
+        name="phoneNumber"
+        className="px-3 py-4 bg-gray-100 border border-gray-200 rounded-md text-[16px]"
       />
 
       <View>

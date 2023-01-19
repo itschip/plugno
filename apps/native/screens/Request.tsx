@@ -3,6 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { RequestFormData } from "@typings/form";
 import { RequstTypeForm } from "@components/request/RequestTypeForm";
 import { Ionicons } from "@expo/vector-icons";
+import { DetailsFrom } from "@components/request/DetailsForm";
 
 export const RequestScreen = () => {
   const methods = useForm<RequestFormData>({
@@ -12,15 +13,16 @@ export const RequestScreen = () => {
   });
 
   return (
-    <SafeAreaView className="bg-white flex-1">
+    <SafeAreaView className="bg-white flex-1 relative">
       <View className="px-4">
         <Text className="text-slate-500 text-2xl font-bold">Ny jobb</Text>
       </View>
       <RequestStepper />
       <FormProvider {...methods}>
-        <RequstTypeForm />
+        {/*<RequstTypeForm />*/}
+        <DetailsFrom />
       </FormProvider>
-      <View className="mt-10 px-4">
+      <View className="mt-10 px-4 absolute bottom-10 left-0 right-0">
         <TouchableOpacity className="bg-gray-100 py-2 rounded-md">
           <Text className="text-center font-medium text-lg">Fortsett</Text>
         </TouchableOpacity>
