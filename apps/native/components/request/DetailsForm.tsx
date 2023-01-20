@@ -3,24 +3,20 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useDebounce } from "../../hooks/useDebounce";
 import { PlacesResponse } from "../../typings/gcp";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 import { useState } from "react";
 import { RequestFormData } from "@typings/form";
 import { InputController } from "../../forms/InputController";
 import { GOOGLE_PLACES_API } from "@utils/env";
-import { axiosInstance } from "../../lib/axios-instance";
+import { useFormContext } from "react-hook-form";
 
 export const DetailsFrom = () => {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
   const [place, setPlace] = useState<string>("");
   const [suggestions, setSuggestions] = useState<PlacesResponse | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
 
-  const user = useSelector((state: RootState) => state.auth.user);
   const debouncedPlace = useDebounce(place, 500);
+
+  const { setValue } = useFormContext<RequestFormData>();
 
   useEffect(() => {
     (async () => {
@@ -35,28 +31,26 @@ export const DetailsFrom = () => {
 
   const handleChangePlace = (place: string) => {
     setPlace(place);
+    setValue("place", place);
     setOpen(false);
   };
 
   const handlePlaceText = (value: string) => {
     setPlace(value);
+    setValue("place", value);
     if (value.trim()) {
       setOpen(true);
     }
   };
 
-  const handleCreateJob = async () => {
-    axiosInstance.post("/jobs/newPlugJob", {
-      title,
-      description,
-      place,
-      phoneNumber,
-      userId: user?.id,
-    });
-  };
-
   return (
     <View className="mt-4 px-4 space-y-4">
+      <InputController<RequestFormData>
+        placeholder="Tittel"
+        name="title"
+        className="px-3 py-4 bg-gray-100 border border-gray-200 rounded-md text-[16px]"
+      />
+
       <InputController<RequestFormData>
         name="description"
         multiline
@@ -96,17 +90,6 @@ export const DetailsFrom = () => {
         name="phoneNumber"
         className="px-3 py-4 bg-gray-100 border border-gray-200 rounded-md text-[16px]"
       />
-
-      <View>
-        <TouchableOpacity
-          onPress={handleCreateJob}
-          className="px-2 py-3 bg-black rounded-md"
-        >
-          <Text className="text-white font-bold text-lg text-center">
-            Legg ut jobb
-          </Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

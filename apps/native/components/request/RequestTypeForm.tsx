@@ -35,6 +35,7 @@ export const RequstTypeForm = () => {
     <View className="px-4 pt-10 space-y-4">
       {requestOptions.map((option) => (
         <TouchableOpacity
+          activeOpacity={1}
           key={option.id}
           onPress={() => setValue("requestType", option.type)}
           className={classes(

@@ -1,6 +1,7 @@
 package jobs
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"plugno-api/auth"
@@ -10,16 +11,25 @@ import (
 )
 
 func (handler *JobsHandler) NewPlugJob(ctx *gin.Context) {
-	var plugJobReq models.PlugJobObject
+	var plugJobReq models.NewPlugJObObject
 
 	err := ctx.ShouldBindJSON(&plugJobReq)
 	if err != nil {
 		log.Println(err.Error())
-		ctx.Writer.WriteHeader(http.StatusBadRequest)
+		ctx.JSON(http.StatusBadRequest, fmt.Sprintf("Failed to create plug job. Error:  %s", err.Error()))
 		return
 	}
 
-	handler.jobModel.CreatePlugJob(&plugJobReq)
+	err = handler.jobModel.CreatePlugJob(&plugJobReq)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, fmt.Sprintf("Failed to create plug job. Error:  %s", err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, map[string]bool{
+		"isSuccess": true,
+	})
 }
 
 func (handler *JobsHandler) GetAllPlugJobs(ctx *gin.Context) {

@@ -45,6 +45,15 @@ type PlugJobObject struct {
 	Avatar      string `json:"avatar"`
 }
 
+type NewPlugJObObject struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Place       string `json:"place"`
+	UserID      int    `json:"userId"`
+	PhoneNumber string `json:"phoneNumber"`
+	RequestType string `json:"requestType"`
+}
+
 type PlugAcceptObject struct {
 	JobID  int `json:"jobId"`
 	PlugID int `json:"plugId"`
@@ -127,7 +136,7 @@ func (jm *JobModel) Create(jobObject *JobObject) error {
 	return nil
 }
 
-func (model *JobModel) CreatePlugJob(jobObject *PlugJobObject) error {
+func (model *JobModel) CreatePlugJob(jobObject *NewPlugJObObject) error {
 	query := `INSERT INTO plug_jobs (title, description, place, phone_number) VALUES (?, ?, ?, ?)`
 
 	_, err := model.DB.Exec(query, jobObject.Title, jobObject.Description, jobObject.Place, jobObject.PhoneNumber)
