@@ -42,11 +42,13 @@ importers:
       expo-device: ~5.0.0
       expo-notifications: ~0.17.0
       expo-status-bar: ~1.4.2
+      i18next: ^22.4.9
       jwt-decode: ^3.1.2
       nativewind: ^2.0.11
       react: 18.1.0
       react-dom: 18.1.0
       react-hook-form: ^7.40.0
+      react-i18next: ^12.1.4
       react-native: 0.70.5
       react-native-safe-area-context: 4.4.1
       react-native-screens: ~3.18.0
@@ -68,11 +70,13 @@ importers:
       expo-device: 5.0.0_expo@47.0.8
       expo-notifications: 0.17.0_expo@47.0.8
       expo-status-bar: 1.4.2
+      i18next: 22.4.9
       jwt-decode: 3.1.2
       nativewind: 2.0.11_f3xea42f6zrwqyr5c6mbkdauxa
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-hook-form: 7.40.0_react@18.1.0
+      react-i18next: 12.1.4_vs42nc5a2zne2fuf76h7qaykcy
       react-native: 0.70.5_naleetjjl2tr2dal5iyxdlhv3y
       react-native-safe-area-context: 4.4.1_tj3nonr5gneraukzjkxpsiy7yu
       react-native-screens: 3.18.2_tj3nonr5gneraukzjkxpsiy7yu
@@ -1837,6 +1841,16 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
+  /@babel/runtime/7.20.7:
+    resolution:
+      {
+        integrity: sha512-UF0tvkUtxwAgZ5W/KrkHf0Rn0fdnLDU9ScxBrEVNUprE/MzirjK4MJUX1/BVDv00Sv8cljtukVK1aky++X1SjQ==,
+      }
+    engines: { node: ">=6.9.0" }
+    dependencies:
+      regenerator-runtime: 0.13.11
+    dev: false
+
   /@babel/template/7.18.10:
     resolution:
       {
@@ -2192,7 +2206,7 @@ packages:
       }
     hasBin: true
     dependencies:
-      "@babel/runtime": 7.20.1
+      "@babel/runtime": 7.20.7
       "@expo/code-signing-certificates": 0.0.5
       "@expo/config": 7.0.3
       "@expo/config-plugins": 5.0.4
@@ -7556,6 +7570,15 @@ packages:
       lru-cache: 6.0.0
     dev: true
 
+  /html-parse-stringify/3.0.1:
+    resolution:
+      {
+        integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==,
+      }
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
   /http-errors/1.7.2:
     resolution:
       {
@@ -7627,6 +7650,15 @@ packages:
       {
         integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==,
       }
+    dev: false
+
+  /i18next/22.4.9:
+    resolution:
+      {
+        integrity: sha512-8gWMmUz460KJDQp/ob3MNUX84cVuDRY9PLFPnV8d+Qezz/6dkjxwOaH70xjrCNDO+JrUL25iXfAIN9wUkInNZw==,
+      }
+    dependencies:
+      "@babel/runtime": 7.20.7
     dev: false
 
   /iconv-lite/0.4.24:
@@ -9282,7 +9314,7 @@ packages:
         integrity: sha512-3MhvDKfxMg2u7dmTdpFOfdR71NgNNo4tzAyJumDVQKwnHYHN44f2QFZQqpPBEmqhWlojNeOxsqFsjYgeyMx6VA==,
       }
     dependencies:
-      "@babel/runtime": 7.20.1
+      "@babel/runtime": 7.20.7
       react-refresh: 0.4.3
     dev: false
 
@@ -11063,6 +11095,30 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-i18next/12.1.4_vs42nc5a2zne2fuf76h7qaykcy:
+    resolution:
+      {
+        integrity: sha512-XQND7jYtgM7ht5PH3yIZljCRpAMTlH/zmngM9ZjToqa+0BR6xuu8c7QF0WIIOEjcMTB2S3iOfpN/xG/ZrAnO6g==,
+      }
+    peerDependencies:
+      i18next: ">= 19.0.0"
+      react: ">= 16.8.0"
+      react-dom: "*"
+      react-native: "*"
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      "@babel/runtime": 7.20.7
+      html-parse-stringify: 3.0.1
+      i18next: 22.4.9
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      react-native: 0.70.5_naleetjjl2tr2dal5iyxdlhv3y
+    dev: false
+
   /react-is/16.13.1:
     resolution:
       {
@@ -11474,7 +11530,7 @@ packages:
         integrity: sha512-knzmNAcuyxV+gQCufkYcvOqX/qIIfHLv0u5x79kRxuGojfYVky1f15TzZEu2Avte8QGepvUNTnLskf8E6X6Vyg==,
       }
     dependencies:
-      "@babel/runtime": 7.20.1
+      "@babel/runtime": 7.20.7
     dev: false
 
   /regex-not/1.0.2:
@@ -13508,6 +13564,14 @@ packages:
       {
         integrity: sha512-gQpnTgkubC6hQgdIcRdYGDSDc+SaujOdyesZQMv6JlfQee/9Mp0Qhnys6WxDWvQnL5WZdT7o2Ul187aSt0Rq+w==,
       }
+    dev: false
+
+  /void-elements/3.1.0:
+    resolution:
+      {
+        integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==,
+      }
+    engines: { node: ">=0.10.0" }
     dev: false
 
   /walker/1.0.8:

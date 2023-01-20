@@ -1,12 +1,4 @@
-import {
-  Text,
-  SafeAreaView,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Text, SafeAreaView, View, Dimensions, ScrollView } from "react-native";
 
 export const Home = () => {
   const screenWidth = Dimensions.get("window").width;
