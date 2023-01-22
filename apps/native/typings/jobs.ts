@@ -28,3 +28,15 @@ export type TActiveJob = {
 export type TJobsState = {
   plugs: TPlugJobResponse[] | null;
 };
+
+export type TAcceptedJob = {
+  jobId: number;
+  plugId: number;
+  status: string;
+  updatedAt: string;
+  createdAt: string;
+  userId: number;
+  title: string;
+  requestType: string;
+  plugAvatar: string;
+};

@@ -45,7 +45,19 @@ type PlugJobObject struct {
 	Avatar      string `json:"avatar"`
 }
 
-type NewPlugJObObject struct {
+type AcceptedJobObject struct {
+	JobID       int    `json:"jobId"`
+	PlugID      int    `json:"plugId"`
+	Status      string `json:"status"`
+	UpdatedAt   string `json:"updatedAt"`
+	CreatedAt   string `json:"createdAt"`
+	UserID      int    `json:"userId"`
+	Title       string `json:"title"`
+	RequestType string `json:"requestType"`
+	PlugAvatar  string `json:"plugAvatar"`
+}
+
+type NewPlugJobObject struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Place       string `json:"place"`
@@ -136,10 +148,10 @@ func (jm *JobModel) Create(jobObject *JobObject) error {
 	return nil
 }
 
-func (model *JobModel) CreatePlugJob(jobObject *NewPlugJObObject) error {
-	query := `INSERT INTO plug_jobs (title, description, place, phone_number) VALUES (?, ?, ?, ?)`
+func (model *JobModel) CreatePlugJob(jobObject *NewPlugJobObject) error {
+	query := `INSERT INTO plug_jobs (title, description, place, phone_number, user_id, request_type) VALUES (?, ?, ?, ?, ?, ?)`
 
-	_, err := model.DB.Exec(query, jobObject.Title, jobObject.Description, jobObject.Place, jobObject.PhoneNumber)
+	_, err := model.DB.Exec(query, jobObject.Title, jobObject.Description, jobObject.Place, jobObject.PhoneNumber, jobObject.UserID, jobObject.RequestType)
 	if err != nil {
 		return err
 	}
@@ -215,4 +227,40 @@ func (model *JobModel) GetActiveJob(jobId int) (*ActiveJobObject, error) {
 	}
 
 	return &activeJob, nil
+}
+
+func (model *JobModel) FindAllAcceptedJobs(userId int) ([]AcceptedJobObject, error) {
+	query := `select aj.job_id,
+       aj.plug_id,
+       aj.status,
+       aj.updated_at,
+       aj.created_at,
+       pj.user_id,
+       pj.title,
+       pj.request_type,
+       u.avatar as plugAvatar
+        from accepted_jobs aj
+             join plug_jobs pj on aj.job_id = pj.id
+            join users u on aj.plug_id = u.id
+        where pj.user_id = ?
+    `
+
+	var acceptedJobObject AcceptedJobObject
+
+	rows, err := model.DB.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	acceptedJobs := []AcceptedJobObject{}
+	for rows.Next() {
+		err := rows.Scan(&acceptedJobObject.JobID, &acceptedJobObject.PlugID, &acceptedJobObject.Status, &acceptedJobObject.UpdatedAt, &acceptedJobObject.CreatedAt, &acceptedJobObject.UserID, &acceptedJobObject.Title, &acceptedJobObject.RequestType, &acceptedJobObject.PlugAvatar)
+		if err != nil {
+			return nil, err
+		}
+
+		acceptedJobs = append(acceptedJobs, acceptedJobObject)
+	}
+
+	return acceptedJobs, nil
 }

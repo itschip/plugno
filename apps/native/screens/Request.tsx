@@ -21,11 +21,14 @@ export const RequestScreen = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const handleSubmit = async (data: RequestFormData) => {
+    console.log(data);
     if (user) {
-      await axiosInstance.post("/jobs/newPlugJob", {
-        ...data,
-        userId: user.id,
-      });
+      axiosInstance
+        .post("/jobs/newPlugJob", {
+          ...data,
+          userId: user.id,
+        })
+        .catch((err) => console.log("ERROR:", err.response.data));
     }
   };
 

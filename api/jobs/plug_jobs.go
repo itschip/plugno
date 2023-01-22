@@ -11,7 +11,7 @@ import (
 )
 
 func (handler *JobsHandler) NewPlugJob(ctx *gin.Context) {
-	var plugJobReq models.NewPlugJObObject
+	var plugJobReq models.NewPlugJobObject
 
 	err := ctx.ShouldBindJSON(&plugJobReq)
 	if err != nil {
@@ -20,10 +20,12 @@ func (handler *JobsHandler) NewPlugJob(ctx *gin.Context) {
 		return
 	}
 
+	fmt.Println(plugJobReq)
+
 	err = handler.jobModel.CreatePlugJob(&plugJobReq)
 	if err != nil {
 		log.Println(err.Error())
-		ctx.JSON(http.StatusInternalServerError, fmt.Sprintf("Failed to create plug job. Error:  %s", err.Error()))
+		ctx.JSON(http.StatusInternalServerError, "Failed to create plug job")
 		return
 	}
 
@@ -71,7 +73,29 @@ func (handler *JobsHandler) AcceptPlugJob(ctx *gin.Context) {
 		return
 	}
 
+	// TODO: Send push notification to user that plug job has been accepted
+
 	ctx.JSON(http.StatusOK, nil)
+}
+
+func (handler *JobsHandler) GetAllAcceptedJobs(ctx *gin.Context) {
+	cookie, err := auth.GetTokenFromRequest(ctx)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusUnauthorized, "Failed to find token")
+		return
+	}
+
+	claims := auth.GetUserFromCookie(cookie)
+
+	plugJobs, err := handler.jobModel.FindAllAcceptedJobs(claims.ID)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, "Failed to find accepted plug jobs")
+		return
+	}
+
+	ctx.JSON(http.StatusOK, plugJobs)
 }
 
 func (handler *JobsHandler) GetActiveJob(ctx *gin.Context) {

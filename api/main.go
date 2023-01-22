@@ -78,6 +78,7 @@ func main() {
 		authorized.POST("/jobs/new", jobsHandler.New)
 		authorized.GET("/jobs/getOne", jobsHandler.GetOne)
 		authorized.GET("/conversations/getAll", chatHandler.FindConversations)
+		authorized.GET("/jobs/getAcceptedPlugJobs", jobsHandler.GetAllAcceptedJobs)
 	}
 
 	router.Run(":6001")
