@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   SafeAreaView,
   View,
@@ -8,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import i18n from "../i18n";
 import { Dispatch, RootState } from "../store";
 
 export const Profile = () => {
@@ -16,8 +18,14 @@ export const Profile = () => {
 
   const [plugEnabled, setPlugEnabled] = useState(role === "plug");
 
+  const [t] = useTranslation();
+
   const handleRoleChange = () => {
     setPlugEnabled((prev) => !prev);
+  };
+
+  const handleChangeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
   };
 
   const handleLogOut = async () => {
@@ -34,12 +42,14 @@ export const Profile = () => {
   return (
     <SafeAreaView className="bg-white flex-1 relative">
       <View className="px-4">
-        <Text className="text-slate-500 text-3xl font-extrabold">Profil</Text>
+        <Text className="text-slate-500 text-3xl font-extrabold">
+          {t("PROFILE.PROFILE")}
+        </Text>
       </View>
       <View className="mt-8 px-4 space-y-4">
         <View>
           <Text className="mb-2 text-slate-400 font-semibold text-xl">
-            Brukernavn
+            {t("PROFILE.USERNAME")}
           </Text>
           <View className="bg-gray-100 border border-gray-200 px-2 py-3 rounded-md">
             <Text className="font-semibold text-slate-500 text-lg">
@@ -50,7 +60,7 @@ export const Profile = () => {
 
         <View>
           <Text className="mb-2 text-slate-400 font-semibold text-xl">
-            E-post
+            {t("PROFILE.EMAIL")}
           </Text>
           <View className="bg-gray-100 border border-gray-200 px-2 py-3 rounded-md">
             <Text className="font-semibold text-slate-500 text-md text-lg">
@@ -70,6 +80,19 @@ export const Profile = () => {
           value={plugEnabled}
           onValueChange={handleRoleChange}
         />
+      </View>
+
+      <View className="px-4 mt-2">
+        <Text className="mb-2 text-slate-400 font-semibold text-xl">
+          {t("PROFILE.CHANGE_LANGUAGE")}
+        </Text>
+
+        <TouchableOpacity onPress={() => handleChangeLanguage("en")}>
+          <Text>EN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleChangeLanguage("no")}>
+          <Text>NO</Text>
+        </TouchableOpacity>
       </View>
 
       <View className="px-4 mt-4 absolute bottom-10 right-0 left-0">

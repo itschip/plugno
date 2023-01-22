@@ -1,0 +1,19 @@
+{
+  "translation": {
+    "HOME": {
+      "FIND_A_PLUG": "Finn en plug",
+      "ASK_FOR_HELP": "Be om hjelp",
+      "FEATURED_PLUGS": "Populære plugs"
+    },
+    "PROFILE": {
+      "PROFILE": "Profil",
+      "MY_PLUGS": "Mine plugs",
+      "MY_REVIEWS": "Mine anmeldelser",
+      "MY_SETTINGS": "Mine instillinger",
+      "USERNAME": "Brukernavn",
+      "EMAIL": "E-post",
+      "CHANGE_ROLE": "Endre rolle",
+      "CHANGE_LANGUAGE": "Endre språk"
+    }
+  }
+}

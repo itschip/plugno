@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Text, SafeAreaView, View, Dimensions, ScrollView } from "react-native";
 
 export const Home = () => {
@@ -5,6 +6,8 @@ export const Home = () => {
 
   const numCols = 2;
   const tileSize = screenWidth / numCols - 15;
+
+  const [t] = useTranslation();
 
   return (
     <SafeAreaView className="bg-white flex-1">
@@ -14,7 +17,7 @@ export const Home = () => {
           className="bg-black h-48 rounded-lg relative"
         >
           <Text className="absolute text-white font-bold bottom-2 right-2 text-2xl">
-            Finn en Plug
+            {t("HOME.FIND_A_PLUG")}
           </Text>
         </View>
 
@@ -23,12 +26,12 @@ export const Home = () => {
           className="bg-gray-400 h-48 rounded-lg relative"
         >
           <Text className="absolute text-gray-100 font-bold bottom-2 right-2 text-2xl">
-            Be om hjelp
+            {t("HOME.ASK_FOR_HELP")}
           </Text>
         </View>
       </View>
       <View className="px-2 mt-4">
-        <Text className="text-2xl font-bold">Populære Plugs</Text>
+        <Text className="text-2xl font-bold">{t("HOME.FEATURED_PLUGS")}</Text>
         <ScrollView horizontal></ScrollView>
       </View>
     </SafeAreaView>

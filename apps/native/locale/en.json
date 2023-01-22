@@ -1,5 +1,19 @@
 {
   "translation": {
-    "HEADING_TITLE": "My Heading"
+    "HOME": {
+      "FIND_A_PLUG": "Find a plug",
+      "ASK_FOR_HELP": "Ask for help",
+      "FEATURED_PLUGS": "Featured plugs"
+    },
+    "PROFILE": {
+      "PROFILE": "Profile",
+      "MY_PLUGS": "My plugs",
+      "MY_REVIEWS": "My reviews",
+      "MY_SETTINGS": "My settings",
+      "USERNAME": "Username",
+      "EMAIL": "Email",
+      "CHANGE_ROLE": "Change role",
+      "CHANGE_LANGUAGE": "Change language"
+    }
   }
 }
