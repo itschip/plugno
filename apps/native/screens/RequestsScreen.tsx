@@ -14,20 +14,19 @@ export const AcceptedJobsScreen = () => {
     axiosInstance
       .get<TAcceptedJob[]>("/jobs/getAcceptedPlugJobs")
       .then((res) => {
-        console.log(res.data);
         setAcceptedJobs(res.data);
       });
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1 bg-white">
       <View className="px-2 flex flex-row items-center space-x-4">
         <TouchableOpacity onPress={navigation.goBack}>
           <Ionicons name="close" size={30} color={"black"} />
         </TouchableOpacity>
       </View>
 
-      <View className="mt-6">
+      <View className="mt-4">
         <RequestList data={acceptedJobs} />
       </View>
     </SafeAreaView>

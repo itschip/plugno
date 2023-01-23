@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Stepper } from "@components/auth/Stepper";
@@ -13,8 +13,6 @@ export const RegisterScreen = () => {
     defaultValues: { role: "plug" },
   });
   const navigation = useNavigation();
-
-  const role = methods.watch("role");
 
   return (
     <SafeAreaView className="bg-white flex-1">

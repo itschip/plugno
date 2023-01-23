@@ -16,12 +16,23 @@ export type RootStackParamList = {
 
 export type HomeStackParamList = {
   Hero: undefined;
-  ActiveJobs: undefined;
+  Requests: undefined;
 };
+
+export type RequestStackParamList = {
+  RequestList: undefined;
+  ActiveRequest: undefined;
+  RequestSummary: {
+    id: number;
+  };
+};
+
+export type RequestStackNavigationProp =
+  NativeStackNavigationProp<RequestStackParamList>;
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
-  "ActiveJobs"
+  "Requests"
 >;
 
 export type ChatStackParamList = {

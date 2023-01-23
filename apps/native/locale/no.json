@@ -13,7 +13,10 @@
       "USERNAME": "Brukernavn",
       "EMAIL": "E-post",
       "CHANGE_ROLE": "Endre rolle",
-      "CHANGE_LANGUAGE": "Endre språk"
+      "CHANGE_LANGUAGE": "Endre språk",
+      "ACTIONS": {
+        "LOGOUT": "Logg ut"
+      }
     }
   }
 }

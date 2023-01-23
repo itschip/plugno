@@ -13,7 +13,10 @@
       "USERNAME": "Username",
       "EMAIL": "Email",
       "CHANGE_ROLE": "Change role",
-      "CHANGE_LANGUAGE": "Change language"
+      "CHANGE_LANGUAGE": "Change language",
+      "ACTIONS": {
+        "LOGOUT": "Logout"
+      }
     }
   }
 }

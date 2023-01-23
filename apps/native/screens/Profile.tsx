@@ -101,7 +101,7 @@ export const Profile = () => {
           onPress={handleLogOut}
         >
           <Text className="text-red-800 font-medium text-center text-md">
-            Logg ut
+            {t("PROFILE.ACTIONS.LOGOUT")}
           </Text>
         </TouchableOpacity>
       </View>

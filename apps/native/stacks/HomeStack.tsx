@@ -4,7 +4,7 @@ import { Home } from "../screens/Home";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenNavigationProp } from "@typings/navigation";
-import { AcceptedJobsScreen } from "@screens/RequestsScreen";
+import { RequestsStack } from "./RequestStack";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +23,7 @@ export const HomeStack = () => {
             <View className="flex flex-row space-x-2 items-center">
               <View className="relative inline-block">
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("ActiveJobs")}
+                  onPress={() => navigation.navigate("Requests")}
                 >
                   <Ionicons name="flash" size={30} color="black" />
                 </TouchableOpacity>
@@ -37,9 +37,9 @@ export const HomeStack = () => {
         }}
       />
       <Stack.Screen
+        name="Requests"
+        component={RequestsStack}
         options={{ animation: "slide_from_bottom", headerShown: false }}
-        name="ActiveJobs"
-        component={AcceptedJobsScreen}
       />
     </Stack.Navigator>
   );
