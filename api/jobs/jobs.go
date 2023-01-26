@@ -2,7 +2,6 @@ package jobs
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"plugno-api/models"
 	"plugno-api/structs"
@@ -30,11 +29,11 @@ func NewJobsHandler(s *structs.Server) *JobsHandler {
 }
 
 func (handler *JobsHandler) New(c *gin.Context) {
+	var err error
 	var jobReq JobReq
-	err := c.ShouldBindJSON(&jobReq)
+	err = c.ShouldBindJSON(&jobReq)
 	if err != nil {
-		log.Println(err.Error())
-		c.Writer.WriteHeader(http.StatusBadRequest)
+		c.JSON(http.StatusBadRequest, "Missing fields to create job")
 		return
 	}
 
@@ -46,13 +45,21 @@ func (handler *JobsHandler) New(c *gin.Context) {
 		AskingPrice:      jobReq.AskingPrice,
 	}
 
-	handler.jobModel.Create(&jobObject)
+	err = handler.jobModel.Create(&jobObject)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "Failed to create job")
+		return
+	}
 
 	c.JSON(200, "Created job")
 }
 
 func (handler *JobsHandler) GetAll(c *gin.Context) {
-	jobs := handler.jobModel.FindAll()
+	jobs, err := handler.jobModel.FindAll()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "Failed to find jobs")
+		return
+	}
 
 	c.JSON(200, jobs)
 }
@@ -66,6 +73,10 @@ func (handler *JobsHandler) GetOne(c *gin.Context) {
 	}
 
 	job, err := handler.jobModel.FindOne(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "Failed to find job")
+		return
+	}
 
 	c.JSON(200, job)
 }
