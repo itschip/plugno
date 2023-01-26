@@ -72,15 +72,16 @@ type PlugAcceptObject struct {
 }
 
 type ActiveJobObject struct {
-	ID          int    `json:"id"`
-	JobID       int    `json:"jobId"`
-	CreatedAt   string `json:"createdAt"`
-	UpdatedAt   string `json:"updatedAt"`
-	Status      string `json:"status"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Username    string `json:"username"`
-	Avatar      string `json:"avatar"`
+	ID            int    `json:"id"`
+	JobID         int    `json:"jobId"`
+	CreatedAt     string `json:"createdAt"`
+	UpdatedAt     string `json:"updatedAt"`
+	Status        string `json:"status"`
+	Title         string `json:"title"`
+	Description   string `json:"description"`
+	Username      string `json:"username"`
+	Avatar        string `json:"avatar"`
+	RequestStatus string `json:"requestStatus"`
 }
 
 type JobModel struct {
@@ -107,7 +108,7 @@ func (model *JobModel) FindOne(id int64) (Job, error) {
 	return job, nil
 }
 
-func (jm *JobModel) FindAll() []Job {
+func (jm *JobModel) FindAll() ([]Job, error) {
 	query := `SELECT title, 
                      id,
                      description,
@@ -119,11 +120,12 @@ func (jm *JobModel) FindAll() []Job {
               FROM jobs ORDER BY createdAt DESC`
 
 	res, err := jm.DB.Query(query)
-	defer res.Close()
-
 	if err != nil {
 		log.Printf("Failed to find all jobs. Error: %s", err)
+		return nil, err
 	}
+
+	defer res.Close()
 
 	jobs := []Job{}
 	for res.Next() {
@@ -131,11 +133,12 @@ func (jm *JobModel) FindAll() []Job {
 		err := res.Scan(&job.Title, &job.ID, &job.Description, &job.ShortDescription, &job.AskingPrice, &job.UserID, &job.CreatedAt, &job.LocationName)
 		if err != nil {
 			log.Printf("Failed to scan jobs. Error: %s", err)
+			return nil, err
 		}
 		jobs = append(jobs, job)
 	}
 
-	return jobs
+	return jobs, nil
 }
 
 func (jm *JobModel) Create(jobObject *JobObject) error {
@@ -204,6 +207,7 @@ func (model *JobModel) GetActiveJob(jobId int) (*ActiveJobObject, error) {
        aj.status,
        pj.title,
        pj.description,
+       aj.request_status,
        u.username,
        u.avatar
     from accepted_jobs aj
@@ -219,6 +223,7 @@ func (model *JobModel) GetActiveJob(jobId int) (*ActiveJobObject, error) {
 		&activeJob.Status,
 		&activeJob.Title,
 		&activeJob.Description,
+		&activeJob.RequestStatus,
 		&activeJob.Username,
 		&activeJob.Avatar,
 	)

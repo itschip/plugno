@@ -37,11 +37,33 @@ const REQUEST_STATUS: Record<string, any> = {
 
 export const RequestList: React.FC<RequestListProps> = ({ data }) => {
   return (
-    <FlatList
-      data={data}
-      renderItem={renderItem}
-      contentContainerStyle={{ paddingHorizontal: 14 }}
-    />
+    <View>
+      {data?.some((job) => job.status === "active") && (
+        <>
+          <View className="px-4 mb-2 flex flex-row">
+            <Text className="font-medium text-slate-500 text-lg">
+              Active jobs
+            </Text>
+          </View>
+          <FlatList
+            data={data?.filter((job) => job.status === "active")}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingHorizontal: 14 }}
+          />
+        </>
+      )}
+
+      <View className="px-4 mb-2 mt-4 flex flex-row">
+        <Text className="font-medium text-slate-500 text-lg">
+          Previous jobs
+        </Text>
+      </View>
+      <FlatList
+        data={data?.filter((job) => job.status !== "active")}
+        renderItem={renderItem}
+        contentContainerStyle={{ paddingHorizontal: 14 }}
+      />
+    </View>
   );
 };
 

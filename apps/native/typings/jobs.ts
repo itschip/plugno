@@ -17,12 +17,16 @@ export type TActiveJob = {
   updatedAt: string;
   status: string;
   tracking_status: {
-    [key: string]: boolean;
+    accepted: boolean;
+    in_transit: boolean;
+    active: boolean;
+    completed: boolean;
   };
   title: string;
   description: string;
   username: string;
   avatar: string;
+  requestStatus: string;
 };
 
 export type TJobsState = {
