@@ -9,7 +9,7 @@ i18n.use(initReactI18next).init({
     en: en,
     no: no,
   },
-  lng: "en",
+  lng: "no",
 });
 
 export default i18n;

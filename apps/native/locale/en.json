@@ -17,6 +17,13 @@
       "ACTIONS": {
         "LOGOUT": "Logout"
       }
+    },
+    "REQUEST_WIZARD": {
+      "NEW_JOB": "New job",
+      "SHIPPING_TYPE": "Shipping",
+      "SHIPPING_TYPE_SLOGAN": "Help with shipping stuff from A to B",
+      "DELIVERY_TYPE": "ASAP",
+      "DELIVERY_TYPE_SLOGAN": "Need to help to fix something ASAP"
     }
   }
 }

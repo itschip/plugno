@@ -17,6 +17,13 @@
       "ACTIONS": {
         "LOGOUT": "Logg ut"
       }
+    },
+    "REQUEST_WIZARD": {
+      "NEW_JOB": "Ny jobb",
+      "SHIPPING_TYPE": "Frakt",
+      "SHIPPING_TYPE_SLOGAN": "Hjelp med å frakte ting fra A til B",
+      "DELIVERY_TYPE": "Jeg trenger noe kjapt",
+      "DELIVERY_TYPE_SLOGAN": "Hjelp med å fikse noe ASAP"
     }
   }
 }

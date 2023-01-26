@@ -1,3 +1,4 @@
+import { UserDetails } from "@components/profile/UserDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +14,7 @@ import i18n from "../i18n";
 import { Dispatch, RootState } from "../store";
 
 export const Profile = () => {
-  const { user, role } = useSelector((state: RootState) => state.auth);
+  const { role } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<Dispatch>();
 
   const [plugEnabled, setPlugEnabled] = useState(role === "plug");
@@ -46,29 +47,8 @@ export const Profile = () => {
           {t("PROFILE.PROFILE")}
         </Text>
       </View>
-      <View className="mt-8 px-4 space-y-4">
-        <View>
-          <Text className="mb-2 text-slate-400 font-semibold text-xl">
-            {t("PROFILE.USERNAME")}
-          </Text>
-          <View className="bg-gray-100 border border-gray-200 px-2 py-3 rounded-md">
-            <Text className="font-semibold text-slate-500 text-lg">
-              {user?.username}
-            </Text>
-          </View>
-        </View>
 
-        <View>
-          <Text className="mb-2 text-slate-400 font-semibold text-xl">
-            {t("PROFILE.EMAIL")}
-          </Text>
-          <View className="bg-gray-100 border border-gray-200 px-2 py-3 rounded-md">
-            <Text className="font-semibold text-slate-500 text-md text-lg">
-              {user?.email}
-            </Text>
-          </View>
-        </View>
-      </View>
+      <UserDetails />
 
       <View className="px-4 mt-4">
         <Text className="mb-2 text-slate-400 font-semibold text-xl">
