@@ -19,12 +19,9 @@ export const jobs = createModel<RootModel>()({
         ...state,
         activeJob: {
           ...payload,
-          tracking_status: {
-            accepted: true,
-            in_transit: false,
-            active: false,
-            completed: false,
-          },
+          tracking_status: JSON.parse(
+            payload.requestStatus
+          ) as TActiveJob["tracking_status"],
         },
       };
     },

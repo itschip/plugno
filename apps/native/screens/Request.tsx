@@ -8,6 +8,7 @@ import { RootState } from "../store";
 import { axiosInstance } from "../lib/axios-instance";
 import { useState } from "react";
 import { RequstTypeForm } from "@components/request/RequestTypeForm";
+import { useTranslation } from "react-i18next";
 
 export const RequestScreen = () => {
   const [step, setStep] = useState(1);
@@ -19,6 +20,8 @@ export const RequestScreen = () => {
   });
 
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const [t] = useTranslation();
 
   const handleSubmit = async (data: RequestFormData) => {
     console.log(data);
@@ -35,7 +38,9 @@ export const RequestScreen = () => {
   return (
     <SafeAreaView className="bg-white flex-1 relative">
       <View className="px-4">
-        <Text className="text-slate-500 text-2xl font-bold">Ny jobb</Text>
+        <Text className="text-slate-500 text-2xl font-bold">
+          {t("REQUEST_WIZARD.NEW_JOB")}
+        </Text>
       </View>
 
       <RequestStepper />

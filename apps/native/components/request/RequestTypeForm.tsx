@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { RequestFormData } from "@typings/form";
 import { classes } from "@utils/css";
+import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 
 type RequestProps = {
@@ -11,7 +13,7 @@ type RequestProps = {
   description: string;
 };
 
-const requestOptions: RequestProps[] = [
+/*const requestOptions: RequestProps[] = [
   {
     id: 1,
     type: "shipping",
@@ -24,12 +26,31 @@ const requestOptions: RequestProps[] = [
     title: "Jeg trenger noe kjapt",
     description: "Hjelp med å fikse noe ASAP",
   },
-];
+]; */
 
 export const RequstTypeForm = () => {
   const { watch, setValue } = useFormContext<RequestFormData>();
+  const [t] = useTranslation();
 
   const requestType = watch("requestType");
+
+  const requestOptions: RequestProps[] = useMemo(
+    () => [
+      {
+        id: 1,
+        type: "shipping",
+        title: t("REQUEST_WIZARD.SHIPPING_TYPE"),
+        description: t("REQUEST_WIZARD.SHIPPING_TYPE_SLOGAN"),
+      },
+      {
+        id: 2,
+        type: "delivery",
+        title: t("REQUEST_WIZARD.DELIVERY_TYPE"),
+        description: t("REQUEST_WIZARD.DELIVERY_TYPE_SLOGAN"),
+      },
+    ],
+    [t]
+  );
 
   return (
     <View className="px-4 pt-10 space-y-4">
