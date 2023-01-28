@@ -160,11 +160,15 @@ func (client *TrackingClient) readTrackerMessage() {
 			fmt.Println("No message type.")
 		}
 
-		client.expoClient.SendPushNotification(&expogo.Notification{
-			To:    []string{"ExponentPushToken[jgjpK8NQcb4475rh2nn4K9]"},
+		_, err = client.expoClient.SendPushNotification(&expogo.Notification{
+			To:    []string{""},
 			Title: "Job Update",
 			Body:  "Your job has been updated",
 		})
+
+		if err != nil {
+			log.Printf("Failed to send push notification: %v", err.Error())
+		}
 
 		client.tracking.broadcast <- message
 	}

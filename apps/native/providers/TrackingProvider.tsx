@@ -19,7 +19,7 @@ type TrackingContextProps = {
   sendTrackingMessage: (socketMessage: SendSocketMessage) => void;
 };
 
-const TrackingContext = createContext<TrackingContextProps>(null);
+const TrackingContext = createContext<TrackingContextProps | null>(null);
 
 type TrackingSocketResponse = {
   jobId: number;
@@ -51,8 +51,6 @@ export const TrackingProvider = ({
       trackingSocket.onmessage = (msg) => {
         const msgData = JSON.parse(msg.data) as TrackingSocketResponse;
 
-        console.log("hello world");
-
         dispatch.jobs.updateTrackingStatus(msgData.type);
       };
 
@@ -63,9 +61,9 @@ export const TrackingProvider = ({
 
     return () => {
       trackingSocket?.close(1000, "Closed chat page");
-      console.log("Tracking socket closed");
+      console.log("TrackingProvider unmounted");
     };
-  }, [trackingSocket]);
+  }, [trackingSocket, dispatch.jobs]);
 
   const handleSendSocketMessage = (socketMessage: SendSocketMessage) => {
     trackingSocket?.send(JSON.stringify(socketMessage));

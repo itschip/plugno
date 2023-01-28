@@ -24,7 +24,7 @@ export const Plugs = () => {
   }, []);
 
   return (
-    <SafeAreaView className="bg-black flex-1 px-4">
+    <SafeAreaView className="bg-white flex-1 px-4">
       <View className="px-4">
         <Text className="text-white text-4xl font-extrabold">Jobs</Text>
       </View>
@@ -45,17 +45,19 @@ const ListItem = ({ item }: { item: TPlugJobResponse }) => {
   };
 
   return (
-    <View className="bg-neutral-800 border border-neutral-700 rounded-md p-2 mt-4">
+    <View className="bg-gray-100 border border-gray-200 rounded-md p-2 mt-4">
       <View className="flex flex-row items-center space-x-2">
         <Image
           source={{ uri: item.avatar }}
           className="h-10 w-10 rounded-full"
         />
-        <Text className="text-white text-xl font-medium">{item.username}</Text>
+        <Text className="text-slate-500 text-lg font-medium">
+          {item.username}
+        </Text>
       </View>
 
       <View className="mt-2">
-        <Text className="text-neutral-100 font-medium text-md text-[15px]">
+        <Text className="text-slate-500 font-medium text-md text-[15px]">
           {item.description}
         </Text>
       </View>

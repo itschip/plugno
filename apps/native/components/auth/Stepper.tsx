@@ -79,7 +79,7 @@ export const Stepper: React.FC<StepperProps> = ({ steps }) => {
             onPress={handleNextStep}
             className="flex flex-row items-baseline justify-center space-x-2 bg-gray-100 py-2 px-3 rounded-md"
           >
-            <Text className="font-medium text-lg ">Gå videre</Text>
+            <Text className="font-main font-medium text-lg ">Gå videre</Text>
             <Feather name="arrow-right" size={20} />
           </TouchableOpacity>
         )}
@@ -87,7 +87,7 @@ export const Stepper: React.FC<StepperProps> = ({ steps }) => {
           onPress={handlePreviousStep}
           className="flex flex-row items-baseline justify-center space-x-2 mt-8"
         >
-          <Text className="text-md">Tilbake</Text>
+          <Text className="text-md font-main">Tilbake</Text>
         </TouchableOpacity>
       </View>
     </View>

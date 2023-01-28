@@ -1,6 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSignIn } from "@clerk/clerk-expo";
 import { useNavigation } from "@react-navigation/native";
-import { API_URL } from "@utils/env";
 import { useState } from "react";
 import {
   SafeAreaView,
@@ -9,48 +8,39 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "../../store";
-import { UserResponse } from "../../typings/user";
+import PlugTextIcon from "../../icons/PlugTextIcon";
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const dispatch = useDispatch<Dispatch>();
+
+  const { isLoaded, setSession, signIn } = useSignIn();
 
   const navigation = useNavigation();
 
-  const handleLogin = async () => {
-    fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data: UserResponse) => {
-        AsyncStorage.setItem("plug:access_token", data.access_token);
-        AsyncStorage.setItem("plug:refresh_token", data.refresh_token);
+  const onSignInPress = async () => {
+    if (!isLoaded) {
+      return;
+    }
 
-        dispatch.auth.populate(data.user);
-      })
-      .catch((err) => {
-        console.log("ERROR:", err);
+    try {
+      const completeSignIn = await signIn.create({
+        identifier: email,
+        password,
       });
+
+      setSession(completeSignIn.createdSessionId);
+    } catch (err) {
+      console.log("Error:> " + (err.errors ? err.errors[0].message : err));
+    }
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-black">
+    <SafeAreaView className="flex-1 items-center justify-center bg-white relative">
+      <View className="absolute  top-40">
+        <PlugTextIcon className="mx-auto" />
+      </View>
       <View className="w-full px-8 space-y-4">
-        <View>
-          <Text className="text-center text-white text-8xl font-extrabold">
-            PLUG
-          </Text>
-        </View>
         <View>
           <TextInput
             value={email}
@@ -61,7 +51,7 @@ export const LoginScreen = () => {
             placeholderTextColor="gray"
             cursorColor="white"
             style={{ fontSize: 18 }}
-            className="bg-neutral-800 py-3 px-3 w-full rounded-md border border-neutral-700 text-white"
+            className="bg-gray-100 py-3 px-3 w-full rounded-md border border-gray-200 "
           />
         </View>
 
@@ -75,23 +65,29 @@ export const LoginScreen = () => {
             placeholderTextColor="gray"
             style={{ fontSize: 18 }}
             cursorColor="white"
-            className="bg-neutral-800 py-3 px-3 w-full rounded-md border border-neutral-700 text-white"
+            className="bg-gray-100 py-3 px-3 w-full rounded-md border border-gray-200"
           />
         </View>
 
         <View>
           <TouchableOpacity
-            onPress={handleLogin}
-            className="px-2 py-2.5 rounded-md bg-neutral-600"
+            onPress={onSignInPress}
+            className="px-2 py-2 rounded-md bg-black"
           >
-            <Text className="text-white text-xl text-center font-semibold">
+            <Text
+              className="text-white text-xl text-center font-semibold"
+              style={{ fontFamily: "Futura" }}
+            >
               Log in
             </Text>
           </TouchableOpacity>
         </View>
 
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text className="text-white text-center text-lg font-medium">
+          <Text
+            className="text-black text-center text-lg font-medium"
+            style={{ fontFamily: "Futura" }}
+          >
             Lag bruker.
           </Text>
         </TouchableOpacity>

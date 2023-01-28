@@ -71,8 +71,10 @@ const RoleOption: React.FC<RoleProp> = (roleOpt) => {
             </View>
           </View>
           <View>
-            <Text className="font-medium text-xl">{roleOpt.title}</Text>
-            <Text>{roleOpt.description}</Text>
+            <Text className="text-xl font-big">{roleOpt.title}</Text>
+            <Text className="font-main text-slate-600">
+              {roleOpt.description}
+            </Text>
           </View>
         </TouchableOpacity>
       )}

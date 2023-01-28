@@ -1,3 +1,4 @@
+import { useClerk } from "@clerk/clerk-expo";
 import { UserDetails } from "@components/profile/UserDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
@@ -18,6 +19,7 @@ export const Profile = () => {
   const dispatch = useDispatch<Dispatch>();
 
   const [plugEnabled, setPlugEnabled] = useState(role === "plug");
+  const { signOut } = useClerk();
 
   const [t] = useTranslation();
 
@@ -30,9 +32,6 @@ export const Profile = () => {
   };
 
   const handleLogOut = async () => {
-    await AsyncStorage.removeItem("plug:access_token");
-    await AsyncStorage.removeItem("plug:refresh_token");
-
     dispatch.auth.populate(null);
   };
 
@@ -78,7 +77,7 @@ export const Profile = () => {
       <View className="px-4 mt-4 absolute bottom-10 right-0 left-0">
         <TouchableOpacity
           className="px-3 py-3 bg-red-100  rounded-md"
-          onPress={handleLogOut}
+          onPress={() => signOut()}
         >
           <Text className="text-red-800 font-medium text-center text-md">
             {t("PROFILE.ACTIONS.LOGOUT")}

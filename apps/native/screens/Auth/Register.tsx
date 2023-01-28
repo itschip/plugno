@@ -25,7 +25,9 @@ export const RegisterScreen = () => {
         </TouchableOpacity>
       </View>
       <View className="px-4 mt-4">
-        <Text className="text-black font-extrabold text-3xl">Lag bruker.</Text>
+        <Text className="text-black font-extrabold text-3xl font-main">
+          Lag bruker.
+        </Text>
       </View>
 
       <View className="px-4 mt-6">

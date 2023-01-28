@@ -14,12 +14,18 @@ import { Dispatch, RootState } from "../../store";
 import { ActiveJobPlugView } from "../ActiveJobPlugView";
 import { TrackingItem } from "../../components/tracking/TrackingItem";
 
+// TODO: Figure this shit out
+// is_active | status | request_status?
+//                      - accepted
+//                      - in_transit
+
 // Active request status
 //  Current status
 // Request status
 //  Overall status
 // All request stauses
 //  Info on all statuses and if they're true/false
+//
 
 export const ActiveRequestScreen = () => {
   const navigation = useNavigation();
@@ -31,10 +37,6 @@ export const ActiveRequestScreen = () => {
     fetchActiveJobs().then((data) => dispatch.jobs.populateActiveJob(data));
     console.log("populate active job");
   }, [dispatch.jobs]);
-
-  console.log(activeJob);
-
-  // TODO: Eventually refactor to a FlatList, with dyanmic job page
 
   if (role === "plug") return <ActiveJobPlugView />;
 
