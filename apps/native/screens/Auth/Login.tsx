@@ -34,7 +34,7 @@ export const LoginScreen = () => {
 
       setSession(completeSignIn.createdSessionId);
     } catch (err) {
-      console.log("Error:> " + (err.errors ? err.errors[0].message : err));
+      console.log("Sign in normal Error:> " + JSON.stringify(err));
     }
   };
 
@@ -64,47 +64,51 @@ export const LoginScreen = () => {
       if (!externalVerificationRedirectURL)
         throw "externalVerificationRedirectURL failed";
 
-      const authResult = await AuthSession.startAsync({
-        authUrl: externalVerificationRedirectURL.toString(),
-        returnUrl: redirectUrl,
-      });
-
-      if (authResult.type !== "success") {
-        throw "Auth result type !success.";
-      }
-
-      // Get the rotatingTokenNonce from the redirect URL parameters
-      const { rotating_token_nonce: rotatingTokenNonce } = authResult.params;
-
-      await signIn.reload({ rotatingTokenNonce });
-
-      const { createdSessionId } = signIn;
-
-      if (createdSessionId) {
-        // If we have a createdSessionId, then auth was successful
-        await setSession(createdSessionId);
-      } else {
-        // If we have no createdSessionId, then this is a first time sign-in, so
-        // we should process this as a signUp instead
-        // Throw if we're not in the right state for creating a new user
-        if (!signUp) {
-          throw "Something went wrong during the Sign up OAuth flow. Please ensure that all sign up requirements are met.";
-        }
-
-        if (signIn.firstFactorVerification.status === "transferable") {
-          throw "Not transferable";
-        }
-
-        console.log(
-          "Didn't have an account transferring, following through with new account sign up"
-        );
-
-        // Create user
-        await signUp.create({ transfer: true });
-        await signUp.reload({
-          rotatingTokenNonce: authResult.params.rotating_token_nonce,
+      try {
+        const authResult = await AuthSession.startAsync({
+          authUrl: externalVerificationRedirectURL.toString(),
+          returnUrl: redirectUrl,
         });
-        await setSession(signUp.createdSessionId);
+
+        if (authResult.type !== "success") {
+          console.log(authResult.params);
+        }
+
+        // Get the rotatingTokenNonce from the redirect URL parameters
+        const { rotating_token_nonce: rotatingTokenNonce } = authResult.params;
+
+        await signIn.reload({ rotatingTokenNonce });
+
+        const { createdSessionId } = signIn;
+
+        if (createdSessionId) {
+          // If we have a createdSessionId, then auth was successful
+          await setSession(createdSessionId);
+        } else {
+          // If we have no createdSessionId, then this is a first time sign-in, so
+          // we should process this as a signUp instead
+          // Throw if we're not in the right state for creating a new user
+          if (!signUp) {
+            throw "Something went wrong during the Sign up OAuth flow. Please ensure that all sign up requirements are met.";
+          }
+
+          if (signIn.firstFactorVerification.status === "transferable") {
+            console.log("Not transferable");
+          }
+
+          console.log(
+            "Didn't have an account transferring, following through with new account sign up"
+          );
+
+          // Create user
+          await signUp.create({ transfer: true });
+          await signUp.reload({
+            rotatingTokenNonce: authResult.params.rotating_token_nonce,
+          });
+          await setSession(signUp.createdSessionId);
+        }
+      } catch (err) {
+        console.log(`Whole thing fucked: Error: ${JSON.stringify(err)}`);
       }
     } catch (err) {
       console.log(JSON.stringify(err, null, 2));

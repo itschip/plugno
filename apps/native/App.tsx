@@ -63,7 +63,7 @@ const ScreensContainer = () => {
 
   return (
     <ClerkProvider
-      publishableKey="pk_test_ZmluZS1yb3VnaHktNjMuY2xlcmsuYWNjb3VudHMuZGV2JA"
+      publishableKey="pk_test_cG9saXNoZWQtZ29iYmxlci03OS5jbGVyay5hY2NvdW50cy5kZXYk"
       tokenCache={tokenCache}
     >
       <SignedOut>
