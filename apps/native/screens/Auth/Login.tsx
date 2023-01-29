@@ -1,4 +1,4 @@
-import { useSignIn } from "@clerk/clerk-expo";
+import { useSignIn, useSignUp } from "@clerk/clerk-expo";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
@@ -9,12 +9,15 @@ import {
   View,
 } from "react-native";
 import PlugTextIcon from "../../icons/PlugTextIcon";
+import { FontAwesome5 } from "@expo/vector-icons";
+import * as AuthSession from "expo-auth-session";
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const { isLoaded, setSession, signIn } = useSignIn();
+  const { signUp } = useSignUp();
 
   const navigation = useNavigation();
 
@@ -32,6 +35,80 @@ export const LoginScreen = () => {
       setSession(completeSignIn.createdSessionId);
     } catch (err) {
       console.log("Error:> " + (err.errors ? err.errors[0].message : err));
+    }
+  };
+
+  const handleSignInWithDiscordPress = async () => {
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      const redirectUrl = AuthSession.makeRedirectUri({
+        path: "/oauth_callback",
+      });
+
+      try {
+        await signIn.create({
+          strategy: "oauth_discord",
+          redirectUrl,
+        });
+      } catch (err) {
+        console.error(`[signIn.create] - Error: ${err}`);
+      }
+
+      const {
+        firstFactorVerification: { externalVerificationRedirectURL },
+      } = signIn;
+
+      if (!externalVerificationRedirectURL)
+        throw "externalVerificationRedirectURL failed";
+
+      const authResult = await AuthSession.startAsync({
+        authUrl: externalVerificationRedirectURL.toString(),
+        returnUrl: redirectUrl,
+      });
+
+      if (authResult.type !== "success") {
+        throw "Auth result type !success.";
+      }
+
+      // Get the rotatingTokenNonce from the redirect URL parameters
+      const { rotating_token_nonce: rotatingTokenNonce } = authResult.params;
+
+      await signIn.reload({ rotatingTokenNonce });
+
+      const { createdSessionId } = signIn;
+
+      if (createdSessionId) {
+        // If we have a createdSessionId, then auth was successful
+        await setSession(createdSessionId);
+      } else {
+        // If we have no createdSessionId, then this is a first time sign-in, so
+        // we should process this as a signUp instead
+        // Throw if we're not in the right state for creating a new user
+        if (!signUp) {
+          throw "Something went wrong during the Sign up OAuth flow. Please ensure that all sign up requirements are met.";
+        }
+
+        if (signIn.firstFactorVerification.status === "transferable") {
+          throw "Not transferable";
+        }
+
+        console.log(
+          "Didn't have an account transferring, following through with new account sign up"
+        );
+
+        // Create user
+        await signUp.create({ transfer: true });
+        await signUp.reload({
+          rotatingTokenNonce: authResult.params.rotating_token_nonce,
+        });
+        await setSession(signUp.createdSessionId);
+      }
+    } catch (err) {
+      console.log(JSON.stringify(err, null, 2));
+      console.log("error signing in", err);
     }
   };
 
@@ -72,7 +149,7 @@ export const LoginScreen = () => {
         <View>
           <TouchableOpacity
             onPress={onSignInPress}
-            className="px-2 py-2 rounded-md bg-black"
+            className="px-2 py-2.5 rounded-md bg-black"
           >
             <Text
               className="text-white text-xl text-center font-semibold"
@@ -80,6 +157,16 @@ export const LoginScreen = () => {
             >
               Log in
             </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View className="flex flex-row">
+          <TouchableOpacity
+            onPress={handleSignInWithDiscordPress}
+            className="bg-blue-500 px-4 py-3 rounded-md"
+          >
+            {/* Actually discord */}
+            <FontAwesome5 name="facebook-f" size={24} color="white" />
           </TouchableOpacity>
         </View>
 
