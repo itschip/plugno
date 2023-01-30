@@ -199,7 +199,7 @@ func (auth *AuthHandler) Login(c *gin.Context) {
 	})
 }
 
-func GetUserFromCookie(cookie string) *Claims {
+func (auth *AuthHandler) GetUserFromCookie(cookie string) *Claims {
 	token, err := jwt.ParseWithClaims(cookie, &Claims{}, func(t *jwt.Token) (interface{}, error) {
 		return jwtKey, nil
 	})

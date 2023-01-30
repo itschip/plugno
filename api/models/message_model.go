@@ -15,18 +15,19 @@ type Conversation struct {
 	Avatar        string `json:"avatar"`
 	JobID         int    `json:"jobId"`
 	JobTitle      string `json:"jobTitle"`
+	UserId        string `json:"userId"`
 }
 
 type ConversationParticipant struct {
-	ID             int `json:"id"`
-	ConversationID int `json:"conversationId"`
-	UserID         int `json:"userId"`
+	ID             int    `json:"id"`
+	ConversationID int    `json:"conversationId"`
+	UserID         string `json:"userId"`
 }
 
 type Message struct {
 	ID             int    `json:"id"`
 	Message        string `json:"message"`
-	UserID         int    `json:"userId"`
+	UserID         string `json:"userId"`
 	ConversationID int    `json:"conversationId"`
 	CreatedAt      string `json:"createdAt"`
 	UpdatedAt      string `json:"updatedAt"`
@@ -126,11 +127,10 @@ func (model *MessageModel) CreateConversation(conversationList []string) {
 	}
 }
 
-func (mm *MessageModel) FindAllConversations(userId int) ([]Conversation, error) {
-	query := `select c.id, c.last_message_id, c.createdAt, u.username, u.avatar, j.id, j.title
+func (mm *MessageModel) FindAllConversations(userId string) ([]Conversation, error) {
+	query := `select c.id, c.last_message_id, c.createdAt, j.id, j.title, cp.user_id as userId
                 from conversations c
                 join conversation_participants cp on c.id = cp.conversation_id
-                join users u on cp.user_id = u.id
                 join jobs j on c.job_id = j.id
             where cp.user_id != ? and exists(select * from conversation_participants where user_id = ? and conversation_id = c.id)`
 
@@ -145,7 +145,7 @@ func (mm *MessageModel) FindAllConversations(userId int) ([]Conversation, error)
 	conversations := []Conversation{}
 	for res.Next() {
 		var conversation Conversation
-		err := res.Scan(&conversation.ID, &conversation.LastMessageID, &conversation.CreatedAt, &conversation.Username, &conversation.Avatar, &conversation.JobID, &conversation.JobTitle)
+		err := res.Scan(&conversation.ID, &conversation.LastMessageID, &conversation.CreatedAt, &conversation.JobID, &conversation.JobTitle, &conversation.UserId)
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err

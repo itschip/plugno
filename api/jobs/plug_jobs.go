@@ -42,9 +42,11 @@ func (handler *JobsHandler) GetAllPlugJobs(ctx *gin.Context) {
 		return
 	}
 
-	claims := auth.GetUserFromCookie(cookie)
+	// claims := auth.GetUserFromCookie(cookie)
 
-	plugJobs, err := handler.jobModel.FindAllPlugJobs(claims.ID)
+	fmt.Println(cookie)
+
+	plugJobs, err := handler.jobModel.FindAllPlugJobs(1)
 	if err != nil {
 		log.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, "Failed to find plug jobs")
@@ -86,9 +88,11 @@ func (handler *JobsHandler) GetAllAcceptedJobs(ctx *gin.Context) {
 		return
 	}
 
-	claims := auth.GetUserFromCookie(cookie)
+	fmt.Println(cookie)
 
-	plugJobs, err := handler.jobModel.FindAllAcceptedJobs(claims.ID)
+	// claims := auth.GetUserFromCookie(cookie)
+
+	plugJobs, err := handler.jobModel.FindAllAcceptedJobs(1)
 	if err != nil {
 		log.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, "Failed to find accepted plug jobs")

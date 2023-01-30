@@ -4,6 +4,7 @@ import (
 	"plugno-api/auth"
 	"plugno-api/chat"
 	"plugno-api/db"
+	"plugno-api/internal"
 	"plugno-api/jobs"
 	"plugno-api/models"
 	"plugno-api/profile"
@@ -11,6 +12,7 @@ import (
 	"plugno-api/tracking"
 	"time"
 
+	"github.com/clerkinc/clerk-sdk-go/clerk"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -18,11 +20,19 @@ import (
 func main() {
 	conn := db.Open()
 
+	clerkKey := internal.EnvVariable("CLERK_API_KEY")
+
+	clerkClient, err := clerk.NewClient(clerkKey)
+	if err != nil {
+		panic(err)
+	}
+
 	server := structs.Server{
 		UserModel:    models.UserModel{DB: conn},
 		JobModel:     models.JobModel{DB: conn},
 		MessageModel: models.MessageModel{DB: conn},
 		ProfileModel: models.ProfileModel{DB: conn},
+		ClerkClient:  clerkClient,
 	}
 
 	authHandler := auth.NewAuthHandler(&server)
@@ -71,13 +81,13 @@ func main() {
 	router.POST("/plugs/acceptJob", jobsHandler.AcceptPlugJob)
 
 	router.GET("/messages/getAll", chatHandler.FindMessages)
+	router.GET("/conversations/getAll", chatHandler.FindConversations)
 
 	authorized := router.Group("/")
 	authorized.Use(auth.Authorized())
 	{
 		authorized.POST("/jobs/new", jobsHandler.New)
 		authorized.GET("/jobs/getOne", jobsHandler.GetOne)
-		authorized.GET("/conversations/getAll", chatHandler.FindConversations)
 		authorized.GET("/jobs/getAcceptedPlugJobs", jobsHandler.GetAllAcceptedJobs)
 	}
 

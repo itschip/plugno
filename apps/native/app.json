@@ -13,8 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "extra": {
-      "apiUrl": "http://192.168.1.228:6001",
-      "websocketUrl": ":192.168.1.228:6001",
+      "apiUrl": "http://192.168.10.139:6001",
+      "websocketUrl": "192.168.10.139:6001",
       "googlePlacesApi": "AIzaSyBaaMi-LR-PaEW_IrD0YYB0thBJzYBDxJI",
       "CLERK_PUBLISHABLE_KEY": "pk_test_ZmluZS1yb3VnaHktNjMuY2xlcmsuYWNjb3VudHMuZGV2JA"
     },

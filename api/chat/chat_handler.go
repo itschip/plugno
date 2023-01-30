@@ -6,6 +6,7 @@ import (
 	"plugno-api/auth"
 	"strconv"
 
+	"github.com/clerkinc/clerk-sdk-go/clerk"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,15 +15,44 @@ func (ch *ChatHandler) FindConversations(g *gin.Context) {
 	if err != nil {
 		log.Println(err.Error())
 		g.JSON(http.StatusUnauthorized, "Unauthorized")
+		return
 	}
 
-	claims := auth.GetUserFromCookie(cookie)
+	claims, err := ch.clerkClient.VerifyToken(cookie)
+	if err != nil {
+		log.Println(err.Error())
+		g.JSON(http.StatusUnauthorized, "Unauthorized")
+		return
+	}
 
-	conversations, err := ch.messageModel.FindAllConversations(claims.ID)
+	conversations, err := ch.messageModel.FindAllConversations(claims.Subject)
 	if err != nil {
 		log.Println(err.Error())
 		g.JSON(http.StatusInternalServerError, "Failed to get conversation")
 		return
+	}
+
+	userIds := make([]string, 0)
+	for _, convo := range conversations {
+		userIds = append(userIds, convo.UserId)
+	}
+
+	users, err := ch.clerkClient.Users().ListAll(clerk.ListAllUsersParams{
+		UserIDs: userIds,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		g.JSON(http.StatusInternalServerError, "Failed to get conversations")
+		return
+	}
+
+	for i, convo := range conversations {
+		for j, userId := range userIds {
+			if convo.UserId == userId {
+				conversations[i].Username = *users[j].FirstName
+				conversations[i].Avatar = users[j].ProfileImageURL
+			}
+		}
 	}
 
 	g.JSON(http.StatusOK, conversations)

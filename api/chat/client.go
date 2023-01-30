@@ -11,17 +11,20 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/clerkinc/clerk-sdk-go/clerk"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
 type ChatHandler struct {
 	messageModel models.MessageModel
+	clerkClient  clerk.Client
 }
 
 func NewChatHandler(s *structs.Server) *ChatHandler {
 	return &ChatHandler{
 		messageModel: s.MessageModel,
+		clerkClient:  s.ClerkClient,
 	}
 }
 
