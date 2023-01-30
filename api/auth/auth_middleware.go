@@ -2,12 +2,11 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
+	"plugno-api/clerk"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v4"
 )
 
 func Authorized() gin.HandlerFunc {
@@ -18,13 +17,9 @@ func Authorized() gin.HandlerFunc {
 			log.Println("Failed getting cookie: ", err.Error())
 		}
 
-		_, err = jwt.ParseWithClaims(cookie, &Claims{}, func(t *jwt.Token) (interface{}, error) {
-			return jwtKey, nil
-		})
+		_, err = clerk.ClerkClient.VerifyToken(cookie)
 
 		if err != nil {
-			fmt.Println("NOT AUTH")
-			fmt.Println("MIddleware: ", err.Error())
 			c.Writer.WriteHeader(http.StatusUnauthorized)
 			c.Writer.Write([]byte("Unauthorized"))
 			c.Abort()

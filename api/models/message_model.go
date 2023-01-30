@@ -37,7 +37,7 @@ type MessageModel struct {
 	DB *sql.DB
 }
 
-func (mm *MessageModel) Create(message string, userId int, conversationId int) (int64, error) {
+func (mm *MessageModel) Create(message string, userId string, conversationId int) (int64, error) {
 	query := `INSERT INTO messages (message, user_id, conversation_id) VALUES (?, ?, ?)`
 
 	result, err := mm.DB.Exec(query, message, userId, conversationId)
@@ -131,7 +131,7 @@ func (mm *MessageModel) FindAllConversations(userId string) ([]Conversation, err
 	query := `select c.id, c.last_message_id, c.createdAt, j.id, j.title, cp.user_id as userId
                 from conversations c
                 join conversation_participants cp on c.id = cp.conversation_id
-                join jobs j on c.job_id = j.id
+                join plug_jobs j on c.job_id = j.id
             where cp.user_id != ? and exists(select * from conversation_participants where user_id = ? and conversation_id = c.id)`
 
 	res, err := mm.DB.Query(query, userId, userId)

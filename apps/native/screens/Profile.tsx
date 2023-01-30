@@ -1,6 +1,5 @@
-import { useClerk } from "@clerk/clerk-expo";
+import { useClerk, useUser } from "@clerk/clerk-expo";
 import { UserDetails } from "@components/profile/UserDetails";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,22 +16,27 @@ import { Dispatch, RootState } from "../store";
 export const Profile = () => {
   const { role } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<Dispatch>();
+  const { user } = useUser();
+  const metaData = user?.unsafeMetadata;
 
-  const [plugEnabled, setPlugEnabled] = useState(role === "plug");
+  const [plugEnabled, setPlugEnabled] = useState(metaData?.plugEnabled);
   const { signOut } = useClerk();
 
   const [t] = useTranslation();
 
-  const handleRoleChange = () => {
-    setPlugEnabled((prev) => !prev);
+  const handleRoleChange = async () => {
+    setPlugEnabled((prev: any) => !prev);
+    if (user) {
+      await user.update({
+        unsafeMetadata: {
+          plugEnabled: plugEnabled ? false : true,
+        },
+      });
+    }
   };
 
   const handleChangeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
-  };
-
-  const handleLogOut = async () => {
-    dispatch.auth.populate(null);
   };
 
   useEffect(() => {

@@ -1,11 +1,14 @@
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useUser } from "@clerk/clerk-expo";
 
 export const UserDetails = () => {
   const [t] = useTranslation();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useUser();
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <View className="mt-8 px-4 space-y-4">
@@ -15,8 +18,8 @@ export const UserDetails = () => {
         </Text>
 
         <View className="bg-gray-100 border border-gray-200 px-2 py-2 rounded-md">
-          <Text className="font-semibold text-slate-500 text-lg">
-            {user?.username}
+          <Text className="font-medium text-slate-500 text-lg">
+            {user?.firstName} {user?.lastName}
           </Text>
         </View>
       </View>
@@ -27,8 +30,8 @@ export const UserDetails = () => {
         </Text>
 
         <View className="bg-gray-100 border border-gray-200 px-2 py-2 rounded-md">
-          <Text className="font-semibold text-slate-500 text-md text-lg">
-            {user?.email}
+          <Text className="font-medium text-slate-500 text-md text-lg">
+            {user?.primaryEmailAddress?.emailAddress}
           </Text>
         </View>
       </View>

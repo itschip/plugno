@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"plugno-api/auth"
+	_clerk "plugno-api/clerk"
 	"strconv"
 
 	"github.com/clerkinc/clerk-sdk-go/clerk"
@@ -18,7 +19,7 @@ func (ch *ChatHandler) FindConversations(g *gin.Context) {
 		return
 	}
 
-	claims, err := ch.clerkClient.VerifyToken(cookie)
+	claims, err := _clerk.ClerkClient.VerifyToken(cookie)
 	if err != nil {
 		log.Println(err.Error())
 		g.JSON(http.StatusUnauthorized, "Unauthorized")
@@ -37,7 +38,7 @@ func (ch *ChatHandler) FindConversations(g *gin.Context) {
 		userIds = append(userIds, convo.UserId)
 	}
 
-	users, err := ch.clerkClient.Users().ListAll(clerk.ListAllUsersParams{
+	users, err := _clerk.ClerkClient.Users().ListAll(clerk.ListAllUsersParams{
 		UserIDs: userIds,
 	})
 	if err != nil {

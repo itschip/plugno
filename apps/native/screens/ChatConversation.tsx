@@ -7,29 +7,26 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
 import { Feather } from "@expo/vector-icons";
 import { classes } from "../utils/css";
 import { useRoute } from "@react-navigation/native";
-import {
-  ConversationScreenNavigationProp,
-  ConversationScreenRouteProp,
-} from "@typings/navigation";
+import { ConversationScreenRouteProp } from "@typings/navigation";
+import { useUser } from "@clerk/clerk-expo";
 
 type Message = {
   id: string;
   createdAt: string;
   message: string;
   updatedAt: string;
-  userId: number;
+  userId: string;
 };
 
 export const ChatConversation = () => {
   const [message, setMessage] = useState<string>("");
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const user = useSelector((state: RootState) => state.auth.user);
+
+  const { user } = useUser();
 
   const {
     params: { id: conversationId },

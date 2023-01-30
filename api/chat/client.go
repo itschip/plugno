@@ -30,7 +30,7 @@ func NewChatHandler(s *structs.Server) *ChatHandler {
 
 type RawMessage struct {
 	Message string `json:"message"`
-	UserID  int    `json:"userId"`
+	UserID  string `json:"userId"`
 	RoomID  int    `json:"roomId"`
 }
 
