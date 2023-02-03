@@ -17,6 +17,9 @@ export const HomeStack = () => {
         component={Home}
         options={{
           headerTitle: "",
+          headerStyle: {
+            backgroundColor: "#f2f2f2",
+          },
           headerShown: true,
           headerShadowVisible: false,
           headerLeft: () => (
@@ -27,7 +30,7 @@ export const HomeStack = () => {
                 >
                   <Ionicons name="flash" size={30} color="black" />
                 </TouchableOpacity>
-                <View className="absolute top-0 left-1 block h-1.5 w-1.5 rounded-full bg-rose-400 ring-2 ring-rose-400" />
+                <View className="absolute top-0 left-1 block h-1.5 w-1.5 rounded-full bg-purple-500 ring-2 ring-rose-400" />
               </View>
               <View className="bg-green-200 px-3 py-1 rounded-full">
                 <Text className="font-medium text-[#166534]">Active</Text>
