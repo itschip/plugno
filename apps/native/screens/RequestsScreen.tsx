@@ -5,17 +5,26 @@ import { axiosInstance } from "../lib/axios-instance";
 import { useEffect, useState } from "react";
 import { TAcceptedJob } from "@typings/jobs";
 import { RequestList } from "@components/requests/RequestList";
+import { useAuth } from "@clerk/clerk-expo";
 
 export const AcceptedJobsScreen = () => {
   const [acceptedJobs, setAcceptedJobs] = useState<TAcceptedJob[] | null>(null);
   const navigation = useNavigation();
+  const { getToken } = useAuth();
 
   useEffect(() => {
-    axiosInstance
-      .get<TAcceptedJob[]>("/jobs/getAcceptedPlugJobs")
-      .then((res) => {
-        setAcceptedJobs(res.data);
-      });
+    (async () => {
+      const token = await getToken();
+      axiosInstance
+        .get<TAcceptedJob[]>("/jobs/getAcceptedPlugJobs", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        })
+        .then((res) => {
+          setAcceptedJobs(res.data);
+        });
+    })();
   }, []);
 
   return (

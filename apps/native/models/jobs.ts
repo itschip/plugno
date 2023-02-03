@@ -26,8 +26,6 @@ export const jobs = createModel<RootModel>()({
       };
     },
     updateTrackingStatus: (state, payload: string) => {
-      console.log("current payload:", payload);
-
       return {
         ...state,
         activeJob: {

@@ -1,9 +1,6 @@
-import { useAuth } from "@clerk/clerk-expo";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { TConversation } from "@typings/conversations";
 import { ConversationScreenNavigationProp } from "@typings/navigation";
-import { API_URL } from "@utils/env";
-import { useCallback, useEffect, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -12,45 +9,12 @@ import {
   View,
   Image,
 } from "react-native";
-import { axiosInstance } from "../lib/axios-instance";
-
-type Conversation = {
-  id: number;
-  lastMessageId: number;
-  createdAt: string;
-  username: string;
-  avatar: string;
-  jobId: string;
-  jobTitle: string;
-};
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export const ChatScreen = () => {
-  const [conversations, setConversations] = useState<Conversation[] | null>(
-    null
-  );
-
-  const { getToken } = useAuth();
-
-  const handleGetConversations = async () => {
-    const token = await getToken();
-    axiosInstance
-      .get<Conversation[]>("/conversations/getAll", {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((res) => {
-        setConversations(res.data);
-      })
-      .catch((err) => {
-        console.log("ERROR", JSON.stringify(err));
-      });
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      handleGetConversations();
-    }, [])
+  const conversations = useSelector(
+    (state: RootState) => state.conversations.conversations
   );
 
   return (
@@ -63,9 +27,9 @@ export const ChatScreen = () => {
   );
 };
 
-const renderItem = ({ item }: { item: Conversation }) => <Item item={item} />;
+const renderItem = ({ item }: { item: TConversation }) => <Item item={item} />;
 
-const Item = ({ item }: { item: Conversation }) => {
+const Item = ({ item }: { item: TConversation }) => {
   const navigation = useNavigation<ConversationScreenNavigationProp>();
 
   return (
