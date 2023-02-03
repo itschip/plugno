@@ -3,7 +3,9 @@
     "HOME": {
       "FIND_A_PLUG": "Finn en plug",
       "ASK_FOR_HELP": "Be om hjelp",
-      "FEATURED_PLUGS": "Populære plugs"
+      "FEATURED_PLUGS": "Populære plugs",
+      "RECENT_MESSAGES": "Seneste meldinger",
+      "RECENT_JOBS": "Tidligere jobber"
     },
     "PROFILE": {
       "PROFILE": "Profil",
