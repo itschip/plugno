@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"plugno-api/auth"
+	"plugno-api/clerk"
 	"plugno-api/models"
 
 	"github.com/gin-gonic/gin"
@@ -42,11 +43,16 @@ func (handler *JobsHandler) GetAllPlugJobs(ctx *gin.Context) {
 		return
 	}
 
-	// claims := auth.GetUserFromCookie(cookie)
+	claims, err := clerk.ClerkClient.VerifyToken(cookie)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, "Failed to find plug jobs")
+		return
+	}
 
-	fmt.Println(cookie)
+	fmt.Println("TOKEN PLUG", claims.Subject)
 
-	plugJobs, err := handler.jobModel.FindAllPlugJobs(1)
+	plugJobs, err := handler.jobModel.FindAllPlugJobs(claims.Subject)
 	if err != nil {
 		log.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, "Failed to find plug jobs")
@@ -88,11 +94,14 @@ func (handler *JobsHandler) GetAllAcceptedJobs(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println(cookie)
+	claims, err := clerk.ClerkClient.VerifyToken(cookie)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, "Failed to find plug jobs")
+		return
+	}
 
-	// claims := auth.GetUserFromCookie(cookie)
-
-	plugJobs, err := handler.jobModel.FindAllAcceptedJobs(1)
+	plugJobs, err := handler.jobModel.FindAllAcceptedJobs(claims.Subject)
 	if err != nil {
 		log.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, "Failed to find accepted plug jobs")

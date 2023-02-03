@@ -75,13 +75,13 @@ func main() {
 	router.POST("/plugs/acceptJob", jobsHandler.AcceptPlugJob)
 
 	router.GET("/messages/getAll", chatHandler.FindMessages)
+	router.GET("/jobs/getAcceptedPlugJobs", jobsHandler.GetAllAcceptedJobs)
 
 	authorized := router.Group("/")
 	authorized.Use(auth.Authorized())
 	{
 		authorized.POST("/jobs/new", jobsHandler.New)
 		authorized.GET("/jobs/getOne", jobsHandler.GetOne)
-		authorized.GET("/jobs/getAcceptedPlugJobs", jobsHandler.GetAllAcceptedJobs)
 		authorized.GET("/conversations/getAll", chatHandler.FindConversations)
 	}
 

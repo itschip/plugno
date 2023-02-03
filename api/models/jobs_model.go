@@ -37,7 +37,7 @@ type PlugJobObject struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Place       string `json:"place"`
-	UserID      int    `json:"userId"`
+	UserID      string `json:"userId"`
 	PhoneNumber string `json:"phoneNumber"`
 	IsAccepted  bool   `json:"isAccepted"`
 	RequestType string `json:"requestType"`
@@ -51,7 +51,7 @@ type AcceptedJobObject struct {
 	Status      string `json:"status"`
 	UpdatedAt   string `json:"updatedAt"`
 	CreatedAt   string `json:"createdAt"`
-	UserID      int    `json:"userId"`
+	UserID      string `json:"userId"`
 	Title       string `json:"title"`
 	RequestType string `json:"requestType"`
 	PlugAvatar  string `json:"plugAvatar"`
@@ -61,7 +61,7 @@ type NewPlugJobObject struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Place       string `json:"place"`
-	UserID      int    `json:"userId"`
+	UserID      string `json:"userId"`
 	PhoneNumber string `json:"phoneNumber"`
 	RequestType string `json:"requestType"`
 }
@@ -162,7 +162,7 @@ func (model *JobModel) CreatePlugJob(jobObject *NewPlugJobObject) error {
 	return nil
 }
 
-func (model *JobModel) FindAllPlugJobs(userId int) ([]PlugJobObject, error) {
+func (model *JobModel) FindAllPlugJobs(userId string) ([]PlugJobObject, error) {
 	query := "SELECT pj.*, u.username, u.avatar FROM plug_jobs pj JOIN users u on pj.user_id = u.id"
 
 	rows, err := model.DB.Query(query)
@@ -234,7 +234,7 @@ func (model *JobModel) GetActiveJob(jobId int) (*ActiveJobObject, error) {
 	return &activeJob, nil
 }
 
-func (model *JobModel) FindAllAcceptedJobs(userId int) ([]AcceptedJobObject, error) {
+func (model *JobModel) FindAllAcceptedJobs(userId string) ([]AcceptedJobObject, error) {
 	query := `select aj.job_id,
        aj.plug_id,
        aj.status,
